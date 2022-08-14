@@ -24,9 +24,11 @@ class MainTableViewCell: UITableViewCell {
         
     }
     
-    func custonCell(with cell: MainCell) {
+    func customCell(with cell: List) {
         imageCell.image = UIImage(systemName: cell.image)
         imageCell.tintColor = cell.imageColor
         nameLabel.text = cell.name
+        guard let tasks = cell.tasks else { return }
+        countLabel.text = "\(tasks)"
     }
 }

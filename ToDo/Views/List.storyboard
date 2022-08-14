@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--List View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="ListsViewController" id="Y6W-OH-hqX" customClass="ListViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="JCi-uM-7S6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="595"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B0U-xi-VIw">
+                                <rect key="frame" x="16" y="611" width="295" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLW-tT-X7G">
+                                        <rect key="frame" x="0.0" y="0.0" width="295" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="J4y-nT-Qhd"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="tintColor" red="0.34930390119999999" green="0.66954880949999995" blue="0.88238066429999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="   Добавить задачу" image="plus" catalog="system">
+                                            <color key="titleColor" red="0.34930390119999999" green="0.66954880949999995" blue="0.88238066429999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addTaskTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="YgI-Q3-giB"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="bLW-tT-X7G" secondAttribute="bottom" id="Swi-Dg-RGY"/>
+                                    <constraint firstItem="bLW-tT-X7G" firstAttribute="top" secondItem="B0U-xi-VIw" secondAttribute="top" id="Xm5-pj-U5c"/>
+                                    <constraint firstItem="bLW-tT-X7G" firstAttribute="leading" secondItem="B0U-xi-VIw" secondAttribute="leading" id="h6N-ap-bm6"/>
+                                    <constraint firstAttribute="trailing" secondItem="bLW-tT-X7G" secondAttribute="trailing" id="lKg-Ep-Ytl"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07I-Fm-xGW">
+                                <rect key="frame" x="319" y="611" width="40" height="40"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEG-eK-C9M">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="CZj-s6-v07"/>
+                                            <constraint firstAttribute="height" constant="40" id="dUg-Hg-qvr"/>
+                                        </constraints>
+                                        <color key="tintColor" red="0.32286190990000002" green="0.56123954060000003" blue="0.71374613050000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="gear" catalog="system"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="IVN-oa-IxU"/>
+                                    <constraint firstItem="HEG-eK-C9M" firstAttribute="leading" secondItem="07I-Fm-xGW" secondAttribute="leading" id="WZF-GF-iTr"/>
+                                    <constraint firstItem="HEG-eK-C9M" firstAttribute="top" secondItem="07I-Fm-xGW" secondAttribute="top" id="ZQB-gx-h62"/>
+                                    <constraint firstAttribute="height" constant="40" id="lry-70-y2g"/>
+                                    <constraint firstAttribute="bottom" secondItem="HEG-eK-C9M" secondAttribute="bottom" id="mbQ-51-Zur"/>
+                                    <constraint firstAttribute="trailing" secondItem="HEG-eK-C9M" secondAttribute="trailing" id="rRz-fh-YOU"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" red="0.51739315269999997" green="0.84258943799999997" blue="0.82611792279999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="JCi-uM-7S6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="8IE-Sh-5J7"/>
+                            <constraint firstItem="07I-Fm-xGW" firstAttribute="leading" secondItem="B0U-xi-VIw" secondAttribute="trailing" constant="8" id="O5E-X3-lLQ"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="07I-Fm-xGW" secondAttribute="trailing" constant="16" id="e2h-CD-bt4"/>
+                            <constraint firstItem="07I-Fm-xGW" firstAttribute="top" secondItem="B0U-xi-VIw" secondAttribute="top" id="gjP-Tx-HCF"/>
+                            <constraint firstItem="B0U-xi-VIw" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="jZf-kL-eGf"/>
+                            <constraint firstItem="B0U-xi-VIw" firstAttribute="top" secondItem="JCi-uM-7S6" secondAttribute="bottom" constant="16" id="nxI-HK-faN"/>
+                            <constraint firstItem="JCi-uM-7S6" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="p7G-0V-dFV"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="B0U-xi-VIw" secondAttribute="bottom" constant="16" id="qYe-Et-eOy"/>
+                            <constraint firstItem="JCi-uM-7S6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="wLH-TI-FJV"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="LrW-S5-KOP"/>
+                    <connections>
+                        <outlet property="addTaskView" destination="B0U-xi-VIw" id="p29-Zp-ipl"/>
+                        <outlet property="listTableView" destination="JCi-uM-7S6" id="m1k-TK-CRQ"/>
+                        <outlet property="settingsView" destination="07I-Fm-xGW" id="nMH-Bm-ikV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="581" y="118"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

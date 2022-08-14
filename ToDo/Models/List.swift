@@ -8,14 +8,16 @@
 import Foundation
 import UIKit
 
-class MainCell {
+class List {
     var name: String
     var image: String
     var imageColor: UIColor
+    var tasks: Int?
     
-    init(name: String, image: String, imageColor: UIColor) {
+    init(name: String, image: String, imageColor: UIColor, countTask: Int?) {
         self.name = name
         self.image = image
         self.imageColor = imageColor
+        self.tasks = countTask
     }
 }
