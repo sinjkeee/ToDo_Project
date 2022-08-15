@@ -49,11 +49,32 @@ class MainViewController: UIViewController {
         return button
     }()
     
+    private lazy var viewForFooter: UIView = {
+        let view = UIView()
+        let subview = UIView()
+        subview.backgroundColor = .systemCyan
+        view.backgroundColor = .white
+        view.addSubview(subview)
+        
+        subview.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.equalTo(1)
+        }
+        
+        return view
+    }()
+    
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Списки"
+        
+        customTitleView.addSubview(userImage)
+        customTitleView.addSubview(infoButton)
+        customTitleView.addSubview(searchButton)
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
@@ -106,13 +127,9 @@ class MainViewController: UIViewController {
     }
     
     private func setConstraint() {
-        customTitleView.addSubview(userImage)
-        customTitleView.addSubview(infoButton)
-        customTitleView.addSubview(searchButton)
         
         customTitleView.snp.makeConstraints { make in
-            let frame = view.frame.width
-            make.width.equalTo(frame)
+            make.width.equalTo(view.frame.width)
             make.height.equalTo(41)
         }
         
@@ -147,23 +164,6 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let viewForFooter: UIView = {
-            let view = UIView()
-            let subview = UIView()
-            subview.backgroundColor = .systemCyan
-            view.backgroundColor = .white
-            view.addSubview(subview)
-            
-            subview.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview().inset(20)
-                make.centerY.equalToSuperview()
-                make.centerX.equalToSuperview()
-                make.height.equalTo(1)
-            }
-            
-            return view
-        }()
-        
         return viewForFooter
     }
     
@@ -178,26 +178,17 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = mainTableView.dequeueReusableCell(withIdentifier: "mainCell", for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
         
-        if indexPath.section == 0 {
-            cell.customCell(with: arrayLists[indexPath.row])
-            return cell
-        } else {
-            cell.customCell(with: arrayCustomLists[indexPath.row])
-            return cell
-        }
+        indexPath.section == 0 ? cell.customCell(with: arrayLists[indexPath.row]) : cell.customCell(with: arrayCustomLists[indexPath.row])
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
         guard let list = UIStoryboard(name: "List", bundle: nil).instantiateViewController(withIdentifier: "ListsViewController") as? ListViewController else { return }
-        if indexPath.section == 0 {
-            list.title = arrayLists[indexPath.row].name
-            navigationController?.pushViewController(list, animated: true)
-        } else {
-            list.title = arrayCustomLists[indexPath.row].name
-            navigationController?.pushViewController(list, animated: true)
-        }
+        
+        list.title = indexPath.section == 0 ? arrayLists[indexPath.row].name : arrayCustomLists[indexPath.row].name
+        navigationController?.pushViewController(list, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
