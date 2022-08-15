@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Task View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="TaskViewController" id="Y6W-OH-hqX" customClass="TaskViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="oR6-Xn-Jds">
+                                <rect key="frame" x="16" y="60" width="343" height="142"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Название задачи" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HwL-qG-CtP">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" returnKeyType="done"/>
+                                    </textField>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M96-Mc-G8W">
+                                        <rect key="frame" x="0.0" y="42" width="343" height="100"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="j70-Uy-kcv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="8uM-zS-puw">
+                                <rect key="frame" x="16" y="218" width="343" height="50"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RMZ-hE-hVI">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="50"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b9R-al-3Pq">
+                                                <rect key="frame" x="0.0" y="17.5" width="16.5" height="14.5"/>
+                                                <color key="tintColor" systemColor="systemGray2Color"/>
+                                                <imageReference key="image" image="calendar" catalog="system" symbolScale="small"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Дата выполнения" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PF-jm-FSJ">
+                                                <rect key="frame" x="24.5" y="16" width="125.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <datePicker alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-hY-POJ">
+                                        <rect key="frame" x="150" y="0.0" width="193" height="50"/>
+                                        <locale key="locale" localeIdentifier="ru"/>
+                                    </datePicker>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="R7P-DG-0Ce">
+                                <rect key="frame" x="16" y="284" width="343" height="50"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="i9w-0n-32b">
+                                        <rect key="frame" x="0.0" y="0.0" width="108.5" height="50"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bell" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="h0c-cZ-mg0">
+                                                <rect key="frame" x="0.0" y="15" width="20" height="19.5"/>
+                                                <color key="tintColor" systemColor="systemGray2Color"/>
+                                            </imageView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Напомнить" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jt-17-PL3">
+                                                <rect key="frame" x="28" y="16" width="80.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <datePicker alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Ph-vw1">
+                                        <rect key="frame" x="108.5" y="0.0" width="234.5" height="50"/>
+                                        <locale key="locale" localeIdentifier="ru"/>
+                                    </datePicker>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DHc-Uc-zSD">
+                                <rect key="frame" x="16" y="350" width="153" height="32"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="paperclip" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0dJ-lJ-U2N">
+                                        <rect key="frame" x="0.0" y="-0.5" width="20" height="33"/>
+                                        <color key="tintColor" systemColor="systemGray2Color"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OH7-Di-UsK">
+                                        <rect key="frame" x="20" y="0.0" width="133" height="32"/>
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Добавить файл">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="15"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="addFileTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="1wU-v8-0zX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="DHc-Uc-zSD" firstAttribute="top" secondItem="R7P-DG-0Ce" secondAttribute="bottom" constant="16" id="2sA-Z4-v8w"/>
+                            <constraint firstItem="oR6-Xn-Jds" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="16" id="5pf-Pb-DYa"/>
+                            <constraint firstItem="DHc-Uc-zSD" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="CC5-KZ-ETe"/>
+                            <constraint firstItem="R7P-DG-0Ce" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="I41-aq-A0A"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="8uM-zS-puw" secondAttribute="trailing" constant="16" id="NB5-Mk-15J"/>
+                            <constraint firstItem="R7P-DG-0Ce" firstAttribute="top" secondItem="8uM-zS-puw" secondAttribute="bottom" constant="16" id="cBr-4r-0Kr"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="R7P-DG-0Ce" secondAttribute="trailing" constant="16" id="hIp-BE-tWX"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="oR6-Xn-Jds" secondAttribute="trailing" constant="16" id="hpD-4N-MhY"/>
+                            <constraint firstItem="8uM-zS-puw" firstAttribute="top" secondItem="oR6-Xn-Jds" secondAttribute="bottom" constant="16" id="jbU-Ra-Kpe"/>
+                            <constraint firstItem="8uM-zS-puw" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="pj1-Mu-azT"/>
+                            <constraint firstItem="oR6-Xn-Jds" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="v4z-bh-JDG"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fyW-yN-40Q">
+                        <barButtonItem key="leftBarButtonItem" title="Отменить" id="ZiS-No-ZKW">
+                            <connections>
+                                <action selector="cancelButtonTapped:" destination="Y6W-OH-hqX" id="OHr-uw-5HG"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Добавить" id="u2K-ba-bGI">
+                            <connections>
+                                <action selector="saveTaskTapped:" destination="Y6W-OH-hqX" id="AVC-2i-H4X"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cancelButton" destination="ZiS-No-ZKW" id="iKk-YP-MEr"/>
+                        <outlet property="datePicker" destination="n0W-hY-POJ" id="T9Z-yM-zc4"/>
+                        <outlet property="dateTimePicker" destination="RAQ-Ph-vw1" id="oDu-JE-Wgk"/>
+                        <outlet property="notesTextView" destination="M96-Mc-G8W" id="7un-Ik-Mz7"/>
+                        <outlet property="saveTaskButton" destination="u2K-ba-bGI" id="P9S-uF-6dv"/>
+                        <outlet property="taskNameTF" destination="HwL-qG-CtP" id="6bv-xG-5K5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="989.60000000000002" y="63.418290854572717"/>
+        </scene>
+        <!--TaskViewController-->
+        <scene sceneID="kCo-5S-xfu">
+            <objects>
+                <navigationController storyboardIdentifier="TaskNavigationController" title="TaskViewController" automaticallyAdjustsScrollViewInsets="NO" id="Beo-dR-paR" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WBd-Ec-jON">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="0NQ-MZ-hMs"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y2p-6f-2vt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="268" y="64.31784107946028"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="bell" catalog="system" width="128" height="124"/>
+        <image name="calendar" catalog="system" width="128" height="106"/>
+        <image name="paperclip" catalog="system" width="121" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
