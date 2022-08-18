@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class TaskViewController: UIViewController {
     
@@ -19,11 +20,17 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
     //MARK: - let/var
-    var placeholderLabel: UILabel!
+    private var placeholderLabel: UILabel!
+    private var taskList: ListModel!
+    var task: TaskModel = TaskModel()
+    var indexPath: IndexPath?
+    var listID: ObjectId!
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        taskList = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID)
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(recognizer)
@@ -31,12 +38,24 @@ class TaskViewController: UIViewController {
         taskNameTF.delegate = self
         notesTextView.delegate = self
         
+        updateUI()
         settingNotesTextView()
+        updateSaveButtonState()
     }
     
     //MARK: - Custom methods
     @objc private func tap() {
         view.endEditing(true)
+    }
+    
+    private func updateUI() {
+        taskNameTF.text = task.name
+        notesTextView.text = task.note
+    }
+    
+    private func updateSaveButtonState() {
+        guard let taskName = taskNameTF.text else { return }
+        self.saveTaskButton.isEnabled = !taskName.isEmpty
     }
     
     // add placeholder and setting text view
@@ -62,11 +81,27 @@ class TaskViewController: UIViewController {
     
     @IBAction func saveTaskTapped(_ sender: UIBarButtonItem) {
         print("save")
+        guard let taskName = taskNameTF.text else { return }
+        if indexPath == nil {
+            task.name = taskName
+            task.note = notesTextView.text
+            RealmManager.shared.save(task: task, in: taskList)
+        } else {
+            let newtask = TaskModel()
+            newtask.name = taskName
+            newtask.note = notesTextView.text
+            RealmManager.shared.updateTask(task: task, updatingTask: newtask)
+        }
+        dismiss(animated: true)
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
         print("cancel")
         dismiss(animated: true)
+    }
+    
+    @IBAction func taskNameTFAction(_ sender: UITextField) {
+        updateSaveButtonState()
     }
     
 }

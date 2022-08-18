@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class MainViewController: UIViewController {
     
@@ -14,8 +15,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var mainTableView: UITableView!
     
     //MARK: - let/var
-    private var arrayLists: [List] = []
-    private var arrayCustomLists: [List] = []
+    private var arrayLists: Results<ListModel>!
+    private var arrayCustomLists: Results<ListModel>!
+    private var notificationTokenForArrayList: NotificationToken?
+    private var notificationTokenForCustomArrayList: NotificationToken?
     
     private lazy var customTitleView: UIView = {
         let view = UIView()
@@ -80,14 +83,52 @@ class MainViewController: UIViewController {
         mainTableView.dataSource = self
         mainTableView.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "mainCell")
         
-        arrayLists = [List(name: "Мой день", image: "sun.max", imageColor: .systemYellow, countTask: nil),
-                      List(name: "Важно", image: "star", imageColor: .systemGray, countTask: 2),
-                      List(name: "Запланировано", image: "calendar", imageColor: .systemGray, countTask: 1),
-                      List(name: "Завершенные", image: "checkmark.circle", imageColor: .systemRed, countTask: nil),
-                      List(name: "Задачи", image: "text.badge.checkmark", imageColor: .systemGreen, countTask: 5)]
+        arrayLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index != .custom }
+        arrayCustomLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index == .custom }
         
-        arrayCustomLists = [List(name: "Купить в магазине", image: "list.bullet", imageColor: .blue, countTask: nil),
-                            List(name: "В поход", image: "list.bullet", imageColor: .red, countTask: 2)]
+        // подписываемся на обновление данных в arrayLists
+        notificationTokenForArrayList = arrayLists.observe { (changes) in
+            switch changes {
+            case .initial:
+                break
+            case .update(_, let deletions, let insertions, let modifications):
+                self.mainTableView.performBatchUpdates { [weak self] in
+                    guard let self = self else { return }
+                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                    self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
+                                         with: .automatic)
+                } completion: { finished in
+                    // ...
+                }
+            case .error(let error):
+                fatalError("\(error)")
+            }
+        }
+        
+        // подписываемся на обновление данных в arrayCustomLists
+        notificationTokenForCustomArrayList = arrayCustomLists.observe { (changes) in
+            switch changes {
+            case .initial:
+                break
+            case .update(_, let deletions, let insertions, let modifications):
+                self.mainTableView.performBatchUpdates { [weak self] in
+                    guard let self = self else { return }
+                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1)}),
+                                         with: .automatic)
+                    self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
+                                         with: .automatic)
+                    self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
+                                         with: .automatic)
+                } completion: { finished in
+                    // ...
+                }
+            case .error(let error):
+                fatalError("\(error)")
+            }
+        }
     }
     
     @IBAction func createNewListTapped(_ sender: UIButton) {
@@ -112,9 +153,11 @@ class MainViewController: UIViewController {
         let ok = UIAlertAction(title: "Ok", style: .default) { action in
             guard let text = alertController.textFields?.first?.text else { return }
             if text != "" {
-                let newCustomCell = List(name: text, image: "list.bullet", imageColor: .blue, countTask: nil)
-                self.arrayCustomLists.append(newCustomCell)
-                self.mainTableView.reloadData()
+                // создаем новый список задач и сохраняем в бд
+                let newTaskList = ListModel()
+                newTaskList.name = text
+                newTaskList.index = .custom
+                RealmManager.shared.save(list: newTaskList)
             }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -177,7 +220,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = mainTableView.dequeueReusableCell(withIdentifier: "mainCell", for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
-
+        
         cell.customCell(with: indexPath.section == 0 ? arrayLists[indexPath.row] : arrayCustomLists[indexPath.row])
         return cell
     }
@@ -187,14 +230,21 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let list = UIStoryboard(name: "List", bundle: nil).instantiateViewController(withIdentifier: "ListsViewController") as? ListViewController else { return }
         
-        list.title = indexPath.section == 0 ? arrayLists[indexPath.row].name : arrayCustomLists[indexPath.row].name
+        // переходя в список передает туда имя списка и id, чтобы внутри уже работать с его тасками
+        list.title = indexPath.section == 0 ? arrayLists[indexPath.row].index.name : arrayCustomLists[indexPath.row].name
+        list.listID = indexPath.section == 0 ? arrayLists[indexPath.row]._id : arrayCustomLists[indexPath.row]._id
+        
         navigationController?.pushViewController(list, animated: true)
     }
     
+    // удаление списка из бд
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            self.arrayCustomLists.remove(at: indexPath.row)
-            self.mainTableView.reloadData()
+            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления", message: nil, showCancel: true, actions: [UIAlertAction(title: "Удаление списка", style: .destructive, handler: { [weak self] action in
+                guard let self = self else { return }
+                let list = self.arrayCustomLists[indexPath.row]
+                RealmManager.shared.delete(list: list)
+            })])
         }
     }
     

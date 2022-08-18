@@ -24,7 +24,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Yr7-5n-rpy">
                                 <rect key="frame" x="62" y="8" width="224" height="100"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="mCM-V4-vTc">
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="mCM-V4-vTc">
                                         <rect key="frame" x="0.0" y="0.0" width="122.5" height="75"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Писать диплом" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Auw-fZ-LVa">
@@ -133,10 +133,16 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
+                <outlet property="bellImage" destination="ohU-Av-YlJ" id="0A4-Kp-MTI"/>
+                <outlet property="bellLabel" destination="bso-FP-1iX" id="989-7I-lr0"/>
+                <outlet property="calendarImage" destination="9Y7-EO-6VA" id="IzH-rE-qVW"/>
+                <outlet property="calendarLabel" destination="4jL-oa-PZb" id="9XX-Y9-aSS"/>
                 <outlet property="completedTaskButton" destination="zmT-ZY-jad" id="nMJ-9g-dqx"/>
                 <outlet property="containerView" destination="9RR-Rt-JUV" id="Ibp-qH-B9D"/>
+                <outlet property="filesImage" destination="C9Y-GA-fCQ" id="fIm-g1-0RR"/>
                 <outlet property="importantTaskButton" destination="UMh-lP-g7e" id="Fcc-yn-naD"/>
-                <outlet property="taskLabel" destination="Auw-fZ-LVa" id="568-0t-wRr"/>
+                <outlet property="noteImage" destination="IUD-bN-D90" id="j46-k5-7mK"/>
+                <outlet property="taskNameLabel" destination="Auw-fZ-LVa" id="568-0t-wRr"/>
             </connections>
             <point key="canvasLocation" x="169.56521739130437" y="164.73214285714286"/>
         </tableViewCell>

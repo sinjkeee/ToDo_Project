@@ -24,11 +24,10 @@ class MainTableViewCell: UITableViewCell {
         
     }
     
-    func customCell(with cell: List) {
-        imageCell.image = UIImage(systemName: cell.image)
-        imageCell.tintColor = cell.imageColor
-        nameLabel.text = cell.name
-        guard let tasks = cell.tasks else { return }
-        countLabel.text = "\(tasks)"
+    func customCell(with cell: ListModel) {
+        imageCell.image = UIImage(systemName: cell.index.image)
+        imageCell.tintColor = cell.index.color
+        nameLabel.text = cell.index == .custom ? cell.name : cell.index.name
+        countLabel.text = "\(cell.tasks.count)"
     }
 }

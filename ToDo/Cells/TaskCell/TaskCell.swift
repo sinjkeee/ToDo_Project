@@ -10,9 +10,18 @@ import UIKit
 class TaskCell: UITableViewCell {
     
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var taskLabel: UILabel!
+    @IBOutlet weak var taskNameLabel: UILabel!
     @IBOutlet weak var completedTaskButton: UIButton!
     @IBOutlet weak var importantTaskButton: UIButton!
+    
+    @IBOutlet weak var calendarImage: UIImageView!
+    @IBOutlet weak var calendarLabel: UILabel!
+    
+    @IBOutlet weak var bellImage: UIImageView!
+    @IBOutlet weak var bellLabel: UILabel!
+    
+    @IBOutlet weak var noteImage: UIImageView!
+    @IBOutlet weak var filesImage: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,6 +41,11 @@ class TaskCell: UITableViewCell {
     
     @IBAction func importantTaskTapped(_ sender: UIButton) {
         print("important")
+    }
+    
+    func configure(with task: TaskModel) {
+        taskNameLabel.text = task.name
+        noteImage.tintColor = task.note.isEmpty ? .systemGray2 : .systemPink
     }
     
 }
