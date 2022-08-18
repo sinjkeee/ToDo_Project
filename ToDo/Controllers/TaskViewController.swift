@@ -81,13 +81,14 @@ class TaskViewController: UIViewController {
     
     @IBAction func saveTaskTapped(_ sender: UIBarButtonItem) {
         print("save")
+        guard let taskName = taskNameTF.text else { return }
         if indexPath == nil {
-            task.name = taskNameTF.text!
+            task.name = taskName
             task.note = notesTextView.text
             RealmManager.shared.save(task: task, in: taskList)
         } else {
             let newtask = TaskModel()
-            newtask.name = taskNameTF.text!
+            newtask.name = taskName
             newtask.note = notesTextView.text
             RealmManager.shared.updateTask(task: task, updatingTask: newtask)
         }

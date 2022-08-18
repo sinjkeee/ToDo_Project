@@ -40,7 +40,8 @@ class ListViewController: UIViewController {
             switch changes {
             case .initial: break
             case .update(_, let deletions, let insertions, let modifications):
-                self.listTableView.performBatchUpdates {
+                self.listTableView.performBatchUpdates { [weak self] in
+                    guard let self = self else { return }
                     self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
                                                   with: .automatic)
                     self.listTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
@@ -75,32 +76,30 @@ class ListViewController: UIViewController {
 extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // проверка на то, что список еще существует
+        
         if let saveList = list {
-            if saveList.isInvalidated {
-                return 0
-            } else {
-                return saveList.tasks.count
-            }
+            return saveList.isInvalidated ? 0 : saveList.tasks.count
         }
         return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let taskCell = listTableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell else { return UITableViewCell() }
-        if let task = list?.tasks[indexPath.row] {
-            taskCell.configure(with: task)
-            return taskCell
-        }
-        return UITableViewCell()
+        guard let taskCell = listTableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell,
+              let task = list?.tasks[indexPath.row] else { return UITableViewCell() }
+        
+        taskCell.configure(with: task)
+        return taskCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController else { return }
-        guard let controller = taskController.viewControllers.first as? TaskViewController else { return }
+        guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController,
+              let controller = taskController.viewControllers.first as? TaskViewController,
+              let task = list?.tasks[indexPath.row]
+        else { return }
+        
         // переходя с ячейки передаем еще индекс, чтобы понимать, что это не новая таска будет создаваться, а редактируется старая
-        guard let task = list?.tasks[indexPath.row] else { return }
         controller.task = task
         controller.indexPath = indexPath
         controller.listID = listID
