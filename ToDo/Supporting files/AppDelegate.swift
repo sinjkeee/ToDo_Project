@@ -13,7 +13,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // проверка на первый запуск приложения. пока так, потом поправлю, когда прикручу регистрацию юзера
+        if UserDefaults.standard.value(forKey: "isFirst") == nil {
+            let list1 = ListModel()
+            list1.index = .one
+            let list2 = ListModel()
+            list2.index = .two
+            let list3 = ListModel()
+            list3.index = .three
+            let list4 = ListModel()
+            list4.index = .four
+            let list5 = ListModel()
+            list5.index = .five
+            RealmManager.shared.save(list: list1)
+            RealmManager.shared.save(list: list2)
+            RealmManager.shared.save(list: list3)
+            RealmManager.shared.save(list: list4)
+            RealmManager.shared.save(list: list5)
+            UserDefaults.standard.set(true, forKey: "isFirst")
+        }
+    
+        RealmManager.shared.printURL()
+
         return true
     }
 
