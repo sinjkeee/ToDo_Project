@@ -42,7 +42,7 @@ class ListViewController: UIViewController {
             case .update(_, let deletions, let insertions, let modifications):
                 self.listTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
-                    self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0)}),
+                    self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
                                                   with: .automatic)
                     self.listTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
                                                   with: .automatic)

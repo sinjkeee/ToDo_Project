@@ -61,6 +61,9 @@
                                     <datePicker alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-hY-POJ">
                                         <rect key="frame" x="150" y="0.0" width="193" height="50"/>
                                         <locale key="locale" localeIdentifier="ru"/>
+                                        <connections>
+                                            <action selector="datePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Tgx-xp-OPD"/>
+                                        </connections>
                                     </datePicker>
                                 </subviews>
                             </stackView>
@@ -85,6 +88,9 @@
                                     <datePicker alpha="0.29999999999999999" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Ph-vw1">
                                         <rect key="frame" x="108.5" y="0.0" width="234.5" height="50"/>
                                         <locale key="locale" localeIdentifier="ru"/>
+                                        <connections>
+                                            <action selector="dateTimePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="CbY-RY-YQZ"/>
+                                        </connections>
                                     </datePicker>
                                 </subviews>
                             </stackView>
@@ -140,6 +146,10 @@
                     <connections>
                         <outlet property="cancelButton" destination="ZiS-No-ZKW" id="iKk-YP-MEr"/>
                         <outlet property="datePicker" destination="n0W-hY-POJ" id="T9Z-yM-zc4"/>
+                        <outlet property="datePickerImage" destination="b9R-al-3Pq" id="MVP-EW-n6C"/>
+                        <outlet property="datePickerLabel" destination="4PF-jm-FSJ" id="oLp-ug-n21"/>
+                        <outlet property="dateTimeImage" destination="h0c-cZ-mg0" id="yGv-5h-3LD"/>
+                        <outlet property="dateTimeLabel" destination="0jt-17-PL3" id="d2d-1I-geS"/>
                         <outlet property="dateTimePicker" destination="RAQ-Ph-vw1" id="oDu-JE-Wgk"/>
                         <outlet property="notesTextView" destination="M96-Mc-G8W" id="7un-Ik-Mz7"/>
                         <outlet property="saveTaskButton" destination="u2K-ba-bGI" id="P9S-uF-6dv"/>
