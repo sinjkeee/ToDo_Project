@@ -176,10 +176,9 @@ class MainViewController: UIViewController {
     private func showEditAlert(_ list: ListModel) {
         let alertController = UIAlertController(title: "Хотите переименовать?", message: "Введите новое название списка", preferredStyle: .alert)
         let ok = UIAlertAction(title: "Изменить", style: .default) { action in
-            guard let text = alertController.textFields?.first?.text else { return }
-            if text != "" {
-                RealmManager.shared.updateList(list: list, newValue: text)
-            }
+            guard let text = alertController.textFields?.first?.text,
+                  text != "" else { return }
+            RealmManager.shared.updateList(list: list, newValue: text)
         }
         let cancel = UIAlertAction(title: "Отмена", style: .cancel)
         alertController.addAction(ok)

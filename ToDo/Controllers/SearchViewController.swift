@@ -84,11 +84,7 @@ extension SearchViewController: UISearchResultsUpdating {
         
         filteredDataTask = []
         
-        for task in dataTask {
-            if task.name.uppercased().contains(text.uppercased()) {
-                filteredDataTask.append(task)
-            }
-        }
+        filteredDataTask = dataTask.filter({$0.name.uppercased().contains(text.uppercased())})
         
         tableView.reloadData()
     }

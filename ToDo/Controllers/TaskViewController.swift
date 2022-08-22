@@ -41,7 +41,7 @@ class TaskViewController: UIViewController {
         datePicker.minimumDate = Date()
         dateTimePicker.minimumDate = Date()
         
-        taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : nil
+        taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : ListModel()
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(recognizer)
