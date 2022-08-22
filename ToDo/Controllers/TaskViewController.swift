@@ -13,9 +13,17 @@ class TaskViewController: UIViewController {
     
     //MARK: - @IBOutlet
     @IBOutlet weak var taskNameTF: UITextField!
+    // дата выполнения таски
     @IBOutlet weak var datePicker: UIDatePicker!
+    @IBOutlet weak var datePickerLabel: UILabel!
+    @IBOutlet weak var datePickerImage: UIImageView!
+    // дата уведомления
     @IBOutlet weak var dateTimePicker: UIDatePicker!
+    @IBOutlet weak var dateTimeLabel: UILabel!
+    @IBOutlet weak var dateTimeImage: UIImageView!
+    
     @IBOutlet weak var notesTextView: UITextView!
+    
     @IBOutlet weak var saveTaskButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
     
@@ -24,13 +32,16 @@ class TaskViewController: UIViewController {
     private var taskList: ListModel!
     var task: TaskModel = TaskModel()
     var indexPath: IndexPath?
-    var listID: ObjectId!
+    var listID: ObjectId?
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        taskList = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID)
+        datePicker.minimumDate = Date()
+        dateTimePicker.minimumDate = Date()
+        
+        taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : ListModel()
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(recognizer)
@@ -102,6 +113,18 @@ class TaskViewController: UIViewController {
     
     @IBAction func taskNameTFAction(_ sender: UITextField) {
         updateSaveButtonState()
+    }
+    
+    @IBAction func datePickerAction(_ sender: UIDatePicker) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM d, yyyy"
+        print(dateFormatter.string(from: sender.date))
+        datePickerImage.tintColor = .systemRed
+        datePicker.alpha = 1
+    }
+    
+    @IBAction func dateTimePickerAction(_ sender: UIDatePicker) {
+        print(sender.date)
     }
     
 }

@@ -72,6 +72,7 @@ class RealmManager {
         }
     }
     
+    // редактирование задачи
     func updateTask(task: TaskModel, updatingTask: TaskModel) {
         write {
             task.name = updatingTask.name
@@ -80,6 +81,13 @@ class RealmManager {
             task.isCompleted = updatingTask.isCompleted
             task.isImportant = updatingTask.isImportant
             task.reminderTime = updatingTask.reminderTime
+        }
+    }
+    
+    // редактирование списка
+    func updateList(list: ListModel, newValue: String) {
+        write {
+            list.name = newValue
         }
     }
 }

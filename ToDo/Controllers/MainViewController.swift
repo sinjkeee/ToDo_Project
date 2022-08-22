@@ -131,17 +131,21 @@ class MainViewController: UIViewController {
         }
     }
     
+    //MARK: - @IBAction
     @IBAction func createNewListTapped(_ sender: UIButton) {
         showAlert()
     }
     
+    //MARK: - updateViewConstraints
     override func updateViewConstraints() {
         super.updateViewConstraints()
         setConstraint()
     }
     
     @objc private func searchButtonTapped() {
-        print("findButtonTapped")
+        guard let searchNavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchNavigationController") as? UINavigationController else { return }
+        
+        present(searchNavigationController, animated: true)
     }
     
     @objc private func infoButtonTapped() {
@@ -165,6 +169,22 @@ class MainViewController: UIViewController {
         alertController.addAction(cancel)
         alertController.addTextField { textField in
             textField.placeholder = "Введите имя списка"
+        }
+        present(alertController, animated: true)
+    }
+    
+    private func showEditAlert(_ list: ListModel) {
+        let alertController = UIAlertController(title: "Хотите переименовать?", message: "Введите новое название списка", preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Изменить", style: .default) { action in
+            guard let text = alertController.textFields?.first?.text,
+                  text != "" else { return }
+            RealmManager.shared.updateList(list: list, newValue: text)
+        }
+        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        alertController.addAction(ok)
+        alertController.addAction(cancel)
+        alertController.addTextField { textField in
+            textField.text = list.name
         }
         present(alertController, animated: true)
     }
@@ -246,6 +266,25 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
                 RealmManager.shared.delete(list: list)
             })])
         }
+    }
+    
+    // метод, который добавляет действие по свайпу вправо
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = listEdit(at: indexPath)
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+    
+    // метод, который будет переименовывать таск лист
+    private func listEdit(at indexPath: IndexPath) -> UIContextualAction {
+        let action = UIContextualAction(style: .normal, title: "title") { [weak self] action, view, completion in
+            guard let self = self else { return }
+            let list = self.arrayCustomLists[indexPath.row]
+            self.showEditAlert(list)
+            completion(true)
+        }
+        action.backgroundColor = .systemGreen
+        action.image = UIImage(systemName: "pencil")
+        return action
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
