@@ -94,7 +94,6 @@ class LoginViewController: UIViewController {
         RealmManager.shared.save(list: list5, in: user)
     }
     
-    
     //MARK: - @IBAction
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         guard let email = loginTF.text,
@@ -102,10 +101,7 @@ class LoginViewController: UIViewController {
         else { return }
         
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if error == nil, let result = result {
-                guard let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavigationController") as? UINavigationController,
-                      let vc = mainController.viewControllers.first as? MainViewController
-                else { return }
+            if error == nil, let result = result, let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavigationController") as? UINavigationController, let vc = mainController.viewControllers.first as? MainViewController {
                 mainController.modalPresentationStyle = .fullScreen
                 // при успешной авторизации мы передаем uid пользователя в контроллер, чтобы понимать, какой пользователь авторизовался
                 vc.userUID = result.user.uid
@@ -125,40 +121,40 @@ class LoginViewController: UIViewController {
         else { return }
         // регистрируем пользователя в firebase
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
-            if error == nil {
-                if let result = result {
-                    print(result.user.uid)
-                    
-                    // сохраняем пользователя в realtime database
-                    let ref = Database.database().reference().child("users")
-                    ref.child(result.user.uid).updateChildValues(["name": name, "email": email])
-                    // создаем объект пользователя в реалм
-                    let newUser = UserModel()
-                    newUser.name = name
-                    newUser.uid = result.user.uid
-                    RealmManager.shared.save(user: newUser)
-                    self.firstLaunchApp(user: newUser)
-                    self.showAlert(title: "Успешно!", message: nil, showCancel: false, actions: [UIAlertAction(title: "OK", style: .default, handler: { action in
-                        UIView.animate(withDuration: 0.25) {
-                            self.registerView.alpha = 0
-                        } completion: { _ in
-                            self.registerView.isHidden = true
-                            self.loginView.alpha = 0
-                            UIView.animate(withDuration: 0.25, delay: 0) {
-                                self.loginView.isHidden = false
-                                self.loginView.alpha = 1
-                            }
-                        }
-                    })])
-                    
-                    self.loginRegisterTF.text = ""
-                    self.passwordRegisterTF.text = ""
-                    self.secondPasswordRegisterTF.text = ""
-                    self.nameRegisterTF.text = ""
-                    self.view.endEditing(true)
-                }
-            } else if let error = error {
+            
+            if let error = error {
                 print(error.localizedDescription)
+                return
+            }
+            
+            if let result = result {
+                // сохраняем пользователя в realtime database
+                let ref = Database.database().reference().child("users")
+                ref.child(result.user.uid).updateChildValues(["name": name, "email": email])
+                // создаем объект пользователя в реалм
+                let newUser = UserModel()
+                newUser.name = name
+                newUser.uid = result.user.uid
+                RealmManager.shared.save(user: newUser)
+                self.firstLaunchApp(user: newUser)
+                self.showAlert(title: "Успешно!", message: nil, showCancel: false, actions: [UIAlertAction(title: "OK", style: .default, handler: { action in
+                    UIView.animate(withDuration: 0.25) {
+                        self.registerView.alpha = 0
+                    } completion: { _ in
+                        self.registerView.isHidden = true
+                        self.loginView.alpha = 0
+                        UIView.animate(withDuration: 0.25, delay: 0) {
+                            self.loginView.isHidden = false
+                            self.loginView.alpha = 1
+                        }
+                    }
+                })])
+                
+                self.loginRegisterTF.text = ""
+                self.passwordRegisterTF.text = ""
+                self.secondPasswordRegisterTF.text = ""
+                self.nameRegisterTF.text = ""
+                self.view.endEditing(true)
             }
         }
     }
@@ -202,14 +198,16 @@ extension LoginViewController {
     }
     
     @objc private func keyboardWillShow(_ notification: NSNotification) {
-        //        guard let userInfo = notification.userInfo,
-        //              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
-        //        let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.25
+        /*
+        guard let userInfo = notification.userInfo,
+              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.25
         
-        //        self.bottomConstraintStackView.constant = keyboardFrame.height + 10
-        //        UIView.animate(withDuration: duration) {
-        //            self.view.layoutIfNeeded()
-        //        }
+        self.bottomConstraintStackView.constant = keyboardFrame.height + 10
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        }
+         */
     }
     
     @objc private func keyboardWillHide(_ notification: NSNotification) {

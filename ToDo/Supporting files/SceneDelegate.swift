@@ -17,7 +17,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.windowScene = windowScene
         
         FirebaseApp.configure()
-        
+
         Auth.auth().addStateDidChangeListener { auth, user in
             if user == nil {
                 print("user == nil")
