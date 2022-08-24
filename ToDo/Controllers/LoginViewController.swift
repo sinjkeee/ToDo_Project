@@ -77,21 +77,11 @@ class LoginViewController: UIViewController {
     }
     
     private func firstLaunchApp(user: UserModel) {
-        let list1 = ListModel()
-        list1.index = .one
-        let list2 = ListModel()
-        list2.index = .two
-        let list3 = ListModel()
-        list3.index = .three
-        let list4 = ListModel()
-        list4.index = .four
-        let list5 = ListModel()
-        list5.index = .five
-        RealmManager.shared.save(list: list1, in: user)
-        RealmManager.shared.save(list: list2, in: user)
-        RealmManager.shared.save(list: list3, in: user)
-        RealmManager.shared.save(list: list4, in: user)
-        RealmManager.shared.save(list: list5, in: user)
+        for i in ListIndex.allCases where i != .custom {
+            let list = ListModel()
+            list.index = i
+            RealmManager.shared.save(list: list, in: user)
+        }
     }
     
     //MARK: - @IBAction

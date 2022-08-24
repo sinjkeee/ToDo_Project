@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 import UIKit
 
-enum ListIndex: Int, PersistableEnum {
+enum ListIndex: Int, PersistableEnum, CaseIterable {
     case one = 1
     case two = 2
     case three = 3
