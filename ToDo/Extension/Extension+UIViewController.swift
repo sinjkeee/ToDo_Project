@@ -22,4 +22,18 @@ extension UIViewController {
         
         present(alertController, animated: true)
     }
+    
+    func showAlert(title: String?, message: String?, showCancel: Bool, actions: [UIAlertAction]) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        for action in actions {
+            alertController.addAction(action)
+        }
+        
+        if showCancel {
+            alertController.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        }
+        
+        present(alertController, animated: true)
+    }
 }

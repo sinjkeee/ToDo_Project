@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import RealmSwift
+import Firebase
 
 class MainViewController: UIViewController {
     
@@ -19,6 +20,8 @@ class MainViewController: UIViewController {
     private var arrayCustomLists: Results<ListModel>!
     private var notificationTokenForArrayList: NotificationToken?
     private var notificationTokenForCustomArrayList: NotificationToken?
+    private var currentUser: UserModel = UserModel()
+    var userUID: String!
     
     private lazy var customTitleView: UIView = {
         let view = UIView()
@@ -83,9 +86,12 @@ class MainViewController: UIViewController {
         mainTableView.dataSource = self
         mainTableView.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "mainCell")
         
-        arrayLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index != .custom }
-        arrayCustomLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index == .custom }
-        
+        // получаем юзера, который сейчас авторизовался
+        guard let user = RealmManager.shared.realm.objects(UserModel.self).where({ $0.uid == userUID }).first else { return }
+        currentUser = user
+        // получаем его списки
+        arrayLists = currentUser.lists.where { $0.index != .custom }
+        arrayCustomLists = currentUser.lists.where { $0.index == .custom }
         // подписываемся на обновление данных в arrayLists
         notificationTokenForArrayList = arrayLists.observe { (changes) in
             switch changes {
@@ -116,7 +122,7 @@ class MainViewController: UIViewController {
             case .update(_, let deletions, let insertions, let modifications):
                 self.mainTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
-                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1)}),
+                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
                                          with: .automatic)
                     self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
                                          with: .automatic)
@@ -149,7 +155,11 @@ class MainViewController: UIViewController {
     }
     
     @objc private func infoButtonTapped() {
-        print("infoButtonTapped")
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print(error)
+        }
     }
     
     private func showAlert() {
@@ -161,7 +171,7 @@ class MainViewController: UIViewController {
                 let newTaskList = ListModel()
                 newTaskList.name = text
                 newTaskList.index = .custom
-                RealmManager.shared.save(list: newTaskList)
+                RealmManager.shared.save(list: newTaskList, in: self.currentUser)
             }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)

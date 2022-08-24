@@ -117,7 +117,7 @@ class TaskViewController: UIViewController {
     
     @IBAction func datePickerAction(_ sender: UIDatePicker) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMMM d, yyyy"
+        dateFormatter.dateFormat = "d MMMM, yyyy"
         print(dateFormatter.string(from: sender.date))
         datePickerImage.tintColor = .systemRed
         datePicker.alpha = 1

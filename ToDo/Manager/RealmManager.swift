@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 5
+    private let realmSchemaVersion: UInt64 = 6
     
     static var shared = RealmManager()
     
@@ -46,6 +46,12 @@ class RealmManager {
     func save(list: ListModel) {
         write {
             realm.add(list)
+        }
+    }
+    
+    func save(list: ListModel, in user: UserModel) {
+        write {
+            user.lists.append(list)
         }
     }
     
