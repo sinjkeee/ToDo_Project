@@ -84,9 +84,21 @@ class RealmManager {
             task.name = updatingTask.name
             task.note = updatingTask.note
             task.dateOfCompletion = updatingTask.dateOfCompletion
-            task.isCompleted = updatingTask.isCompleted
-            task.isImportant = updatingTask.isImportant
             task.reminderTime = updatingTask.reminderTime
+        }
+    }
+    
+    // меняем состояние задачи важное/обычное
+    func updateImportantState(task: TaskModel) {
+        write {
+            task.isImportant = !task.isImportant
+        }
+    }
+    
+    // меняем статус задачи выполнен/нет
+    func updateCompletedState(task: TaskModel) {
+        write {
+            task.isCompleted = !task.isCompleted
         }
     }
     

@@ -18,7 +18,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var toRegisterView: UIButton!
     @IBOutlet weak var dontHaveAnAccountLabel: UILabel!
-    @IBOutlet weak var bottomConstraintStackView: NSLayoutConstraint!
+    @IBOutlet weak var bottomConstraintStackLoginView: NSLayoutConstraint!
     // register view
     @IBOutlet weak var registerView: UIView!
     @IBOutlet weak var haveAnAccountLabel: UILabel!
@@ -28,6 +28,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var nameRegisterTF: UITextField!
     @IBOutlet weak var passwordRegisterTF: UITextField!
     @IBOutlet weak var secondPasswordRegisterTF: UITextField!
+    @IBOutlet weak var bottomConstraintStackView: NSLayoutConstraint!
     
     //MARK: - viewDidLoad
     override func viewDidLoad() {
@@ -127,7 +128,10 @@ class LoginViewController: UIViewController {
                 newUser.uid = result.user.uid
                 RealmManager.shared.save(user: newUser)
                 self.firstLaunchApp(user: newUser)
-                self.showAlert(title: "Успешно!", message: nil, showCancel: false, actions: [UIAlertAction(title: "OK", style: .default, handler: { action in
+                self.showAlert(title: "Успешно!",
+                               message: nil,
+                               showCancel: false,
+                               actions: [UIAlertAction(title: "OK", style: .default, handler: { action in
                     UIView.animate(withDuration: 0.25) {
                         self.registerView.alpha = 0
                     } completion: { _ in
@@ -188,23 +192,25 @@ extension LoginViewController {
     }
     
     @objc private func keyboardWillShow(_ notification: NSNotification) {
-        /*
-        guard let userInfo = notification.userInfo,
-              let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+        
+        guard let userInfo = notification.userInfo else { return }
+              //let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
         let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.25
         
-        self.bottomConstraintStackView.constant = keyboardFrame.height + 10
+        self.bottomConstraintStackView.constant = -50 //keyboardFrame.height + 10
+        self.bottomConstraintStackLoginView.constant = -15
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
-         */
+         
     }
     
     @objc private func keyboardWillHide(_ notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         let duration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0.25
         
-        //self.bottomConstraintStackView.constant = 240
+        self.bottomConstraintStackView.constant = 0
+        self.bottomConstraintStackLoginView.constant = 0
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }

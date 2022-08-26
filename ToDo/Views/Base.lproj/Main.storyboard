@@ -54,7 +54,7 @@
             </objects>
             <point key="canvasLocation" x="1047.8260869565217" y="130.58035714285714"/>
         </scene>
-        <!--Search-->
+        <!--Search View Controller-->
         <scene sceneID="jGA-ni-Vcg">
             <objects>
                 <viewController storyboardIdentifier="SearchViewController" id="bwi-bp-c2o" customClass="SearchViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
@@ -63,7 +63,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="CM7-DF-XC5">
-                                <rect key="frame" x="0.0" y="96" width="375" height="571"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
@@ -76,7 +76,7 @@
                             <constraint firstItem="CM7-DF-XC5" firstAttribute="trailing" secondItem="CEL-FP-QMQ" secondAttribute="trailing" id="V2y-yz-3GD"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Search" id="ekG-xP-6nv"/>
+                    <navigationItem key="navigationItem" id="ekG-xP-6nv"/>
                     <connections>
                         <outlet property="tableView" destination="CM7-DF-XC5" id="fHm-4k-DK8"/>
                     </connections>
@@ -291,6 +291,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="bottomConstraintStackLoginView" destination="CWr-Pg-EMJ" id="nef-m7-52a"/>
+                        <outlet property="bottomConstraintStackView" destination="Z16-SV-80k" id="aXx-dY-uQo"/>
                         <outlet property="dontHaveAnAccountLabel" destination="P2I-Hy-Xef" id="Jcm-AH-nps"/>
                         <outlet property="haveAnAccountLabel" destination="R6j-e4-YaE" id="O8t-eJ-agg"/>
                         <outlet property="loginButton" destination="Cjn-F7-4rc" id="sj3-9m-Qdw"/>
@@ -316,8 +318,8 @@
             <objects>
                 <navigationController storyboardIdentifier="SearchNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="cxP-0j-I9q" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" largeTitles="YES" id="p1T-52-aeW">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="96"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="p1T-52-aeW">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

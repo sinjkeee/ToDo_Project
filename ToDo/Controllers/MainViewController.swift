@@ -101,11 +101,11 @@ class MainViewController: UIViewController {
                 self.mainTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
                     self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                 } completion: { finished in
                     // ...
                 }
@@ -123,11 +123,11 @@ class MainViewController: UIViewController {
                 self.mainTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
                     self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                 } completion: { finished in
                     // ...
                 }
@@ -150,7 +150,7 @@ class MainViewController: UIViewController {
     
     @objc private func searchButtonTapped() {
         guard let searchNavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchNavigationController") as? UINavigationController else { return }
-        
+
         present(searchNavigationController, animated: true)
     }
     
@@ -163,7 +163,9 @@ class MainViewController: UIViewController {
     }
     
     private func showAlert() {
-        let alertController = UIAlertController(title: "Новый список", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Новый список",
+                                                message: "",
+                                                preferredStyle: .alert)
         let ok = UIAlertAction(title: "Ok", style: .default) { action in
             guard let text = alertController.textFields?.first?.text else { return }
             if text != "" {
@@ -184,7 +186,9 @@ class MainViewController: UIViewController {
     }
     
     private func showEditAlert(_ list: ListModel) {
-        let alertController = UIAlertController(title: "Хотите переименовать?", message: "Введите новое название списка", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Хотите переименовать?",
+                                                message: "Введите новое название списка",
+                                                preferredStyle: .alert)
         let ok = UIAlertAction(title: "Изменить", style: .default) { action in
             guard let text = alertController.textFields?.first?.text,
                   text != "" else { return }
@@ -270,7 +274,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     // удаление списка из бд
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления", message: nil, showCancel: true, actions: [UIAlertAction(title: "Удаление списка", style: .destructive, handler: { [weak self] action in
+            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления",
+                            message: nil,
+                            showCancel: true,
+                            actions: [UIAlertAction(title: "Удаление списка",
+                                                    style: .destructive,
+                                                    handler: { [weak self] action in
                 guard let self = self else { return }
                 let list = self.arrayCustomLists[indexPath.row]
                 RealmManager.shared.delete(list: list)
@@ -286,7 +295,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     // метод, который будет переименовывать таск лист
     private func listEdit(at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: "title") { [weak self] action, view, completion in
+        let action = UIContextualAction(style: .normal,
+                                        title: "title") { [weak self] action, view, completion in
             guard let self = self else { return }
             let list = self.arrayCustomLists[indexPath.row]
             self.showEditAlert(list)

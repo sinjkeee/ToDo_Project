@@ -24,9 +24,12 @@ class SearchViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemGray6
-        title = "Search"
+        title = ""
         
+        searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
+        searchController.searchBar.placeholder = "Поиск"
         searchController.searchResultsUpdater = self
+        
         navigationItem.searchController = searchController
         
         tableView.delegate = self
@@ -58,6 +61,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let taskCell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell else { return UITableViewCell() }
         
+        taskCell.task = filteredDataTask[indexPath.row]
         taskCell.configure(with: filteredDataTask[indexPath.row])
         return taskCell
     }

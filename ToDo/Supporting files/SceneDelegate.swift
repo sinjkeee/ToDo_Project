@@ -18,6 +18,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         FirebaseApp.configure()
 
+//        do {
+//            try Auth.auth().signOut()
+//        } catch {
+//            print(error)
+//        }
+        
         Auth.auth().addStateDidChangeListener { auth, user in
             if user == nil {
                 print("user == nil")
