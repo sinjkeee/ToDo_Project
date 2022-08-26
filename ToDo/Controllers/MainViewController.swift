@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import RealmSwift
+import Firebase
 
 class MainViewController: UIViewController {
     
@@ -19,6 +20,8 @@ class MainViewController: UIViewController {
     private var arrayCustomLists: Results<ListModel>!
     private var notificationTokenForArrayList: NotificationToken?
     private var notificationTokenForCustomArrayList: NotificationToken?
+    private var currentUser: UserModel = UserModel()
+    var userUID: String!
     
     private lazy var customTitleView: UIView = {
         let view = UIView()
@@ -83,9 +86,12 @@ class MainViewController: UIViewController {
         mainTableView.dataSource = self
         mainTableView.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "mainCell")
         
-        arrayLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index != .custom }
-        arrayCustomLists = RealmManager.shared.realm.objects(ListModel.self).where { $0.index == .custom }
-        
+        // получаем юзера, который сейчас авторизовался
+        guard let user = RealmManager.shared.realm.objects(UserModel.self).where({ $0.uid == userUID }).first else { return }
+        currentUser = user
+        // получаем его списки
+        arrayLists = currentUser.lists.where { $0.index != .custom }
+        arrayCustomLists = currentUser.lists.where { $0.index == .custom }
         // подписываемся на обновление данных в arrayLists
         notificationTokenForArrayList = arrayLists.observe { (changes) in
             switch changes {
@@ -95,11 +101,11 @@ class MainViewController: UIViewController {
                 self.mainTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
                     self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 0) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                 } completion: { finished in
                     // ...
                 }
@@ -116,12 +122,12 @@ class MainViewController: UIViewController {
             case .update(_, let deletions, let insertions, let modifications):
                 self.mainTableView.performBatchUpdates { [weak self] in
                     guard let self = self else { return }
-                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1)}),
-                                         with: .automatic)
+                    self.mainTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: 1) }),
+                                                  with: .automatic)
                     self.mainTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: 1) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                     self.mainTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: 1) }),
-                                         with: .automatic)
+                                                  with: .automatic)
                 } completion: { finished in
                     // ...
                 }
@@ -144,16 +150,22 @@ class MainViewController: UIViewController {
     
     @objc private func searchButtonTapped() {
         guard let searchNavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchNavigationController") as? UINavigationController else { return }
-        
+
         present(searchNavigationController, animated: true)
     }
     
     @objc private func infoButtonTapped() {
-        print("infoButtonTapped")
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print(error)
+        }
     }
     
     private func showAlert() {
-        let alertController = UIAlertController(title: "Новый список", message: "", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Новый список",
+                                                message: "",
+                                                preferredStyle: .alert)
         let ok = UIAlertAction(title: "Ok", style: .default) { action in
             guard let text = alertController.textFields?.first?.text else { return }
             if text != "" {
@@ -161,7 +173,7 @@ class MainViewController: UIViewController {
                 let newTaskList = ListModel()
                 newTaskList.name = text
                 newTaskList.index = .custom
-                RealmManager.shared.save(list: newTaskList)
+                RealmManager.shared.save(list: newTaskList, in: self.currentUser)
             }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel)
@@ -174,7 +186,9 @@ class MainViewController: UIViewController {
     }
     
     private func showEditAlert(_ list: ListModel) {
-        let alertController = UIAlertController(title: "Хотите переименовать?", message: "Введите новое название списка", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Хотите переименовать?",
+                                                message: "Введите новое название списка",
+                                                preferredStyle: .alert)
         let ok = UIAlertAction(title: "Изменить", style: .default) { action in
             guard let text = alertController.textFields?.first?.text,
                   text != "" else { return }
@@ -260,7 +274,12 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     // удаление списка из бд
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления", message: nil, showCancel: true, actions: [UIAlertAction(title: "Удаление списка", style: .destructive, handler: { [weak self] action in
+            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления",
+                            message: nil,
+                            showCancel: true,
+                            actions: [UIAlertAction(title: "Удаление списка",
+                                                    style: .destructive,
+                                                    handler: { [weak self] action in
                 guard let self = self else { return }
                 let list = self.arrayCustomLists[indexPath.row]
                 RealmManager.shared.delete(list: list)
@@ -276,7 +295,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     
     // метод, который будет переименовывать таск лист
     private func listEdit(at indexPath: IndexPath) -> UIContextualAction {
-        let action = UIContextualAction(style: .normal, title: "title") { [weak self] action, view, completion in
+        let action = UIContextualAction(style: .normal,
+                                        title: "title") { [weak self] action, view, completion in
             guard let self = self else { return }
             let list = self.arrayCustomLists[indexPath.row]
             self.showEditAlert(list)

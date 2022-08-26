@@ -10,8 +10,8 @@ import RealmSwift
 
 class UserModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
-    @Persisted var login: String = ""
-    @Persisted var password: String = ""
+    @Persisted var name: String = ""
+    @Persisted var uid: String = ""
     @Persisted var lists = List<ListModel>()
 }
 

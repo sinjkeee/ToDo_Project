@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 5
+    private let realmSchemaVersion: UInt64 = 6
     
     static var shared = RealmManager()
     
@@ -49,6 +49,12 @@ class RealmManager {
         }
     }
     
+    func save(list: ListModel, in user: UserModel) {
+        write {
+            user.lists.append(list)
+        }
+    }
+    
     // сохранине новой задачи в список задач
     func save(task: TaskModel, in list: ListModel) {
         write {
@@ -78,9 +84,21 @@ class RealmManager {
             task.name = updatingTask.name
             task.note = updatingTask.note
             task.dateOfCompletion = updatingTask.dateOfCompletion
-            task.isCompleted = updatingTask.isCompleted
-            task.isImportant = updatingTask.isImportant
             task.reminderTime = updatingTask.reminderTime
+        }
+    }
+    
+    // меняем состояние задачи важное/обычное
+    func updateImportantState(task: TaskModel) {
+        write {
+            task.isImportant = !task.isImportant
+        }
+    }
+    
+    // меняем статус задачи выполнен/нет
+    func updateCompletedState(task: TaskModel) {
+        write {
+            task.isCompleted = !task.isCompleted
         }
     }
     
