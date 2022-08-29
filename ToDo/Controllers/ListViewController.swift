@@ -58,7 +58,8 @@ class ListViewController: UIViewController {
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         
-        listTableView.register(UINib(nibName: "TaskCell", bundle: nil), forCellReuseIdentifier: "taskCell")
+        listTableView.register(UINib(nibName: "TaskCell", bundle: nil),
+                               forCellReuseIdentifier: "taskCell")
         listTableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         
         // получаем объект списка по _id
@@ -112,15 +113,16 @@ class ListViewController: UIViewController {
     
     //MARK: - @IBAction
     @IBAction func addTaskTapped(_ sender: UIButton) {
-        guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController else { return }
-        guard let controller = taskController.viewControllers.first as? TaskViewController else { return }
+        guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController,
+              let controller = taskController.viewControllers.first as? TaskViewController
+        else { return }
         controller.listID = listID
         present(taskController, animated: true)
     }
     
     @objc private func hideCompletedTask(sender: UIButton) {
         sender.setImage(UIImage(systemName: isHideCompletionTasks ? "chevron.down" : "chevron.forward"), for: .normal)
-        isHideCompletionTasks = !isHideCompletionTasks
+        isHideCompletionTasks.toggle()
         listTableView.reloadData()
     }
 }
@@ -195,12 +197,11 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                       let list = self.list
                 else { return }
                 
-                var index = 0
-                for (i, v) in list.tasks.enumerated() {
-                    if v._id == task._id {
-                        index = i
-                    }
+                let index = list.tasks.firstIndex { element in
+                    element._id == task._id
                 }
+                
+                guard let index = index else { return }
                 
                 RealmManager.shared.delete(task: task, index: index, from: list)
             })])

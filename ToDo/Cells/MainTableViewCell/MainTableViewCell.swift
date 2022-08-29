@@ -23,7 +23,7 @@ class MainTableViewCell: UITableViewCell {
         
     }
     
-    func customCell(with cell: ListModel) {
+    func configure(with cell: ListModel) {
         imageCell.image = UIImage(systemName: cell.index.image)
         imageCell.tintColor = cell.index.color
         nameLabel.text = cell.index == .custom ? cell.name : cell.index.name

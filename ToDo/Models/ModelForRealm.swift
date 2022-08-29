@@ -32,4 +32,5 @@ class TaskModel: Object {
     @Persisted var dateOfCreation: Date = Date()
     @Persisted var reminderTime: Date?
     @Persisted var dateOfCompletion: Date?
+    @Persisted var images = List<Data>()
 }
