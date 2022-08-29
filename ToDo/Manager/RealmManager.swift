@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 6
+    private let realmSchemaVersion: UInt64 = 7
     
     static var shared = RealmManager()
     
@@ -35,6 +35,7 @@ class RealmManager {
             print(error.localizedDescription)
         }
     }
+    
     // сохранение нового пользователя
     func save(user: UserModel) {
         write {
@@ -85,20 +86,21 @@ class RealmManager {
             task.note = updatingTask.note
             task.dateOfCompletion = updatingTask.dateOfCompletion
             task.reminderTime = updatingTask.reminderTime
+            task.images = updatingTask.images
         }
     }
     
     // меняем состояние задачи важное/обычное
     func updateImportantState(task: TaskModel) {
         write {
-            task.isImportant = !task.isImportant
+            task.isImportant.toggle()
         }
     }
     
     // меняем статус задачи выполнен/нет
     func updateCompletedState(task: TaskModel) {
         write {
-            task.isCompleted = !task.isCompleted
+            task.isCompleted.toggle()
         }
     }
     

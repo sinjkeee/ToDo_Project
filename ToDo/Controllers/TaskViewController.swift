@@ -26,10 +26,14 @@ class TaskViewController: UIViewController {
     
     @IBOutlet weak var saveTaskButton: UIBarButtonItem!
     @IBOutlet weak var cancelButton: UIBarButtonItem!
+    @IBOutlet weak var imageCollectionView: UICollectionView!
     
     //MARK: - let/var
     private var placeholderLabel: UILabel!
     private var taskList: ListModel!
+    private var imagePicker = UIImagePickerController()
+    private var imagesLocal = [Data]()
+    private var imagesArray = List<Data>()
     var task: TaskModel = TaskModel()
     var indexPath: IndexPath?
     var listID: ObjectId?
@@ -41,11 +45,23 @@ class TaskViewController: UIViewController {
         datePicker.minimumDate = Date()
         dateTimePicker.minimumDate = Date()
         
+        imageCollectionView.delegate = self
+        imageCollectionView.dataSource = self
+        imageCollectionView.register(UINib(nibName: "ImageCell",
+                                           bundle: nil),
+                                     forCellWithReuseIdentifier: "ImageCell")
+        imageCollectionView.showsVerticalScrollIndicator = false
+        imageCollectionView.showsHorizontalScrollIndicator = false
+        imageCollectionView.backgroundColor = .white
+        imageCollectionView.contentInset = UIEdgeInsets(top: 0,
+                                                        left: ImageCellConstants.leftDistanceToView,
+                                                        bottom: 0,
+                                                        right: ImageCellConstants.rightDistanceToView)
+        
+        imagePicker.delegate = self
+        
         taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : ListModel()
-        
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
-        view.addGestureRecognizer(recognizer)
-        
+
         taskNameTF.delegate = self
         notesTextView.delegate = self
         
@@ -55,13 +71,12 @@ class TaskViewController: UIViewController {
     }
     
     //MARK: - Custom methods
-    @objc private func tap() {
-        view.endEditing(true)
-    }
-    
     private func updateUI() {
         taskNameTF.text = task.name
         notesTextView.text = task.note
+        task.images.forEach { imageData in
+            self.imagesLocal.append(imageData)
+        }
     }
     
     private func updateSaveButtonState() {
@@ -85,29 +100,59 @@ class TaskViewController: UIViewController {
         placeholderLabel.isHidden = !notesTextView.text.isEmpty
     }
     
+    private func showImagePicker(withType type: UIImagePickerController.SourceType) {
+        imagePicker.sourceType = type
+        imagePicker.allowsEditing = true
+        present(imagePicker, animated: true)
+    }
+    
+    private func saveNewTask(taskName: String) {
+        task.name = taskName
+        task.note = notesTextView.text
+        task.images = imagesArray
+        imagesLocal.forEach { data in
+            task.images.append(data)
+        }
+        RealmManager.shared.save(task: task, in: taskList)
+    }
+    
+    private func updateTask(taskName: String) {
+        let newtask = TaskModel()
+        newtask.name = taskName
+        newtask.note = notesTextView.text
+        imagesLocal.forEach { data in
+            newtask.images.append(data)
+        }
+        RealmManager.shared.updateTask(task: task, updatingTask: newtask)
+    }
+    
     //MARK: - @IBAction
     @IBAction func addFileTapped(_ sender: UIButton) {
-        print("added file")
+        showActionSheet(title: nil,
+                        message: nil,
+                        showCancel: true,
+                        actions: [UIAlertAction(title: "Камера",
+                                                style: .default,
+                                                handler: { _ in
+            self.showImagePicker(withType: .camera) }),
+                                  UIAlertAction(title: "Библиотека изображений",
+                                                style: .default,
+                                                handler: { _ in
+            self.showImagePicker(withType: .photoLibrary) })
+                        ])
     }
     
     @IBAction func saveTaskTapped(_ sender: UIBarButtonItem) {
-        print("save")
         guard let taskName = taskNameTF.text else { return }
         if indexPath == nil {
-            task.name = taskName
-            task.note = notesTextView.text
-            RealmManager.shared.save(task: task, in: taskList)
+            saveNewTask(taskName: taskName)
         } else {
-            let newtask = TaskModel()
-            newtask.name = taskName
-            newtask.note = notesTextView.text
-            RealmManager.shared.updateTask(task: task, updatingTask: newtask)
+            updateTask(taskName: taskName)
         }
         dismiss(animated: true)
     }
     
     @IBAction func cancelButtonTapped(_ sender: UIBarButtonItem) {
-        print("cancel")
         dismiss(animated: true)
     }
     
@@ -146,5 +191,83 @@ extension TaskViewController: UITextFieldDelegate {
         }
         
         return false
+    }
+}
+
+//MARK: - UIImagePickerControllerDelegate
+extension TaskViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        guard let image = (info[.editedImage] ?? info[.originalImage]) as? UIImage,
+              let data = image.jpegData(compressionQuality: 1)
+        else { return }
+        
+        imagesLocal.append(data)
+        imageCollectionView.reloadData()
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension TaskViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return imagesLocal.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let imageCell = imageCollectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as? ImageCell else { return UICollectionViewCell() }
+        imageCell.delegate = self
+        imageCell.configure(withData: imagesLocal[indexPath.row], index: indexPath.row)
+        return imageCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let imageViewController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "ImageViewController") as? ImageViewController else { return }
+        let imageData = imagesLocal[indexPath.row]
+        imageViewController.imageData = imageData
+        present(imageViewController, animated: true, completion: nil)
+    }
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension TaskViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return ImageCellConstants.galleryMinimumLineSpacing
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: ImageCellConstants.galleryItemWidth, height: imageCollectionView.frame.height * 0.8)
+    }
+}
+
+//MARK: - ImageCellDelegate
+extension TaskViewController: ImageCellDelegate {
+    func shareImage(image: UIImage) {
+        let shareController = UIActivityViewController(activityItems: [image],
+                                                       applicationActivities: nil)
+        
+        shareController.completionWithItemsHandler = { _, bool, _, _ in
+            if bool {
+                print("Успешно!")
+            }
+        }
+        
+        present(shareController, animated: true)
+    }
+    
+    func deleteImage(index: Int) {
+        showActionSheet(title: "Вы действительно хотите удалить этот файл?",
+                        message: nil,
+                        showCancel: true,
+                        actions: [UIAlertAction(title: "Удаление файла",
+                                                style: .destructive,
+                                                handler: { _ in
+            self.imagesLocal.remove(at: index)
+            self.imageCollectionView.reloadData()
+        })])
     }
 }

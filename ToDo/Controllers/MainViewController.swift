@@ -255,7 +255,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = mainTableView.dequeueReusableCell(withIdentifier: "mainCell", for: indexPath) as? MainTableViewCell else { return UITableViewCell() }
         
-        cell.customCell(with: indexPath.section == 0 ? arrayLists[indexPath.row] : arrayCustomLists[indexPath.row])
+        cell.configure(with: indexPath.section == 0 ? arrayLists[indexPath.row] : arrayCustomLists[indexPath.row])
         return cell
     }
     
