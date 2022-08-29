@@ -43,11 +43,6 @@ class TaskCell: UITableViewCell {
         containerView.layer.cornerRadius = 6
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        // Configure the view for the selected state
-    }
-    
     @IBAction func completedTaskTapped(_ sender: UIButton) {
         RealmManager.shared.updateCompletedState(task: task)
         print("completed")
@@ -61,8 +56,8 @@ class TaskCell: UITableViewCell {
     func configure(with task: TaskModel) {
         taskNameLabel.attributedText = task.isCompleted ? completedAttributeString : notCompletedAttributeString
         noteImage.tintColor = task.note.isEmpty ? .systemGray2 : .systemPink
+        filesImage.tintColor = task.images.isEmpty ? .systemGray2 : .systemPink
         importantTaskButton.setImage(UIImage(systemName: task.isImportant ? "star.fill" : "star"), for: .normal)
         completedTaskButton.setImage(UIImage(systemName: task.isCompleted ? "circle.slash" : "circle"), for: .normal)
     }
-    
 }

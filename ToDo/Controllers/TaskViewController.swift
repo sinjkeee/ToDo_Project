@@ -144,11 +144,7 @@ class TaskViewController: UIViewController {
     
     @IBAction func saveTaskTapped(_ sender: UIBarButtonItem) {
         guard let taskName = taskNameTF.text else { return }
-        if indexPath == nil {
-            saveNewTask(taskName: taskName)
-        } else {
-            updateTask(taskName: taskName)
-        }
+        indexPath == nil ? saveNewTask(taskName: taskName) : updateTask(taskName: taskName)
         dismiss(animated: true)
     }
     
