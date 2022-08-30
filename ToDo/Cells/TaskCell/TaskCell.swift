@@ -55,9 +55,23 @@ class TaskCell: UITableViewCell {
     
     func configure(with task: TaskModel) {
         taskNameLabel.attributedText = task.isCompleted ? completedAttributeString : notCompletedAttributeString
-        noteImage.tintColor = task.note.isEmpty ? .systemGray2 : .systemPink
-        filesImage.tintColor = task.images.isEmpty ? .systemGray2 : .systemPink
+        noteImage.tintColor = task.note.isEmpty ? .systemGray2 : .systemBlue
+        filesImage.tintColor = task.images.isEmpty ? .systemGray2 : .systemBlue
+        
         importantTaskButton.setImage(UIImage(systemName: task.isImportant ? "star.fill" : "star"), for: .normal)
         completedTaskButton.setImage(UIImage(systemName: task.isCompleted ? "circle.slash" : "circle"), for: .normal)
+        
+        calendarImage.tintColor = task.dateOfCompletion == nil ? .systemGray2 : .systemBlue
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.dateFormat = "dd, MMM, YY"
+        calendarLabel.text = task.dateOfCompletion == nil ? "" : formatter.string(from: task.dateOfCompletion ?? Date())
+        calendarLabel.textColor = .systemBlue
+        
+        bellLabel.text = task.reminderTime == nil ? "" : ""
+        let smallConfig = UIImage.SymbolConfiguration(scale: .small)
+        bellImage.image = task.reminderTime == nil ? UIImage(systemName: "bell.slash", withConfiguration: smallConfig) : UIImage(systemName: "bell.badge", withConfiguration: smallConfig)
+        
+        bellImage.tintColor = task.reminderTime == nil ? .systemGray2 : .systemPink
     }
 }

@@ -8,6 +8,7 @@
 import UIKit
 import RealmSwift
 import SnapKit
+import UserNotifications
 
 class ListViewController: UIViewController {
     
@@ -20,7 +21,7 @@ class ListViewController: UIViewController {
     private var currentTasksNotificationToken: NotificationToken?
     private var completedTaskNotificationToken: NotificationToken?
     private var notificationToken: NotificationToken?
-    
+    private var notificationCenter = UNUserNotificationCenter.current()
     private var currentTasks: Results<TaskModel>!
     private var completedTasks: Results<TaskModel>!
     private var list: ListModel?
@@ -73,37 +74,37 @@ class ListViewController: UIViewController {
             case .initial: break
             case .update(_, _, _, _):
                 /*
-                var deletionsTask: TaskModel?
-                if let index = deletions.first {
-                    deletionsTask = tasks[index]
-                }
-                var insertionsTask: TaskModel?
-                if let index = insertions.first {
-                    insertionsTask = tasks[index]
-                }
-                var modificationsTask: TaskModel?
-                if let index = modifications.first {
-                    modificationsTask = tasks[index]
-                }
-                
-                self.listTableView.performBatchUpdates { [weak self] in
-                    guard let self = self else { return }
-                    self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: deletionsTask?.isCompleted ?? false ? 1 : 0) }),
-                                                  with: .automatic)
-                    self.listTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: insertionsTask?.isCompleted ?? false ? 1 : 0) }),
-                                                  with: .automatic)
-                    self.listTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: modificationsTask?.isCompleted ?? false ? 1 : 0) }),
-                                                  with: .automatic)
-                } completion: { finished in
-                    // ...
-                }
+                 var deletionsTask: TaskModel?
+                 if let index = deletions.first {
+                 deletionsTask = tasks[index]
+                 }
+                 var insertionsTask: TaskModel?
+                 if let index = insertions.first {
+                 insertionsTask = tasks[index]
+                 }
+                 var modificationsTask: TaskModel?
+                 if let index = modifications.first {
+                 modificationsTask = tasks[index]
+                 }
+                 
+                 self.listTableView.performBatchUpdates { [weak self] in
+                 guard let self = self else { return }
+                 self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: deletionsTask?.isCompleted ?? false ? 1 : 0) }),
+                 with: .automatic)
+                 self.listTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: insertionsTask?.isCompleted ?? false ? 1 : 0) }),
+                 with: .automatic)
+                 self.listTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: modificationsTask?.isCompleted ?? false ? 1 : 0) }),
+                 with: .automatic)
+                 } completion: { finished in
+                 // ...
+                 }
                  */
                 self.listTableView.reloadData()
             case .error(let error):
                 fatalError("\(error)")
             }
         })
-
+        
         listTableView.delegate = self
         listTableView.dataSource = self
         
@@ -202,7 +203,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 
                 guard let index = index else { return }
-                
+                self.notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
                 RealmManager.shared.delete(task: task, index: index, from: list)
             })])
         }

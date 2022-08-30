@@ -36,10 +36,10 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Z0m-pO-3w2">
-                                        <rect key="frame" x="0.0" y="80" width="200" height="20"/>
+                                        <rect key="frame" x="0.0" y="80" width="210" height="20"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVr-ma-vnR">
-                                                <rect key="frame" x="0.0" y="0.0" width="66" height="20"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="OVr-ma-vnR">
+                                                <rect key="frame" x="0.0" y="0.0" width="71" height="20"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Y7-EO-6VA">
                                                         <rect key="frame" x="0.0" y="2.5" width="16.5" height="14.5"/>
@@ -47,23 +47,23 @@
                                                         <imageReference key="image" image="calendar" catalog="system" symbolScale="small"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Сегодня" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4jL-oa-PZb">
-                                                        <rect key="frame" x="16.5" y="0.0" width="49.5" height="20"/>
+                                                        <rect key="frame" x="21.5" y="0.0" width="49.5" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" systemColor="systemGray2Color"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kzr-rn-EM1">
-                                                <rect key="frame" x="82" y="0.0" width="56" height="20"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Kzr-rn-EM1">
+                                                <rect key="frame" x="87" y="0.0" width="61" height="20"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ohU-Av-YlJ">
                                                         <rect key="frame" x="0.0" y="2" width="15.5" height="16"/>
                                                         <color key="tintColor" systemColor="systemGray2Color"/>
-                                                        <imageReference key="image" image="bell" catalog="system" symbolScale="small"/>
+                                                        <imageReference key="image" image="bell.slash" catalog="system" symbolScale="small"/>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Завтра" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bso-FP-1iX">
-                                                        <rect key="frame" x="15.5" y="0.0" width="40.5" height="20"/>
+                                                        <rect key="frame" x="20.5" y="0.0" width="40.5" height="20"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" systemColor="systemGray2Color"/>
                                                         <nil key="highlightedColor"/>
@@ -71,12 +71,12 @@
                                                 </subviews>
                                             </stackView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IUD-bN-D90">
-                                                <rect key="frame" x="154" y="2" width="14.5" height="16"/>
+                                                <rect key="frame" x="164" y="2" width="14.5" height="16"/>
                                                 <color key="tintColor" systemColor="systemGray2Color"/>
                                                 <imageReference key="image" image="doc" catalog="system" symbolScale="small"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="C9Y-GA-fCQ">
-                                                <rect key="frame" x="184.5" y="1.5" width="15.5" height="17"/>
+                                                <rect key="frame" x="194.5" y="1.5" width="15.5" height="17"/>
                                                 <color key="tintColor" systemColor="systemGray2Color"/>
                                                 <imageReference key="image" image="paperclip" catalog="system" symbolScale="small"/>
                                             </imageView>
@@ -148,7 +148,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="bell" catalog="system" width="128" height="124"/>
+        <image name="bell.slash" catalog="system" width="124" height="128"/>
         <image name="button:UMh-lP-g7e:image" catalog="system" width="128" height="116">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8QD05T
