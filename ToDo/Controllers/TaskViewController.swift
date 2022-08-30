@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import RealmSwift
+import UserNotifications
 
 class TaskViewController: UIViewController {
     
@@ -17,10 +18,12 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var datePicker: UIDatePicker!
     @IBOutlet weak var datePickerLabel: UILabel!
     @IBOutlet weak var datePickerImage: UIImageView!
+    @IBOutlet weak var deleteDatePickerButton: UIButton!
     // дата уведомления
     @IBOutlet weak var dateTimePicker: UIDatePicker!
     @IBOutlet weak var dateTimeLabel: UILabel!
     @IBOutlet weak var dateTimeImage: UIImageView!
+    @IBOutlet weak var deleteDateTimeButton: UIButton!
     
     @IBOutlet weak var notesTextView: UITextView!
     
@@ -34,6 +37,9 @@ class TaskViewController: UIViewController {
     private var imagePicker = UIImagePickerController()
     private var imagesLocal = [Data]()
     private var imagesArray = List<Data>()
+    private var notificationCenter = UNUserNotificationCenter.current()
+    private var reminderTime: Date?
+    private var dateOfCompletion: Date?
     var task: TaskModel = TaskModel()
     var indexPath: IndexPath?
     var listID: ObjectId?
@@ -44,6 +50,11 @@ class TaskViewController: UIViewController {
         
         datePicker.minimumDate = Date()
         dateTimePicker.minimumDate = Date()
+        
+        deleteDateTimeButton.isHidden = true
+        deleteDatePickerButton.isHidden = true
+        
+        notificationCenter.delegate = self
         
         imageCollectionView.delegate = self
         imageCollectionView.dataSource = self
@@ -61,7 +72,7 @@ class TaskViewController: UIViewController {
         imagePicker.delegate = self
         
         taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : ListModel()
-
+        
         taskNameTF.delegate = self
         notesTextView.delegate = self
         
@@ -74,9 +85,19 @@ class TaskViewController: UIViewController {
     private func updateUI() {
         taskNameTF.text = task.name
         notesTextView.text = task.note
+        dateOfCompletion = task.dateOfCompletion
+        reminderTime = task.reminderTime
+        datePicker.date = dateOfCompletion ?? Date()
+        dateTimePicker.date = reminderTime ?? Date()
         task.images.forEach { imageData in
             self.imagesLocal.append(imageData)
         }
+        datePickerImage.tintColor = dateOfCompletion == nil ? .systemGray2 : .systemBlue
+        dateTimeImage.tintColor = reminderTime == nil ? .systemGray2 : .systemBlue
+        datePicker.alpha = dateOfCompletion == nil ? 0.2 : 1
+        dateTimePicker.alpha = reminderTime == nil ? 0.2 : 1
+        deleteDatePickerButton.isHidden = dateOfCompletion == nil
+        deleteDateTimeButton.isHidden = reminderTime == nil
     }
     
     private func updateSaveButtonState() {
@@ -110,9 +131,22 @@ class TaskViewController: UIViewController {
         task.name = taskName
         task.note = notesTextView.text
         task.images = imagesArray
+        task.reminderTime = reminderTime
+        task.dateOfCompletion = dateOfCompletion
         imagesLocal.forEach { data in
             task.images.append(data)
         }
+        
+        if let time = reminderTime {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
+            sendNotifications(title: "Напоминание",
+                              body: task.name,
+                              date: time,
+                              id: task._id.stringValue)
+        } else {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
+        }
+        
         RealmManager.shared.save(task: task, in: taskList)
     }
     
@@ -120,10 +154,44 @@ class TaskViewController: UIViewController {
         let newtask = TaskModel()
         newtask.name = taskName
         newtask.note = notesTextView.text
+        newtask.dateOfCompletion = dateOfCompletion
+        newtask.reminderTime = reminderTime
         imagesLocal.forEach { data in
             newtask.images.append(data)
         }
+        
+        if let time = reminderTime {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
+            sendNotifications(title: "Напоминание",
+                              body: task.name,
+                              date: time,
+                              id: task._id.stringValue)
+        } else {
+            notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
+        }
+        
         RealmManager.shared.updateTask(task: task, updatingTask: newtask)
+    }
+    
+    private func sendNotifications(title: String, body: String, date: Date, id: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        
+        let dateComponents = Calendar.current.dateComponents([.year, .month, .day, .hour, .minute],
+                                                             from: date)
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents,
+                                                    repeats: false)
+        
+        let request = UNNotificationRequest(identifier: id,
+                                            content: content,
+                                            trigger: trigger)
+        
+        notificationCenter.add(request) { error in
+            print(error?.localizedDescription as Any)
+        }
     }
     
     //MARK: - @IBAction
@@ -157,17 +225,41 @@ class TaskViewController: UIViewController {
     }
     
     @IBAction func datePickerAction(_ sender: UIDatePicker) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d MMMM, yyyy"
-        print(dateFormatter.string(from: sender.date))
-        datePickerImage.tintColor = .systemRed
+        dateOfCompletion = sender.date
+        datePickerImage.tintColor = .systemBlue
         datePicker.alpha = 1
+        deleteDatePickerButton.isHidden = false
     }
     
     @IBAction func dateTimePickerAction(_ sender: UIDatePicker) {
-        print(sender.date)
+        notificationCenter.requestAuthorization(options: [.sound, .badge, .alert]) { granted, error in
+            guard granted else { return }
+        }
+        
+        notificationCenter.getNotificationSettings { settings in
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async {
+                self.reminderTime = sender.date
+                self.dateTimeImage.tintColor = .systemBlue
+                self.dateTimePicker.alpha = 1
+                self.deleteDateTimeButton.isHidden = false
+            }
+        }
     }
     
+    @IBAction func deleteDatePickerTapped(_ sender: UIButton) {
+        dateOfCompletion = nil
+        datePicker.alpha = 0.2
+        datePickerImage.tintColor = .systemGray2
+        deleteDatePickerButton.isHidden = true
+    }
+    
+    @IBAction func deleteDateTimeTapped(_ sender: UIButton) {
+        reminderTime = nil
+        dateTimePicker.alpha = 0.2
+        dateTimeImage.tintColor = .systemGray2
+        deleteDateTimeButton.isHidden = true
+    }
 }
 
 //MARK: - UITextViewDelegate
@@ -236,7 +328,8 @@ extension TaskViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: ImageCellConstants.galleryItemWidth, height: imageCollectionView.frame.height * 0.8)
+        return CGSize(width: ImageCellConstants.galleryItemWidth,
+                      height: imageCollectionView.frame.height * 0.8)
     }
 }
 
@@ -265,5 +358,13 @@ extension TaskViewController: ImageCellDelegate {
             self.imagesLocal.remove(at: index)
             self.imageCollectionView.reloadData()
         })])
+    }
+}
+
+//MARK: - UNUserNotificationCenterDelegate
+extension TaskViewController: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        // тут будет переход в таску, после нажатия на уведомление
+        print(#function)
     }
 }
