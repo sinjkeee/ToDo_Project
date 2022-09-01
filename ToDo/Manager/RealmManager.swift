@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 7
+    private let realmSchemaVersion: UInt64 = 11
     
     static var shared = RealmManager()
     
@@ -40,6 +40,18 @@ class RealmManager {
     func save(user: UserModel) {
         write {
             realm.add(user)
+        }
+    }
+    
+    func deleteUserPhoto(user: UserModel) {
+        write {
+            user.userImage = Data()
+        }
+    }
+    
+    func updateUserPhoto(user: UserModel, image data: Data) {
+        write {
+            user.userImage = data
         }
     }
     

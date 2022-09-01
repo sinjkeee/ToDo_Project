@@ -20,6 +20,7 @@ class MainViewController: UIViewController {
     private var arrayCustomLists: Results<ListModel>!
     private var notificationTokenForArrayList: NotificationToken?
     private var notificationTokenForCustomArrayList: NotificationToken?
+    private var notificationToken: NotificationToken?
     private var currentUser: UserModel = UserModel()
     var userUID: String!
     
@@ -30,28 +31,46 @@ class MainViewController: UIViewController {
     
     private lazy var userImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "person.crop.circle")
+        imageView.image = UIImage(systemName: "person.circle")
+        imageView.contentMode = .scaleToFill
         imageView.tintColor = .systemCyan
+        imageView.layer.cornerRadius = 15
+        imageView.clipsToBounds = true
         return imageView
     }()
     
     private lazy var infoButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Владимир Секерко", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        button.setTitle("Имя Фамилия", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 18,
+                                                    weight: .semibold)
         button.tintColor = .black
-        button.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(toUserInfoTapped),
+                         for: .touchUpInside)
         return button
+    }()
+    
+    private lazy var infoLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Владимир Секерко"
+        label.font = UIFont.systemFont(ofSize: 18,
+                                       weight: .medium)
+        label.textAlignment = .left
+        label.isUserInteractionEnabled = true
+        return label
     }()
     
     private lazy var searchButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
         button.tintColor = .systemCyan
         button.imageView?.contentMode = .scaleAspectFit
         button.contentVerticalAlignment = .fill
         button.contentHorizontalAlignment = .fill
-        button.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(searchButtonTapped),
+                         for: .touchUpInside)
         return button
     }()
     
@@ -59,7 +78,7 @@ class MainViewController: UIViewController {
         let view = UIView()
         let subview = UIView()
         subview.backgroundColor = .systemCyan
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         view.addSubview(subview)
         
         subview.snp.makeConstraints { make in
@@ -68,7 +87,6 @@ class MainViewController: UIViewController {
             make.centerX.equalToSuperview()
             make.height.equalTo(1)
         }
-        
         return view
     }()
     
@@ -79,16 +97,33 @@ class MainViewController: UIViewController {
         self.title = "Списки"
         
         customTitleView.addSubview(userImage)
-        customTitleView.addSubview(infoButton)
+        customTitleView.addSubview(infoLabel)
         customTitleView.addSubview(searchButton)
+        
+        let userInfoRecognizer = UITapGestureRecognizer(target: self,
+                                                        action: #selector(toUserInfoTapped))
+        infoLabel.addGestureRecognizer(userInfoRecognizer)
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
-        mainTableView.register(UINib(nibName: "MainTableViewCell", bundle: nil), forCellReuseIdentifier: "mainCell")
+        mainTableView.register(UINib(nibName: "MainTableViewCell",
+                                     bundle: nil),
+                               forCellReuseIdentifier: "mainCell")
         
         // получаем юзера, который сейчас авторизовался
         guard let user = RealmManager.shared.realm.objects(UserModel.self).where({ $0.uid == userUID }).first else { return }
         currentUser = user
+        // подписываемся на обновление данных у юзера
+        notificationToken = user.observe({ (changes) in
+            switch changes {
+            case .error(_):
+                print("Error")
+            case .change(_, _):
+                self.updateUI()
+            case .deleted:
+                break
+            }
+        })
         // получаем его списки
         arrayLists = currentUser.lists.where { $0.index != .custom }
         arrayCustomLists = currentUser.lists.where { $0.index == .custom }
@@ -113,7 +148,6 @@ class MainViewController: UIViewController {
                 fatalError("\(error)")
             }
         }
-        
         // подписываемся на обновление данных в arrayCustomLists
         notificationTokenForCustomArrayList = arrayCustomLists.observe { (changes) in
             switch changes {
@@ -135,6 +169,7 @@ class MainViewController: UIViewController {
                 fatalError("\(error)")
             }
         }
+        updateUI()
     }
     
     //MARK: - @IBAction
@@ -148,25 +183,38 @@ class MainViewController: UIViewController {
         setConstraint()
     }
     
+    @objc private func userInfoTapped() {
+        print("print")
+    }
+    
     @objc private func searchButtonTapped() {
-        guard let searchNavigationController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchNavigationController") as? UINavigationController else { return }
-
+        guard let searchNavigationController = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "SearchNavigationController") as? UINavigationController else { return }
+        
         present(searchNavigationController, animated: true)
     }
     
-    @objc private func infoButtonTapped() {
+    @objc private func toUserInfoTapped() {
+        /*
         do {
             try Auth.auth().signOut()
         } catch {
             print(error)
         }
+         */
+        guard let navigationController = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "UserNaviController") as? UINavigationController,
+              let controller = navigationController.viewControllers.first as? UserViewController
+        else { return }
+        controller.user = currentUser
+        present(navigationController, animated: true)
     }
     
     private func showAlert() {
         let alertController = UIAlertController(title: "Новый список",
                                                 message: "",
                                                 preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Ok", style: .default) { action in
+        let ok = UIAlertAction(title: "Ok", style: .default) { _ in
             guard let text = alertController.textFields?.first?.text else { return }
             if text != "" {
                 // создаем новый список задач и сохраняем в бд
@@ -185,11 +233,16 @@ class MainViewController: UIViewController {
         present(alertController, animated: true)
     }
     
+    private func updateUI() {
+        infoLabel.text = currentUser.name
+        userImage.image = currentUser.userImage.isEmpty ? UIImage(systemName: "person.circle") : UIImage(data: currentUser.userImage)
+    }
+    
     private func showEditAlert(_ list: ListModel) {
         let alertController = UIAlertController(title: "Хотите переименовать?",
                                                 message: "Введите новое название списка",
                                                 preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Изменить", style: .default) { action in
+        let ok = UIAlertAction(title: "Изменить", style: .default) { _ in
             guard let text = alertController.textFields?.first?.text,
                   text != "" else { return }
             RealmManager.shared.updateList(list: list, newValue: text)
@@ -216,11 +269,11 @@ class MainViewController: UIViewController {
             make.centerY.equalToSuperview()
         }
         
-        infoButton.snp.makeConstraints { make in
-            make.width.equalTo(200)
+        infoLabel.snp.makeConstraints { make in
+            make.width.equalTo(250)
             make.height.equalTo(30)
             make.centerY.equalTo(userImage)
-            make.leading.equalTo(userImage.snp.trailing).offset(8)
+            make.leading.equalTo(userImage.snp.trailing).offset(16)
         }
         
         searchButton.snp.makeConstraints { make in
@@ -262,7 +315,8 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        guard let list = UIStoryboard(name: "List", bundle: nil).instantiateViewController(withIdentifier: "ListsViewController") as? ListViewController else { return }
+        guard let list = UIStoryboard(name: "List", bundle: nil)
+            .instantiateViewController(withIdentifier: "ListsViewController") as? ListViewController else { return }
         
         // переходя в список передает туда имя списка и id, чтобы внутри уже работать с его тасками
         list.title = indexPath.section == 0 ? arrayLists[indexPath.row].index.name : arrayCustomLists[indexPath.row].name

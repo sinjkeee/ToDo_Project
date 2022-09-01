@@ -110,6 +110,9 @@ class ListViewController: UIViewController {
         
         listTableView.separatorStyle = .none
         listTableView.showsVerticalScrollIndicator = false
+        
+        settingsView.isHidden = title == "Завершенные" ? true : false
+        addTaskView.isHidden = title == "Завершенные" ? true : false
     }
     
     //MARK: - @IBAction
@@ -192,7 +195,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                             showCancel: true,
                             actions: [UIAlertAction(title: "Удалить задачу",
                                                     style: .destructive,
-                                                    handler: { [weak self] action in
+                                                    handler: { [weak self] _ in
                 guard let self = self,
                       let task = indexPath.section == 0 ? self.list?.tasks.where({$0.isCompleted == false})[indexPath.row] : self.list?.tasks.where({$0.isCompleted == true})[indexPath.row],
                       let list = self.list

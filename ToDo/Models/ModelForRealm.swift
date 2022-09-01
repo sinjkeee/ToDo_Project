@@ -12,6 +12,8 @@ class UserModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var name: String = ""
     @Persisted var uid: String = ""
+    @Persisted var userImage = Data()
+    @Persisted var email: String = ""
     @Persisted var lists = List<ListModel>()
 }
 

@@ -63,12 +63,10 @@ class ImageCell: UICollectionViewCell {
     }
 
     @objc private func deleteImageTapped() {
-        print("delete")
         delegate?.deleteImage(index: index)
     }
     
     @objc private func shareImageTapped() {
-        print("share")
         delegate?.shareImage(image: image)
     }
     

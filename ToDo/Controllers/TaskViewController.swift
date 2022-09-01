@@ -71,7 +71,8 @@ class TaskViewController: UIViewController {
         
         imagePicker.delegate = self
         
-        taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID) : ListModel()
+        taskList = listID != nil ? RealmManager.shared.realm.object(ofType: ListModel.self,
+                                                                    forPrimaryKey: listID) : ListModel()
         
         taskNameTF.delegate = self
         notesTextView.delegate = self
@@ -196,18 +197,20 @@ class TaskViewController: UIViewController {
     
     //MARK: - @IBAction
     @IBAction func addFileTapped(_ sender: UIButton) {
+        let camera = UIAlertAction(title: "Камера",
+                                   style: .default) { _ in
+            self.showImagePicker(withType: .camera)
+        }
+        
+        let photoLibrary = UIAlertAction(title: "Библиотека изображений",
+                                         style: .default) { _ in
+            self.showImagePicker(withType: .photoLibrary)
+        }
+        
         showActionSheet(title: nil,
                         message: nil,
                         showCancel: true,
-                        actions: [UIAlertAction(title: "Камера",
-                                                style: .default,
-                                                handler: { _ in
-            self.showImagePicker(withType: .camera) }),
-                                  UIAlertAction(title: "Библиотека изображений",
-                                                style: .default,
-                                                handler: { _ in
-            self.showImagePicker(withType: .photoLibrary) })
-                        ])
+                        actions: [camera, photoLibrary])
     }
     
     @IBAction func saveTaskTapped(_ sender: UIBarButtonItem) {

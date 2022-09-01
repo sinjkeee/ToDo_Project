@@ -18,11 +18,11 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Мой день" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Gt-mr-sCq">
-                        <rect key="frame" x="62" y="12" width="86.5" height="20"/>
+                        <rect key="frame" x="62" y="12" width="80.5" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="NPC-EN-PUT"/>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="19"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>

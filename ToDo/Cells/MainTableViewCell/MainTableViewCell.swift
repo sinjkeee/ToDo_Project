@@ -27,6 +27,7 @@ class MainTableViewCell: UITableViewCell {
         imageCell.image = UIImage(systemName: cell.index.image)
         imageCell.tintColor = cell.index.color
         nameLabel.text = cell.index == .custom ? cell.name : cell.index.name
-        countLabel.text = "\(cell.tasks.filter({ $0.isCompleted == false }).count)"
+        let taskCount = cell.tasks.filter({ $0.isCompleted == false }).count
+        countLabel.text = taskCount > 0 ? "\(taskCount)" : ""
     }
 }
