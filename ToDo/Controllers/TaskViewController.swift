@@ -48,9 +48,6 @@ class TaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        datePicker.minimumDate = Date()
-        dateTimePicker.minimumDate = Date()
-        
         deleteDateTimeButton.isHidden = true
         deleteDatePickerButton.isHidden = true
         

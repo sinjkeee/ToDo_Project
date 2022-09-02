@@ -105,7 +105,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="CEL-FP-QMQ"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" systemColor="secondarySystemGroupedBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="CM7-DF-XC5" firstAttribute="leading" secondItem="CEL-FP-QMQ" secondAttribute="leading" id="Ayz-oG-msj"/>
                             <constraint firstItem="CM7-DF-XC5" firstAttribute="bottom" secondItem="CEL-FP-QMQ" secondAttribute="bottom" id="Hs3-ku-ZrT"/>
@@ -389,6 +389,9 @@
     </scenes>
     <resources>
         <image name="plus" catalog="system" width="128" height="113"/>
+        <systemColor name="secondarySystemGroupedBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

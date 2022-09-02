@@ -21,6 +21,8 @@ class MainViewController: UIViewController {
     private var notificationTokenForArrayList: NotificationToken?
     private var notificationTokenForCustomArrayList: NotificationToken?
     private var notificationToken: NotificationToken?
+    private var notificationTokenCompletedTasks: NotificationToken?
+    private var notificationTokenImportantTasks: NotificationToken?
     private var currentUser: UserModel = UserModel()
     var userUID: String!
     
@@ -169,6 +171,62 @@ class MainViewController: UIViewController {
                 fatalError("\(error)")
             }
         }
+        
+        //MARK: - completion list
+        /*
+        let completedList = RealmManager.shared.realm.objects(ListModel.self).first { list in
+            list.index == ListIndex.four
+        }
+        let completedTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
+            task.isCompleted == true
+        }
+         
+        RealmManager.shared.deleteAllTasks(list: completedList!)
+        completedTasks.forEach { task in
+            RealmManager.shared.save(task: task, in: completedList!)
+        }
+        
+        notificationTokenCompletedTasks = completedTasks.observe({ (changes) in
+            switch changes {
+            case .initial(_):
+                break
+            case .update(_, _, _, _):
+                RealmManager.shared.deleteAllTasks(list: completedList!)
+                completedTasks.forEach { task in
+                    RealmManager.shared.save(task: task, in: completedList!)
+                }
+            case .error(_):
+                break
+            }
+        })
+        */
+        //MARK: - important list
+        
+        let importantList = RealmManager.shared.realm.objects(ListModel.self).first { list in
+            list.index == ListIndex.two
+        }
+        let importantTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
+            task.isImportant == true
+        }
+        RealmManager.shared.deleteAllTasks(list: importantList!)
+        importantTasks.forEach { task in
+            RealmManager.shared.save(task: task, in: importantList!)
+        }
+        
+        notificationTokenImportantTasks = importantTasks.observe({ (changes) in
+            switch changes {
+            case .initial(_):
+                break
+            case .update(_, _, _, _):
+                RealmManager.shared.deleteAllTasks(list: importantList!)
+                importantTasks.forEach { task in
+                    RealmManager.shared.save(task: task, in: importantList!)
+                }
+            case .error(_):
+                break
+            }
+        })
+        
         updateUI()
     }
     

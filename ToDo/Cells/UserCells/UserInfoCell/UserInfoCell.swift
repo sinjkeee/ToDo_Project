@@ -37,7 +37,7 @@ class UserInfoCell: UITableViewCell {
     
     func configure(with user: UserModel) {
         userNameLabel.text = user.name
-        userEmailLabel.text = user.uid
+        userEmailLabel.text = user.email
         userImageView.image = user.userImage.isEmpty ? UIImage(systemName: "person.circle") : UIImage(data: user.userImage)
     }
 }

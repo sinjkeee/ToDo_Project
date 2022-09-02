@@ -25,7 +25,7 @@ class MainTableViewCell: UITableViewCell {
     
     func configure(with cell: ListModel) {
         imageCell.image = UIImage(systemName: cell.index.image)
-        imageCell.tintColor = cell.index.color
+        imageCell.tintColor = cell.color.color
         nameLabel.text = cell.index == .custom ? cell.name : cell.index.name
         let taskCount = cell.tasks.filter({ $0.isCompleted == false }).count
         countLabel.text = taskCount > 0 ? "\(taskCount)" : ""
