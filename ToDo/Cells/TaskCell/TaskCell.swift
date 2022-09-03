@@ -95,6 +95,6 @@ class TaskCell: UITableViewCell {
         formatter.dateFormat = "dd, MMM, YY"
         calendarLabel.text = task.dateOfCompletion == nil ? "" : formatter.string(from: task.dateOfCompletion ?? Date())
         
-        stackView.isHidden = noteImage.isHidden && filesImage.isHidden && bellImage.isHidden && calendarImage.isHidden ? true : false
+        stackView.isHidden = noteImage.isHidden && filesImage.isHidden && bellImage.isHidden && calendarImage.isHidden
     }
 }
