@@ -33,8 +33,9 @@ class ColorCell: UICollectionViewCell {
         setConstraint()
     }
 
-    func configure(color: UIColor) {
+    func configure(color: UIColor, isCurrentColor: Bool) {
         colorView.backgroundColor = color
+        subView.isHidden = !isCurrentColor
     }
     
     private func setConstraint() {

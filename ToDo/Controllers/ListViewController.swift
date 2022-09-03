@@ -300,7 +300,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as? ColorCell else { return UICollectionViewCell() }
         let color = ListOfColors.allCases[indexPath.row]
-        colorCell.configure(color: color.color)
+        colorCell.configure(color: color.color, isCurrentColor: list?.color.color == color.color)
         return colorCell
     }
     
@@ -309,6 +309,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         let currentColor = ListOfColors.allCases[indexPath.row]
         guard let list = list else { return }
         RealmManager.shared.updateColor(list: list, newColor: currentColor)
+        collectionView.reloadData()
     }
 }
 
