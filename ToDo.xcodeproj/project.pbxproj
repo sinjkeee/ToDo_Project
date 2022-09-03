@@ -33,6 +33,7 @@
 		2A9E474128BF7F67006DCFB0 /* SignOutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E473F28BF7F67006DCFB0 /* SignOutCell.xib */; };
 		2A9E474528C20114006DCFB0 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474328C20113006DCFB0 /* ColorCell.swift */; };
 		2A9E474628C20114006DCFB0 /* ColorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E474428C20113006DCFB0 /* ColorCell.xib */; };
+		2A9E474828C368EB006DCFB0 /* ListOfColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474728C368EA006DCFB0 /* ListOfColors.swift */; };
 		2AC7A4E728A23A0B00FC641A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */; };
 		2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */; };
 		2AC7A4EB28A23A0B00FC641A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4EA28A23A0B00FC641A /* MainViewController.swift */; };
@@ -69,6 +70,7 @@
 		2A9E473F28BF7F67006DCFB0 /* SignOutCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignOutCell.xib; sourceTree = "<group>"; };
 		2A9E474328C20113006DCFB0 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		2A9E474428C20113006DCFB0 /* ColorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCell.xib; sourceTree = "<group>"; };
+		2A9E474728C368EA006DCFB0 /* ListOfColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfColors.swift; sourceTree = "<group>"; };
 		2AC7A4E328A23A0B00FC641A /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				2A9E471628ABEF3A006DCFB0 /* ListIndex.swift */,
+				2A9E474728C368EA006DCFB0 /* ListOfColors.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 				2A9E46EA28AA4219006DCFB0 /* UIViewController+Extension.swift in Sources */,
 				2AD5D55828A65A630038A1A4 /* UIButton+Extension.swift in Sources */,
 				2A9E473128BB977B006DCFB0 /* ImageCell.swift in Sources */,
+				2A9E474828C368EB006DCFB0 /* ListOfColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
