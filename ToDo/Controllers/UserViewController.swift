@@ -51,9 +51,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0:
-            return 1
-        case 1:
+        case 0, 1:
             return 1
         case 2:
             return 2
@@ -71,8 +69,6 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
             userInfoCell.delegate = self
             userInfoCell.configure(with: user)
             return userInfoCell
-        case 1:
-            return UITableViewCell()
         case 2:
             signOutCell.configure(index: indexPath.row)
             return signOutCell

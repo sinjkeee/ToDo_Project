@@ -201,16 +201,17 @@ class MainViewController: UIViewController {
         })
         */
         //MARK: - important list
-        
         let importantList = RealmManager.shared.realm.objects(ListModel.self).first { list in
             list.index == ListIndex.two
         }
+        guard let importantList = importantList else { return }
+        
         let importantTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
             task.isImportant == true
         }
-        RealmManager.shared.deleteAllTasks(list: importantList!)
+        RealmManager.shared.deleteAllTasks(list: importantList)
         importantTasks.forEach { task in
-            RealmManager.shared.save(task: task, in: importantList!)
+            RealmManager.shared.save(task: task, in: importantList)
         }
         
         notificationTokenImportantTasks = importantTasks.observe({ (changes) in
@@ -218,9 +219,9 @@ class MainViewController: UIViewController {
             case .initial(_):
                 break
             case .update(_, _, _, _):
-                RealmManager.shared.deleteAllTasks(list: importantList!)
+                RealmManager.shared.deleteAllTasks(list: importantList)
                 importantTasks.forEach { task in
-                    RealmManager.shared.save(task: task, in: importantList!)
+                    RealmManager.shared.save(task: task, in: importantList)
                 }
             case .error(_):
                 break
@@ -253,13 +254,6 @@ class MainViewController: UIViewController {
     }
     
     @objc private func toUserInfoTapped() {
-        /*
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print(error)
-        }
-         */
         guard let navigationController = UIStoryboard(name: "Main", bundle: nil)
             .instantiateViewController(withIdentifier: "UserNaviController") as? UINavigationController,
               let controller = navigationController.viewControllers.first as? UserViewController

@@ -79,7 +79,8 @@ class TaskCell: UITableViewCell {
         bellLabel.isHidden = true
         
         let smallConfig = UIImage.SymbolConfiguration(scale: .small)
-        bellImage.image = task.reminderTime == nil ? UIImage(systemName: "bell.slash", withConfiguration: smallConfig) : UIImage(systemName: "bell.badge", withConfiguration: smallConfig)
+        bellImage.image = UIImage(systemName: task.reminderTime == nil ? "bell.slash" : "bell.badge",
+                                  withConfiguration: smallConfig)
         
         // если дата выполнения задачи сегодня, то подсвечиваем ярким, если в будущем, то синим цветом
         let currendDate = Date()
@@ -94,10 +95,6 @@ class TaskCell: UITableViewCell {
         formatter.dateFormat = "dd, MMM, YY"
         calendarLabel.text = task.dateOfCompletion == nil ? "" : formatter.string(from: task.dateOfCompletion ?? Date())
         
-        if noteImage.isHidden && filesImage.isHidden && bellImage.isHidden && calendarImage.isHidden {
-            stackView.isHidden = true
-        } else {
-            stackView.isHidden = false
-        }
+        stackView.isHidden = noteImage.isHidden && filesImage.isHidden && bellImage.isHidden && calendarImage.isHidden ? true : false
     }
 }

@@ -11,7 +11,7 @@ import SnapKit
 import UserNotifications
 
 enum ListOfColors: Int, PersistableEnum, CaseIterable {
-    case one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7, eight = 8, nine = 9, ten = 10, eleven = 11, twelve = 12
+    case one = 1, two = 2, three = 3, four = 4, five = 5, six = 6, seven = 7, eight = 8, nine = 9, ten = 10, eleven = 11, twelve = 12, thirteen = 13
     
     var color: UIColor {
         switch self {
@@ -39,6 +39,8 @@ enum ListOfColors: Int, PersistableEnum, CaseIterable {
             return UIColor.systemIndigo
         case .twelve:
             return UIColor.systemOrange
+        case .thirteen:
+            return UIColor.systemTeal
         }
     }
 }
@@ -60,21 +62,6 @@ class ListViewController: UIViewController {
     private var notificationCenter = UNUserNotificationCenter.current()
     private var list: ListModel?
     private var isHideCompletionTasks = false
-    private var colors: [UIColor] = [UIColor(red: 255/255, green: 192/255, blue: 203/255, alpha: 1),
-                                     UIColor(red: 250/255, green: 92/255, blue: 92/255, alpha: 1),
-                                     UIColor(red: 216/255, green: 191/255, blue: 216/255, alpha: 1),
-                                     UIColor(red: 255/255, green: 204/255, blue: 0/255, alpha: 1),
-                                     UIColor(red: 100/255, green: 149/255, blue: 237/255, alpha: 1),
-                                     UIColor(red: 204/255, green: 119/255, blue: 34/255, alpha: 1),
-                                     .systemCyan,
-                                     .systemGray,
-                                     .systemMint,
-                                     .systemGreen,
-                                     .systemIndigo,
-                                     .systemOrange,
-                                     .systemPink.withAlphaComponent(0.8),
-                                     .systemTeal,
-                                     .systemBrown]
     var listID: ObjectId!
     
     private lazy var viewForHeader: UIView = {
@@ -318,10 +305,10 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(colors[indexPath.row].description)
         self.view.backgroundColor = ListOfColors.allCases[indexPath.row].color
         let currentColor = ListOfColors.allCases[indexPath.row]
-        RealmManager.shared.updateColor(list: list!, newColor: currentColor)
+        guard let list = list else { return }
+        RealmManager.shared.updateColor(list: list, newColor: currentColor)
     }
 }
 
