@@ -16,16 +16,17 @@ class ListViewController: UIViewController {
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var addTaskView: UIView!
     @IBOutlet weak var settingsView: UIView!
+    @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var bottomConstraintContentView: NSLayoutConstraint!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     //MARK: - let/var
     private var currentTasksNotificationToken: NotificationToken?
     private var completedTaskNotificationToken: NotificationToken?
     private var notificationToken: NotificationToken?
     private var notificationCenter = UNUserNotificationCenter.current()
-    private var currentTasks: Results<TaskModel>!
-    private var completedTasks: Results<TaskModel>!
     private var list: ListModel?
-    private var isHideCompletionTasks = true
+    private var isHideCompletionTasks = false
     var listID: ObjectId!
     
     private lazy var viewForHeader: UIView = {
@@ -51,8 +52,23 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        bottomConstraintContentView.constant = -350
+        
+        contentView.layer.cornerRadius = 10
+        
         addTaskView.layer.cornerRadius = 6
+        addTaskView.layer.masksToBounds = false
+        addTaskView.layer.shadowColor = UIColor.black.cgColor
+        addTaskView.layer.shadowRadius = 2
+        addTaskView.layer.shadowOpacity = 0.35
+        addTaskView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        
         settingsView.layer.cornerRadius = 6
+        settingsView.layer.masksToBounds = false
+        settingsView.layer.shadowColor = UIColor.black.cgColor
+        settingsView.layer.shadowRadius = 2
+        settingsView.layer.shadowOpacity = 0.35
+        settingsView.layer.shadowOffset = CGSize(width: 3, height: 3)
         
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -63,12 +79,16 @@ class ListViewController: UIViewController {
                                forCellReuseIdentifier: "taskCell")
         listTableView.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
         
+        collectionView.register(UINib(nibName: "ColorCell", bundle: nil),
+                                forCellWithReuseIdentifier: "colorCell")
+        collectionView.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        
         // получаем объект списка по _id
         list = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID)
-        // получаем текущие и завершенные таски
-        currentTasks = list?.tasks.where{ $0.isCompleted == false }
-        completedTasks = list?.tasks.where{ $0.isCompleted == true }
-        // подписываемся на изменения в списке currentTasks
+        
+        self.view.backgroundColor = list?.color.color
+        
+        // подписываемся на изменения задач в текущем листе
         notificationToken = list?.tasks.observe({ (changes) in
             switch changes {
             case .initial: break
@@ -105,11 +125,18 @@ class ListViewController: UIViewController {
             }
         })
         
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         listTableView.delegate = self
         listTableView.dataSource = self
         
         listTableView.separatorStyle = .none
         listTableView.showsVerticalScrollIndicator = false
+        /*
+        settingsView.isHidden = title == "Завершенные" ? true : false
+        addTaskView.isHidden = title == "Завершенные" ? true : false
+        */
     }
     
     //MARK: - @IBAction
@@ -120,6 +147,26 @@ class ListViewController: UIViewController {
         controller.listID = listID
         present(taskController, animated: true)
     }
+    
+    @IBAction func settingsTapped(_ sender: UIButton) {
+        bottomConstraintContentView.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            self.bottomConstraintContentView.constant = -10
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @IBAction func doneButtonTapped(_ sender: UIButton) {
+        bottomConstraintContentView.constant = -350
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     
     @objc private func hideCompletedTask(sender: UIButton) {
         sender.setImage(UIImage(systemName: isHideCompletionTasks ? "chevron.down" : "chevron.forward"), for: .normal)
@@ -164,7 +211,6 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let taskCell = listTableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell,
               let list = list else { return UITableViewCell() }
         
-        taskCell.task = indexPath.section == 0 ? (list.tasks.where{$0.isCompleted == false}[indexPath.row]) : (list.tasks.where{$0.isCompleted == true}[indexPath.row])
         taskCell.configure(with: indexPath.section == 0 ? (list.tasks.where{$0.isCompleted == false}[indexPath.row]) : (list.tasks.where{$0.isCompleted == true}[indexPath.row]))
         return taskCell
     }
@@ -192,7 +238,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                             showCancel: true,
                             actions: [UIAlertAction(title: "Удалить задачу",
                                                     style: .destructive,
-                                                    handler: { [weak self] action in
+                                                    handler: { [weak self] _ in
                 guard let self = self,
                       let task = indexPath.section == 0 ? self.list?.tasks.where({$0.isCompleted == false})[indexPath.row] : self.list?.tasks.where({$0.isCompleted == true})[indexPath.row],
                       let list = self.list
@@ -207,5 +253,38 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                 RealmManager.shared.delete(task: task, index: index, from: list)
             })])
         }
+    }
+}
+
+//MARK: - UICollectionViewDelegate
+extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ListOfColors.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: "colorCell", for: indexPath) as? ColorCell else { return UICollectionViewCell() }
+        let color = ListOfColors.allCases[indexPath.row]
+        colorCell.configure(color: color.color, isCurrentColor: list?.color.color == color.color)
+        return colorCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.view.backgroundColor = ListOfColors.allCases[indexPath.row].color
+        let currentColor = ListOfColors.allCases[indexPath.row]
+        guard let list = list else { return }
+        RealmManager.shared.updateColor(list: list, newColor: currentColor)
+        collectionView.reloadData()
+    }
+}
+
+//MARK: - UICollectionViewDelegateFlowLayout
+extension ListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 30, height: 30)
     }
 }

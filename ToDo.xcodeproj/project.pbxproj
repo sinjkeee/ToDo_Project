@@ -26,6 +26,14 @@
 		2A9E473128BB977B006DCFB0 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E472F28BB977B006DCFB0 /* ImageCell.swift */; };
 		2A9E473228BB977B006DCFB0 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E473028BB977B006DCFB0 /* ImageCell.xib */; };
 		2A9E473428BCB4B1006DCFB0 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E473328BCB4B1006DCFB0 /* ImageViewController.swift */; };
+		2A9E473628BF4FF6006DCFB0 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E473528BF4FF6006DCFB0 /* UserViewController.swift */; };
+		2A9E473B28BF644E006DCFB0 /* UserInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E473928BF644E006DCFB0 /* UserInfoCell.swift */; };
+		2A9E473C28BF644E006DCFB0 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E473A28BF644E006DCFB0 /* UserInfoCell.xib */; };
+		2A9E474028BF7F67006DCFB0 /* SignOutCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E473E28BF7F67006DCFB0 /* SignOutCell.swift */; };
+		2A9E474128BF7F67006DCFB0 /* SignOutCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E473F28BF7F67006DCFB0 /* SignOutCell.xib */; };
+		2A9E474528C20114006DCFB0 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474328C20113006DCFB0 /* ColorCell.swift */; };
+		2A9E474628C20114006DCFB0 /* ColorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E474428C20113006DCFB0 /* ColorCell.xib */; };
+		2A9E474828C368EB006DCFB0 /* ListOfColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474728C368EA006DCFB0 /* ListOfColors.swift */; };
 		2AC7A4E728A23A0B00FC641A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */; };
 		2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */; };
 		2AC7A4EB28A23A0B00FC641A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4EA28A23A0B00FC641A /* MainViewController.swift */; };
@@ -55,6 +63,14 @@
 		2A9E472F28BB977B006DCFB0 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		2A9E473028BB977B006DCFB0 /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
 		2A9E473328BCB4B1006DCFB0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		2A9E473528BF4FF6006DCFB0 /* UserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		2A9E473928BF644E006DCFB0 /* UserInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoCell.swift; sourceTree = "<group>"; };
+		2A9E473A28BF644E006DCFB0 /* UserInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UserInfoCell.xib; sourceTree = "<group>"; };
+		2A9E473E28BF7F67006DCFB0 /* SignOutCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOutCell.swift; sourceTree = "<group>"; };
+		2A9E473F28BF7F67006DCFB0 /* SignOutCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SignOutCell.xib; sourceTree = "<group>"; };
+		2A9E474328C20113006DCFB0 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		2A9E474428C20113006DCFB0 /* ColorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCell.xib; sourceTree = "<group>"; };
+		2A9E474728C368EA006DCFB0 /* ListOfColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfColors.swift; sourceTree = "<group>"; };
 		2AC7A4E328A23A0B00FC641A /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				2A9E471628ABEF3A006DCFB0 /* ListIndex.swift */,
+				2A9E474728C368EA006DCFB0 /* ListOfColors.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -125,6 +142,42 @@
 				2A9E473028BB977B006DCFB0 /* ImageCell.xib */,
 			);
 			path = ImageCell;
+			sourceTree = "<group>";
+		};
+		2A9E473728BF6416006DCFB0 /* UserCells */ = {
+			isa = PBXGroup;
+			children = (
+				2A9E473D28BF7F04006DCFB0 /* SignOut */,
+				2A9E473828BF642E006DCFB0 /* UserInfoCell */,
+			);
+			path = UserCells;
+			sourceTree = "<group>";
+		};
+		2A9E473828BF642E006DCFB0 /* UserInfoCell */ = {
+			isa = PBXGroup;
+			children = (
+				2A9E473928BF644E006DCFB0 /* UserInfoCell.swift */,
+				2A9E473A28BF644E006DCFB0 /* UserInfoCell.xib */,
+			);
+			path = UserInfoCell;
+			sourceTree = "<group>";
+		};
+		2A9E473D28BF7F04006DCFB0 /* SignOut */ = {
+			isa = PBXGroup;
+			children = (
+				2A9E473E28BF7F67006DCFB0 /* SignOutCell.swift */,
+				2A9E473F28BF7F67006DCFB0 /* SignOutCell.xib */,
+			);
+			path = SignOut;
+			sourceTree = "<group>";
+		};
+		2A9E474228C200F8006DCFB0 /* ColorCell */ = {
+			isa = PBXGroup;
+			children = (
+				2A9E474328C20113006DCFB0 /* ColorCell.swift */,
+				2A9E474428C20113006DCFB0 /* ColorCell.xib */,
+			);
+			path = ColorCell;
 			sourceTree = "<group>";
 		};
 		2AC7A4DA28A23A0B00FC641A = {
@@ -178,6 +231,7 @@
 				2AD5D55B28A692880038A1A4 /* TaskViewController.swift */,
 				2A9E471828B23F01006DCFB0 /* SearchViewController.swift */,
 				2A9E473328BCB4B1006DCFB0 /* ImageViewController.swift */,
+				2A9E473528BF4FF6006DCFB0 /* UserViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -193,6 +247,8 @@
 		2AD5D52228A2A5C10038A1A4 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				2A9E474228C200F8006DCFB0 /* ColorCell */,
+				2A9E473728BF6416006DCFB0 /* UserCells */,
 				2A9E472E28BB9754006DCFB0 /* ImageCell */,
 				2AD5D52A28A3BD520038A1A4 /* TaskCell */,
 				2A56BC2E28A24C67009D4624 /* MainTableViewCell */,
@@ -312,7 +368,10 @@
 				2A56BC2D28A24C5B009D4624 /* MainTableViewCell.xib in Resources */,
 				2A9E473228BB977B006DCFB0 /* ImageCell.xib in Resources */,
 				2AD5D52E28A3BD750038A1A4 /* TaskCell.xib in Resources */,
+				2A9E473C28BF644E006DCFB0 /* UserInfoCell.xib in Resources */,
+				2A9E474628C20114006DCFB0 /* ColorCell.xib in Resources */,
 				2AC7A4EE28A23A0B00FC641A /* Main.storyboard in Resources */,
+				2A9E474128BF7F67006DCFB0 /* SignOutCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,17 +387,22 @@
 				2A9E471728ABEF3A006DCFB0 /* ListIndex.swift in Sources */,
 				2AD5D52D28A3BD750038A1A4 /* TaskCell.swift in Sources */,
 				2AC7A4E728A23A0B00FC641A /* AppDelegate.swift in Sources */,
+				2A9E474028BF7F67006DCFB0 /* SignOutCell.swift in Sources */,
+				2A9E473628BF4FF6006DCFB0 /* UserViewController.swift in Sources */,
 				2AD5D52828A3A89B0038A1A4 /* ListViewController.swift in Sources */,
 				2A9E473428BCB4B1006DCFB0 /* ImageViewController.swift in Sources */,
+				2A9E473B28BF644E006DCFB0 /* UserInfoCell.swift in Sources */,
 				2AD5D55528A642460038A1A4 /* LoginViewController.swift in Sources */,
 				2A56BC2C28A24C5B009D4624 /* MainTableViewCell.swift in Sources */,
 				2A9E471928B23F02006DCFB0 /* SearchViewController.swift in Sources */,
+				2A9E474528C20114006DCFB0 /* ColorCell.swift in Sources */,
 				2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */,
 				2A9E471128AB88CF006DCFB0 /* ModelForRealm.swift in Sources */,
 				2AD5D55C28A692880038A1A4 /* TaskViewController.swift in Sources */,
 				2A9E46EA28AA4219006DCFB0 /* UIViewController+Extension.swift in Sources */,
 				2AD5D55828A65A630038A1A4 /* UIButton+Extension.swift in Sources */,
 				2A9E473128BB977B006DCFB0 /* ImageCell.swift in Sources */,
+				2A9E474828C368EB006DCFB0 /* ListOfColors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

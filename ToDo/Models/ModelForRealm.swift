@@ -7,17 +7,21 @@
 
 import Foundation
 import RealmSwift
+import UIKit
 
 class UserModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var name: String = ""
     @Persisted var uid: String = ""
+    @Persisted var userImage = Data()
+    @Persisted var email: String = ""
     @Persisted var lists = List<ListModel>()
 }
 
 class ListModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var index: ListIndex = .custom
+    @Persisted var color: ListOfColors = .allCases.randomElement() ?? .seven
     @Persisted var name: String = "Список без названия"
     @Persisted var image: String = "list.bullet"
     @Persisted var tasks = List<TaskModel>()

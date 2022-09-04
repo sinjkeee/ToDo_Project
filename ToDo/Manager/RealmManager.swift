@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 7
+    private let realmSchemaVersion: UInt64 = 14
     
     static var shared = RealmManager()
     
@@ -43,6 +43,18 @@ class RealmManager {
         }
     }
     
+    func deleteUserPhoto(user: UserModel) {
+        write {
+            user.userImage = Data()
+        }
+    }
+    
+    func updateUserPhoto(user: UserModel, image data: Data) {
+        write {
+            user.userImage = data
+        }
+    }
+    
     // сохранение нового списка задач
     func save(list: ListModel) {
         write {
@@ -60,6 +72,12 @@ class RealmManager {
     func save(task: TaskModel, in list: ListModel) {
         write {
             list.tasks.append(task)
+        }
+    }
+    
+    func deleteAllTasks(list: ListModel) {
+        write {
+            list.tasks.removeAll()
         }
     }
 
@@ -108,6 +126,13 @@ class RealmManager {
     func updateList(list: ListModel, newValue: String) {
         write {
             list.name = newValue
+        }
+    }
+    
+    // сохранение цвета листа
+    func updateColor(list: ListModel, newColor: ListOfColors) {
+        write {
+            list.color = newColor
         }
     }
 }
