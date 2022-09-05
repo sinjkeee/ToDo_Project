@@ -273,6 +273,7 @@ class MainViewController: UIViewController {
                 let newTaskList = ListModel()
                 newTaskList.name = text
                 newTaskList.index = .custom
+                newTaskList.listSortType = SortedForList()
                 RealmManager.shared.save(list: newTaskList, in: self.currentUser)
             }
         }

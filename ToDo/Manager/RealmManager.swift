@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 14
+    private let realmSchemaVersion: UInt64 = 15
     
     static var shared = RealmManager()
     
@@ -33,6 +33,20 @@ class RealmManager {
             }
         } catch let error {
             print(error.localizedDescription)
+        }
+    }
+    
+    // меняем тип сортировки списка
+    func updateListSortingType(with list: ListModel, type: Sorting) {
+        write {
+            list.listSortType?.sortType = type
+        }
+    }
+    
+    // меняем порядок сортировки списка
+    func updateListSortingAscident(with list: ListModel) {
+        write {
+            list.listSortType.isAscident.toggle()
         }
     }
     
@@ -85,6 +99,7 @@ class RealmManager {
     func delete(list: ListModel) {
         write {
             realm.delete(list.tasks)
+            realm.delete(list.listSortType)
             realm.delete(list)
         }
     }

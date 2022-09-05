@@ -80,6 +80,7 @@ class LoginViewController: UIViewController {
     private func firstLaunchApp(user: UserModel) {
         for i in ListIndex.allCases where i != .custom {
             let list = ListModel()
+            list.listSortType = SortedForList()
             list.index = i
             RealmManager.shared.save(list: list, in: user)
         }
