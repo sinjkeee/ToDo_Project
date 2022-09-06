@@ -25,6 +25,8 @@ class UserViewController: UIViewController {
                            forCellReuseIdentifier: "userInfoCell")
         tableVIew.register(UINib(nibName: "SignOutCell", bundle: nil),
                            forCellReuseIdentifier: "signOutCell")
+        tableVIew.register(UINib(nibName: "ListCell", bundle: nil),
+                           forCellReuseIdentifier: "listCell")
         imagePicker.delegate = self
         tableVIew.dataSource = self
         tableVIew.delegate = self
@@ -51,8 +53,10 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0, 1:
+        case 0:
             return 1
+        case 1:
+            return 4
         case 2:
             return 2
         default:
@@ -62,13 +66,17 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let userInfoCell = tableView.dequeueReusableCell(withIdentifier: "userInfoCell") as? UserInfoCell,
-              let signOutCell = tableView.dequeueReusableCell(withIdentifier: "signOutCell") as? SignOutCell
+              let signOutCell = tableView.dequeueReusableCell(withIdentifier: "signOutCell") as? SignOutCell,
+              let listCell = tableView.dequeueReusableCell(withIdentifier: "listCell") as? ListCell
         else { return UITableViewCell() }
         switch indexPath.section {
         case 0:
             userInfoCell.delegate = self
             userInfoCell.configure(with: user)
             return userInfoCell
+        case 1:
+            listCell.configure(index: indexPath.row)
+            return listCell
         case 2:
             signOutCell.configure(index: indexPath.row)
             return signOutCell
@@ -78,11 +86,15 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        indexPath.section == 0 ? 200 : 40
+        indexPath.section == 0 ? 200 : 47
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        section == 1 ? "СМАРТ-СПИСКИ" : ""
     }
     
 }
