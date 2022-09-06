@@ -20,9 +20,8 @@ class MainViewController: UIViewController {
     private var arrayCustomLists: Results<ListModel>!
     private var notificationTokenForArrayList: NotificationToken?
     private var notificationTokenForCustomArrayList: NotificationToken?
-    private var notificationToken: NotificationToken?
-    private var notificationTokenCompletedTasks: NotificationToken?
-    private var notificationTokenImportantTasks: NotificationToken?
+    private var notificationTokenUser: NotificationToken?
+    private var notificationTokenTasks: NotificationToken?
     private var currentUser: UserModel = UserModel()
     var userUID: String!
     
@@ -116,7 +115,7 @@ class MainViewController: UIViewController {
         guard let user = RealmManager.shared.realm.objects(UserModel.self).where({ $0.uid == userUID }).first else { return }
         currentUser = user
         // подписываемся на обновление данных у юзера
-        notificationToken = user.observe({ (changes) in
+        notificationTokenUser = user.observe({ (changes) in
             switch changes {
             case .error(_):
                 print("Error")
@@ -173,39 +172,26 @@ class MainViewController: UIViewController {
         }
         
         //MARK: - completion list
-        /*
         let completedList = RealmManager.shared.realm.objects(ListModel.self).first { list in
             list.index == ListIndex.four
         }
+        guard let completedList = completedList else { return }
+        
         let completedTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
             task.isCompleted == true
         }
-         
-        RealmManager.shared.deleteAllTasks(list: completedList!)
+
+        RealmManager.shared.deleteAllTasks(list: completedList)
         completedTasks.forEach { task in
-            RealmManager.shared.save(task: task, in: completedList!)
+            RealmManager.shared.save(task: task, in: completedList)
         }
-        
-        notificationTokenCompletedTasks = completedTasks.observe({ (changes) in
-            switch changes {
-            case .initial(_):
-                break
-            case .update(_, _, _, _):
-                RealmManager.shared.deleteAllTasks(list: completedList!)
-                completedTasks.forEach { task in
-                    RealmManager.shared.save(task: task, in: completedList!)
-                }
-            case .error(_):
-                break
-            }
-        })
-        */
+
         //MARK: - important list
         let importantList = RealmManager.shared.realm.objects(ListModel.self).first { list in
             list.index == ListIndex.two
         }
         guard let importantList = importantList else { return }
-        
+
         let importantTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
             task.isImportant == true
         }
@@ -213,15 +199,40 @@ class MainViewController: UIViewController {
         importantTasks.forEach { task in
             RealmManager.shared.save(task: task, in: importantList)
         }
+
+        //MARK: - dateOfCompletionList
+        let dateOfCompletionList = RealmManager.shared.realm.objects(ListModel.self).first { list in
+            list.index == ListIndex.three
+        }
+        guard let dateOfCompletionList = dateOfCompletionList else { return }
+
+        let dateOfCompletionTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
+            task.dateOfCompletion != nil
+        }
+        RealmManager.shared.deleteAllTasks(list: dateOfCompletionList)
+        dateOfCompletionTasks.forEach { task in
+            RealmManager.shared.save(task: task, in: dateOfCompletionList)
+        }
         
-        notificationTokenImportantTasks = importantTasks.observe({ (changes) in
+        notificationTokenTasks = RealmManager.shared.realm.objects(TaskModel.self).observe({ (changes) in
             switch changes {
             case .initial(_):
                 break
             case .update(_, _, _, _):
+                // important tasks update
                 RealmManager.shared.deleteAllTasks(list: importantList)
                 importantTasks.forEach { task in
                     RealmManager.shared.save(task: task, in: importantList)
+                }
+                // completed tasks update
+                RealmManager.shared.deleteAllTasks(list: completedList)
+                completedTasks.forEach { task in
+                    RealmManager.shared.save(task: task, in: completedList)
+                }
+                // dateOfCompletion tasks update
+                RealmManager.shared.deleteAllTasks(list: dateOfCompletionList)
+                dateOfCompletionTasks.forEach { task in
+                    RealmManager.shared.save(task: task, in: dateOfCompletionList)
                 }
             case .error(_):
                 break
