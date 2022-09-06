@@ -20,13 +20,27 @@ class ListViewController: UIViewController {
     @IBOutlet weak var bottomConstraintContentView: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
     
+    @IBOutlet weak var alphabetSwitch: UISwitch!
+    @IBOutlet weak var alphabetButton: UIButton!
+    
+    @IBOutlet weak var importantSwitch: UISwitch!
+    @IBOutlet weak var importantButton: UIButton!
+    
+    
+    @IBOutlet weak var dateOfCompletionSwitch: UISwitch!
+    @IBOutlet weak var dateOfCompletionButton: UIButton!
+    
+    @IBOutlet weak var dateOfCreationSwitch: UISwitch!
+    @IBOutlet weak var dateOfCreationButton: UIButton!
+    
     //MARK: - let/var
-    private var currentTasksNotificationToken: NotificationToken?
-    private var completedTaskNotificationToken: NotificationToken?
     private var notificationToken: NotificationToken?
+    private var sortedForList: SortedForList!
+    private var sortedTasks: [TaskModel]?
     private var notificationCenter = UNUserNotificationCenter.current()
     private var list: ListModel?
     private var isHideCompletionTasks = false
+    private var sortingClosure: ((TaskModel, TaskModel) -> Bool)?
     var listID: ObjectId!
     
     private lazy var viewForHeader: UIView = {
@@ -85,41 +99,18 @@ class ListViewController: UIViewController {
         
         // получаем объект списка по _id
         list = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: listID)
-        
+        self.sortedForList = list?.listSortType
         self.view.backgroundColor = list?.color.color
+        
+        self.updateData()
+        self.updateSwitchState()
         
         // подписываемся на изменения задач в текущем листе
         notificationToken = list?.tasks.observe({ (changes) in
             switch changes {
             case .initial: break
             case .update(_, _, _, _):
-                /*
-                 var deletionsTask: TaskModel?
-                 if let index = deletions.first {
-                 deletionsTask = tasks[index]
-                 }
-                 var insertionsTask: TaskModel?
-                 if let index = insertions.first {
-                 insertionsTask = tasks[index]
-                 }
-                 var modificationsTask: TaskModel?
-                 if let index = modifications.first {
-                 modificationsTask = tasks[index]
-                 }
-                 
-                 self.listTableView.performBatchUpdates { [weak self] in
-                 guard let self = self else { return }
-                 self.listTableView.deleteRows(at: deletions.map({ IndexPath(row: $0, section: deletionsTask?.isCompleted ?? false ? 1 : 0) }),
-                 with: .automatic)
-                 self.listTableView.insertRows(at: insertions.map({ IndexPath(row: $0, section: insertionsTask?.isCompleted ?? false ? 1 : 0) }),
-                 with: .automatic)
-                 self.listTableView.reloadRows(at: modifications.map({ IndexPath(row: $0, section: modificationsTask?.isCompleted ?? false ? 1 : 0) }),
-                 with: .automatic)
-                 } completion: { finished in
-                 // ...
-                 }
-                 */
-                self.listTableView.reloadData()
+                self.updateData()
             case .error(let error):
                 fatalError("\(error)")
             }
@@ -134,9 +125,48 @@ class ListViewController: UIViewController {
         listTableView.separatorStyle = .none
         listTableView.showsVerticalScrollIndicator = false
         /*
-        settingsView.isHidden = title == "Завершенные" ? true : false
-        addTaskView.isHidden = title == "Завершенные" ? true : false
-        */
+         settingsView.isHidden = title == "Завершенные" ? true : false
+         addTaskView.isHidden = title == "Завершенные" ? true : false
+         */
+    }
+    //MARK: - private methods
+    private func updateSwitchState() {
+        alphabetSwitch.isOn = sortedForList.sortType == .alphabet
+        alphabetButton.isHidden = !(sortedForList.sortType == .alphabet)
+        
+        importantSwitch.isOn = sortedForList.sortType == .isImportant
+        importantButton.isHidden = !(sortedForList.sortType == .isImportant)
+        
+        dateOfCompletionSwitch.isOn = sortedForList.sortType == .dateOfCompletion
+        dateOfCompletionButton.isHidden = !(sortedForList.sortType == .dateOfCompletion)
+        
+        dateOfCreationSwitch.isOn = sortedForList.sortType == .dateOfCreation
+        dateOfCreationButton.isHidden = !(sortedForList.sortType == .dateOfCreation)
+    }
+    
+    private func updateData() {
+        switch sortedForList.sortType {
+        case .alphabet:
+            sortingClosure = sortedForList.isAscident ?
+            {$0.name.lowercased() < $1.name.lowercased()} :
+            {$0.name.lowercased() > $1.name.lowercased()}
+        case .isImportant:
+            sortingClosure = sortedForList.isAscident ?
+            {$0.isImportant && !$1.isImportant} :
+            {!$0.isImportant && $1.isImportant}
+        case .dateOfCreation:
+            sortingClosure = sortedForList.isAscident ?
+            {$0.dateOfCreation > $1.dateOfCreation} :
+            {$0.dateOfCreation < $1.dateOfCreation}
+        case .dateOfCompletion:
+            sortingClosure = sortedForList.isAscident ?
+            {$0.dateOfCompletion ?? Date() < $1.dateOfCompletion ?? Date()} :
+            {$0.dateOfCompletion ?? Date() > $1.dateOfCompletion ?? Date()}
+        }
+        
+        guard let sortingClosure = sortingClosure else { return }
+        self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: sortingClosure)
+        self.listTableView.reloadData()
     }
     
     //MARK: - @IBAction
@@ -167,11 +197,65 @@ class ListViewController: UIViewController {
         }
     }
     
-    
     @objc private func hideCompletedTask(sender: UIButton) {
         sender.setImage(UIImage(systemName: isHideCompletionTasks ? "chevron.down" : "chevron.forward"), for: .normal)
         isHideCompletionTasks.toggle()
         listTableView.reloadData()
+    }
+    
+    @IBAction func alphabetSwitchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            guard let list = list else { return }
+            RealmManager.shared.updateListSortingType(with: list, type: .alphabet)
+            self.updateSwitchState()
+            self.updateData()
+        } else {
+            self.updateData()
+            self.alphabetSwitch.isOn = true
+        }
+    }
+    
+    @IBAction func ascidentToogle(_ sender: UIButton) {
+        guard let list = list else { return }
+        RealmManager.shared.updateListSortingAscident(with: list)
+        self.updateData()
+        self.updateSwitchState()
+    }
+    
+    @IBAction func importantSwitchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            guard let list = list else { return }
+            RealmManager.shared.updateListSortingType(with: list, type: .isImportant)
+            self.updateSwitchState()
+            self.updateData()
+        } else {
+            self.updateData()
+            self.importantSwitch.isOn = true
+        }
+    }
+    
+    @IBAction func dateOfCompletionSwitchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            guard let list = list else { return }
+            RealmManager.shared.updateListSortingType(with: list, type: .dateOfCompletion)
+            self.updateSwitchState()
+            self.updateData()
+        } else {
+            self.updateData()
+            self.dateOfCompletionSwitch.isOn = true
+        }
+    }
+    
+    @IBAction func dateOfCreationSwitchAction(_ sender: UISwitch) {
+        if sender.isOn {
+            guard let list = list else { return }
+            RealmManager.shared.updateListSortingType(with: list, type: .dateOfCreation)
+            self.updateSwitchState()
+            self.updateData()
+        } else {
+            self.updateData()
+            self.dateOfCreationSwitch.isOn = true
+        }
     }
 }
 
@@ -187,7 +271,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
             if list.isInvalidated { // проверка на то, что список еще существует
                 return 0
             } else { // если секция 1 смотрим isHideCompletionTasks и или 0 задач показываем или все, что есть
-                return section == 0 ? (list.tasks.where{$0.isCompleted == false}.count) : isHideCompletionTasks ? 0 : (list.tasks.where{$0.isCompleted == true}.count)
+                return section == 0 ? sortedTasks?.filter({$0.isCompleted == false}).count ?? 0 : isHideCompletionTasks ? 0 : sortedTasks?.filter({$0.isCompleted == true}).count ?? 0
             }
         }
         return 0
@@ -202,16 +286,16 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        guard let list = list else { return 0 }
         // проверка есть ли завершенные таски и если да, то показываем хэдэр
-        return section == 1 ? list.tasks.filter({$0.isCompleted == true}).count > 0 ? 35 : 0 : 0
+        return section == 1 ? sortedTasks?.filter({$0.isCompleted == true}).count ?? 0 > 0 ? 35 : 0 : 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let taskCell = listTableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell,
-              let list = list else { return UITableViewCell() }
+              let task = indexPath.section == 0 ? sortedTasks?.filter({$0.isCompleted == false})[indexPath.row] : sortedTasks?.filter({$0.isCompleted == true})[indexPath.row]
+        else { return UITableViewCell() }
         
-        taskCell.configure(with: indexPath.section == 0 ? (list.tasks.where{$0.isCompleted == false}[indexPath.row]) : (list.tasks.where{$0.isCompleted == true}[indexPath.row]))
+        taskCell.configure(with: task)
         return taskCell
     }
     
@@ -220,11 +304,11 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         
         guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController,
               let controller = taskController.viewControllers.first as? TaskViewController,
-              let list = list
+              let task = indexPath.section == 0 ? sortedTasks?.filter({$0.isCompleted == false})[indexPath.row] : sortedTasks?.filter({$0.isCompleted == true})[indexPath.row]
         else { return }
         
         // переходя с ячейки передаем еще индекс, чтобы понимать, что это не новая таска будет создаваться, а редактируется старая
-        controller.task = indexPath.section == 0 ? (list.tasks.where{$0.isCompleted == false}[indexPath.row]) : (list.tasks.where{$0.isCompleted == true}[indexPath.row])
+        controller.task = task
         controller.indexPath = indexPath
         controller.listID = listID
         present(taskController, animated: true)
@@ -232,7 +316,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            guard let taskName = indexPath.section == 0 ? list?.tasks.where({$0.isCompleted == false})[indexPath.row].name : list?.tasks.where({$0.isCompleted == true})[indexPath.row].name else { return }
+            guard let taskName = indexPath.section == 0 ? self.sortedTasks?.filter({$0.isCompleted == false})[indexPath.row].name : self.sortedTasks?.filter({$0.isCompleted == true})[indexPath.row].name else { return }
             showActionSheet(title: "Элемент \"\(taskName)\" будет удален без возможности восстановления",
                             message: nil,
                             showCancel: true,
@@ -240,7 +324,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
                                                     style: .destructive,
                                                     handler: { [weak self] _ in
                 guard let self = self,
-                      let task = indexPath.section == 0 ? self.list?.tasks.where({$0.isCompleted == false})[indexPath.row] : self.list?.tasks.where({$0.isCompleted == true})[indexPath.row],
+                      let task = indexPath.section == 0 ? self.sortedTasks?.filter({$0.isCompleted == false})[indexPath.row] : self.sortedTasks?.filter({$0.isCompleted == true})[indexPath.row],
                       let list = self.list
                 else { return }
                 

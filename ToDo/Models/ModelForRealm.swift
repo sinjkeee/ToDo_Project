@@ -22,6 +22,7 @@ class ListModel: Object {
     @Persisted(primaryKey: true) var _id: ObjectId
     @Persisted var index: ListIndex = .custom
     @Persisted var color: ListOfColors = .allCases.randomElement() ?? .seven
+    @Persisted var listSortType: SortedForList!
     @Persisted var name: String = "Список без названия"
     @Persisted var image: String = "list.bullet"
     @Persisted var tasks = List<TaskModel>()
@@ -37,4 +38,16 @@ class TaskModel: Object {
     @Persisted var reminderTime: Date?
     @Persisted var dateOfCompletion: Date?
     @Persisted var images = List<Data>()
+}
+
+class SortedForList: Object {
+    @Persisted var sortType: Sorting = .dateOfCreation
+    @Persisted var isAscident: Bool = true
+}
+
+enum Sorting: Int, PersistableEnum {
+    case alphabet = 1
+    case isImportant
+    case dateOfCreation
+    case dateOfCompletion
 }

@@ -22,6 +22,7 @@
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Название задачи" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HwL-qG-CtP">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences" autocorrectionType="no" returnKeyType="done"/>
                                         <connections>
@@ -34,6 +35,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="100" id="j70-Uy-kcv"/>
                                         </constraints>
+                                        <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     </textView>
@@ -53,7 +55,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Дата выполнения" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PF-jm-FSJ">
                                                 <rect key="frame" x="24.5" y="16" width="125.5" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -63,6 +65,7 @@
                                         <subviews>
                                             <datePicker alpha="0.20000000000000001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-hY-POJ">
                                                 <rect key="frame" x="0.0" y="0.0" width="174.5" height="50"/>
+                                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                                 <locale key="locale" localeIdentifier="ru"/>
                                                 <connections>
                                                     <action selector="datePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Tgx-xp-OPD"/>
@@ -96,7 +99,7 @@
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Напомнить" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jt-17-PL3">
                                                 <rect key="frame" x="28" y="16" width="80.5" height="18"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -106,6 +109,7 @@
                                         <subviews>
                                             <datePicker alpha="0.20000000000000001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Ph-vw1">
                                                 <rect key="frame" x="0.0" y="0.0" width="216" height="50"/>
+                                                <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
                                                 <locale key="locale" localeIdentifier="ru"/>
                                                 <connections>
                                                     <action selector="dateTimePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="CbY-RY-YQZ"/>
@@ -268,11 +272,17 @@
         <image name="calendar" catalog="system" width="128" height="106"/>
         <image name="paperclip" catalog="system" width="121" height="128"/>
         <image name="trash" catalog="system" width="121" height="128"/>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
             <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGroupedBackgroundColor">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemPinkColor">
             <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
