@@ -40,6 +40,7 @@ class ListViewController: UIViewController {
     private var notificationCenter = UNUserNotificationCenter.current()
     private var list: ListModel?
     private var isHideCompletionTasks = false
+    private var sortingClosure: ((TaskModel, TaskModel) -> Bool)?
     var listID: ObjectId!
     
     private lazy var viewForHeader: UIView = {
@@ -130,97 +131,41 @@ class ListViewController: UIViewController {
     }
     //MARK: - private methods
     private func updateSwitchState() {
-        switch sortedForList.sortType {
-        case .alphabet:
-            // alphabet
-            alphabetSwitch.isOn = true
-            alphabetButton.isHidden = false
-            alphabetButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"),
-                                    for: .normal)
-            // important
-            importantSwitch.isOn = false
-            importantButton.isHidden = true
-            // dateOfCompletion
-            dateOfCompletionSwitch.isOn = false
-            dateOfCompletionButton.isHidden = true
-            // dateOfCreation
-            dateOfCreationSwitch.isOn = false
-            dateOfCreationButton.isHidden = true
-        case .isImportant:
-            // alphabet
-            alphabetSwitch.isOn = false
-            alphabetButton.isHidden = true
-            // important
-            importantButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"),
-                                     for: .normal)
-            importantButton.isHidden = false
-            importantSwitch.isOn = true
-            // dateOfCompletion
-            dateOfCompletionSwitch.isOn = false
-            dateOfCompletionButton.isHidden = true
-            // dateOfCreation
-            dateOfCreationSwitch.isOn = false
-            dateOfCreationButton.isHidden = true
-        case .dateOfCreation:
-            // alphabet
-            alphabetSwitch.isOn = false
-            alphabetButton.isHidden = true
-            // important
-            importantSwitch.isOn = false
-            importantButton.isHidden = true
-            // dateOfCompletion
-            dateOfCompletionSwitch.isOn = false
-            dateOfCompletionButton.isHidden = true
-            // dateOfCreation
-            dateOfCreationSwitch.isOn = true
-            dateOfCreationButton.isHidden = false
-            dateOfCreationButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"),
-                                          for: .normal)
-        case .dateOfCompletion:
-            // alphabet
-            alphabetSwitch.isOn = false
-            alphabetButton.isHidden = true
-            // important
-            importantSwitch.isOn = false
-            importantButton.isHidden = true
-            // dateOfCompletion
-            dateOfCompletionSwitch.isOn = true
-            dateOfCompletionButton.isHidden = false
-            dateOfCompletionButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"),
-                                            for: .normal)
-            // dateOfCreation
-            dateOfCreationSwitch.isOn = false
-            dateOfCreationButton.isHidden = true
-        }
+        alphabetSwitch.isOn = sortedForList.sortType == .alphabet
+        alphabetButton.isHidden = !(sortedForList.sortType == .alphabet)
+        
+        importantSwitch.isOn = sortedForList.sortType == .isImportant
+        importantButton.isHidden = !(sortedForList.sortType == .isImportant)
+        
+        dateOfCompletionSwitch.isOn = sortedForList.sortType == .dateOfCompletion
+        dateOfCompletionButton.isHidden = !(sortedForList.sortType == .dateOfCompletion)
+        
+        dateOfCreationSwitch.isOn = sortedForList.sortType == .dateOfCreation
+        dateOfCreationButton.isHidden = !(sortedForList.sortType == .dateOfCreation)
     }
     
     private func updateData() {
         switch sortedForList.sortType {
         case .alphabet:
-            if sortedForList.isAscident {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.name.lowercased() < $1.name.lowercased()})
-            } else {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.name.lowercased() > $1.name.lowercased()})
-            }
-        case .dateOfCreation:
-            if sortedForList.isAscident {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.dateOfCreation > $1.dateOfCreation})
-            } else {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.dateOfCreation < $1.dateOfCreation})
-            }
+            sortingClosure = sortedForList.isAscident ?
+            {$0.name.lowercased() < $1.name.lowercased()} :
+            {$0.name.lowercased() > $1.name.lowercased()}
         case .isImportant:
-            if sortedForList.isAscident {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.isImportant && !$1.isImportant})
-            } else {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {!$0.isImportant && $1.isImportant})
-            }
+            sortingClosure = sortedForList.isAscident ?
+            {$0.isImportant && !$1.isImportant} :
+            {!$0.isImportant && $1.isImportant}
+        case .dateOfCreation:
+            sortingClosure = sortedForList.isAscident ?
+            {$0.dateOfCreation > $1.dateOfCreation} :
+            {$0.dateOfCreation < $1.dateOfCreation}
         case .dateOfCompletion:
-            if sortedForList.isAscident {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.dateOfCompletion ?? Date() < $1.dateOfCompletion ?? Date()})
-            } else {
-                self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: {$0.dateOfCompletion ?? Date() > $1.dateOfCompletion ?? Date()})
-            }
+            sortingClosure = sortedForList.isAscident ?
+            {$0.dateOfCompletion ?? Date() < $1.dateOfCompletion ?? Date()} :
+            {$0.dateOfCompletion ?? Date() > $1.dateOfCompletion ?? Date()}
         }
+        
+        guard let sortingClosure = sortingClosure else { return }
+        self.sortedTasks = RealmManager.shared.realm.object(ofType: ListModel.self, forPrimaryKey: self.listID)?.tasks.sorted(by: sortingClosure)
         self.listTableView.reloadData()
     }
     
