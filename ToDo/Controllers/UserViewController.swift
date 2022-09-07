@@ -8,7 +8,7 @@
 import UIKit
 
 class UserViewController: UIViewController {
-
+    
     //MARK: - @IBOutlets
     @IBOutlet weak var tableVIew: UITableView!
     
@@ -19,7 +19,7 @@ class UserViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         title = "Параметры"
         tableVIew.register(UINib(nibName: "UserInfoCell", bundle: nil),
                            forCellReuseIdentifier: "userInfoCell")
@@ -75,6 +75,7 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
             userInfoCell.configure(with: user)
             return userInfoCell
         case 1:
+            listCell.delegate = self
             listCell.configure(index: indexPath.row)
             return listCell
         case 2:
@@ -96,7 +97,6 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         section == 1 ? "СМАРТ-СПИСКИ" : ""
     }
-    
 }
 
 //MARK: - UserInfoCellDelegate
@@ -151,5 +151,37 @@ extension UserViewController: UIImagePickerControllerDelegate, UINavigationContr
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - ListCellDelegate
+extension UserViewController: ListCellDelegate {
+    func changeListVisibility(index: Int) {
+        switch index {
+        case 0:
+            let importantList = RealmManager.shared.realm.objects(ListModel.self).first { list in
+                list.index == ListIndex.two
+            }
+            guard let importantList = importantList else { return }
+            RealmManager.shared.updateHiddenListProterty(list: importantList)
+        case 1:
+            let dateOfCompleted = RealmManager.shared.realm.objects(ListModel.self).first { list in
+                list.index == ListIndex.three
+            }
+            guard let dateOfCompleted = dateOfCompleted else { return }
+            RealmManager.shared.updateHiddenListProterty(list: dateOfCompleted)
+        case 2:
+            let completedTasks = RealmManager.shared.realm.objects(ListModel.self).first { list in
+                list.index == ListIndex.four
+            }
+            guard let completedTasks = completedTasks else { return }
+            RealmManager.shared.updateHiddenListProterty(list: completedTasks)
+        default:
+            let tasksList = RealmManager.shared.realm.objects(ListModel.self).first { list in
+                list.index == ListIndex.five
+            }
+            guard let tasksList = tasksList else { return }
+            RealmManager.shared.updateHiddenListProterty(list: tasksList)
+        }
     }
 }

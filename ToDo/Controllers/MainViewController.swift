@@ -126,7 +126,7 @@ class MainViewController: UIViewController {
             }
         })
         // получаем его списки
-        arrayLists = currentUser.lists.where { $0.index != .custom /* && $0.index != .four*/}
+        arrayLists = currentUser.lists.where { $0.index != .custom && $0.isHidden != true }
         arrayCustomLists = currentUser.lists.where { $0.index == .custom }
         // подписываемся на обновление данных в arrayLists
         notificationTokenForArrayList = arrayLists.observe { (changes) in
@@ -254,6 +254,7 @@ class MainViewController: UIViewController {
         setConstraint()
     }
     
+    //MARK: - private methods
     @objc private func userInfoTapped() {
         print("print")
     }
