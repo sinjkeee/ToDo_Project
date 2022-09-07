@@ -124,11 +124,11 @@ class ListViewController: UIViewController {
         
         listTableView.separatorStyle = .none
         listTableView.showsVerticalScrollIndicator = false
-        /*
-         settingsView.isHidden = title == "Завершенные" ? true : false
-         addTaskView.isHidden = title == "Завершенные" ? true : false
-         */
+        
+        settingsView.isHidden = title == "Завершенные"
+        addTaskView.isHidden = title == "Завершенные"
     }
+    
     //MARK: - private methods
     private func updateSwitchState() {
         alphabetSwitch.isOn = sortedForList.sortType == .alphabet

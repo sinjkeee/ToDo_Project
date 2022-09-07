@@ -128,6 +128,7 @@ class LoginViewController: UIViewController {
                 newUser.name = name
                 newUser.uid = result.user.uid
                 newUser.email = email
+                newUser.settings = UserSettings()
                 RealmManager.shared.save(user: newUser)
                 self.firstLaunchApp(user: newUser)
                 self.showAlert(title: "Успешно!",

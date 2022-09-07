@@ -34,6 +34,9 @@
 		2A9E474528C20114006DCFB0 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474328C20113006DCFB0 /* ColorCell.swift */; };
 		2A9E474628C20114006DCFB0 /* ColorCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9E474428C20113006DCFB0 /* ColorCell.xib */; };
 		2A9E474828C368EB006DCFB0 /* ListOfColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E474728C368EA006DCFB0 /* ListOfColors.swift */; };
+		2AA3156428C77D5E00F09967 /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA3156228C77D5E00F09967 /* ListCell.swift */; };
+		2AA3156528C77D5E00F09967 /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AA3156328C77D5E00F09967 /* ListCell.xib */; };
+		2AA3156728C8B48800F09967 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA3156628C8B48800F09967 /* Sorting.swift */; };
 		2AC7A4E728A23A0B00FC641A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */; };
 		2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */; };
 		2AC7A4EB28A23A0B00FC641A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4EA28A23A0B00FC641A /* MainViewController.swift */; };
@@ -71,6 +74,9 @@
 		2A9E474328C20113006DCFB0 /* ColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
 		2A9E474428C20113006DCFB0 /* ColorCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ColorCell.xib; sourceTree = "<group>"; };
 		2A9E474728C368EA006DCFB0 /* ListOfColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListOfColors.swift; sourceTree = "<group>"; };
+		2AA3156228C77D5E00F09967 /* ListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		2AA3156328C77D5E00F09967 /* ListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
+		2AA3156628C8B48800F09967 /* Sorting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sorting.swift; sourceTree = "<group>"; };
 		2AC7A4E328A23A0B00FC641A /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +137,7 @@
 			children = (
 				2A9E471628ABEF3A006DCFB0 /* ListIndex.swift */,
 				2A9E474728C368EA006DCFB0 /* ListOfColors.swift */,
+				2AA3156628C8B48800F09967 /* Sorting.swift */,
 			);
 			path = Enums;
 			sourceTree = "<group>";
@@ -147,6 +154,7 @@
 		2A9E473728BF6416006DCFB0 /* UserCells */ = {
 			isa = PBXGroup;
 			children = (
+				2AA3156128C77CEA00F09967 /* ListCell */,
 				2A9E473D28BF7F04006DCFB0 /* SignOut */,
 				2A9E473828BF642E006DCFB0 /* UserInfoCell */,
 			);
@@ -178,6 +186,15 @@
 				2A9E474428C20113006DCFB0 /* ColorCell.xib */,
 			);
 			path = ColorCell;
+			sourceTree = "<group>";
+		};
+		2AA3156128C77CEA00F09967 /* ListCell */ = {
+			isa = PBXGroup;
+			children = (
+				2AA3156228C77D5E00F09967 /* ListCell.swift */,
+				2AA3156328C77D5E00F09967 /* ListCell.xib */,
+			);
+			path = ListCell;
 			sourceTree = "<group>";
 		};
 		2AC7A4DA28A23A0B00FC641A = {
@@ -363,6 +380,7 @@
 				2AC7A4F328A23A0D00FC641A /* LaunchScreen.storyboard in Resources */,
 				2A9E471B28B4F30E006DCFB0 /* GoogleService-Info.plist in Resources */,
 				2AD5D52528A3A7F40038A1A4 /* List.storyboard in Resources */,
+				2AA3156528C77D5E00F09967 /* ListCell.xib in Resources */,
 				2AC7A4F028A23A0D00FC641A /* Assets.xcassets in Resources */,
 				2AD5D55A28A692680038A1A4 /* Task.storyboard in Resources */,
 				2A56BC2D28A24C5B009D4624 /* MainTableViewCell.xib in Resources */,
@@ -399,6 +417,8 @@
 				2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */,
 				2A9E471128AB88CF006DCFB0 /* ModelForRealm.swift in Sources */,
 				2AD5D55C28A692880038A1A4 /* TaskViewController.swift in Sources */,
+				2AA3156428C77D5E00F09967 /* ListCell.swift in Sources */,
+				2AA3156728C8B48800F09967 /* Sorting.swift in Sources */,
 				2A9E46EA28AA4219006DCFB0 /* UIViewController+Extension.swift in Sources */,
 				2AD5D55828A65A630038A1A4 /* UIButton+Extension.swift in Sources */,
 				2A9E473128BB977B006DCFB0 /* ImageCell.swift in Sources */,

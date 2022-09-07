@@ -126,7 +126,7 @@ class MainViewController: UIViewController {
             }
         })
         // получаем его списки
-        arrayLists = currentUser.lists.where { $0.index != .custom }
+        arrayLists = currentUser.lists.where { $0.index != .custom && $0.isHidden != true }
         arrayCustomLists = currentUser.lists.where { $0.index == .custom }
         // подписываемся на обновление данных в arrayLists
         notificationTokenForArrayList = arrayLists.observe { (changes) in
@@ -214,6 +214,7 @@ class MainViewController: UIViewController {
             RealmManager.shared.save(task: task, in: dateOfCompletionList)
         }
         
+        
         notificationTokenTasks = RealmManager.shared.realm.objects(TaskModel.self).observe({ (changes) in
             switch changes {
             case .initial(_):
@@ -253,6 +254,7 @@ class MainViewController: UIViewController {
         setConstraint()
     }
     
+    //MARK: - private methods
     @objc private func userInfoTapped() {
         print("print")
     }

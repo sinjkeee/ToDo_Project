@@ -15,6 +15,7 @@ class UserModel: Object {
     @Persisted var uid: String = ""
     @Persisted var userImage = Data()
     @Persisted var email: String = ""
+    @Persisted var settings: UserSettings!
     @Persisted var lists = List<ListModel>()
 }
 
@@ -25,6 +26,7 @@ class ListModel: Object {
     @Persisted var listSortType: SortedForList!
     @Persisted var name: String = "Список без названия"
     @Persisted var image: String = "list.bullet"
+    @Persisted var isHidden: Bool = false
     @Persisted var tasks = List<TaskModel>()
 }
 
@@ -45,9 +47,6 @@ class SortedForList: Object {
     @Persisted var isAscident: Bool = true
 }
 
-enum Sorting: Int, PersistableEnum {
-    case alphabet = 1
-    case isImportant
-    case dateOfCreation
-    case dateOfCompletion
+class UserSettings: Object {
+    @Persisted var hiddenLists = List<ObjectId>()
 }

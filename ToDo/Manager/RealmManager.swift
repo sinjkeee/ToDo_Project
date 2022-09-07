@@ -9,7 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmManager {
-    private let realmSchemaVersion: UInt64 = 15
+    private let realmSchemaVersion: UInt64 = 18
     
     static var shared = RealmManager()
     
@@ -47,6 +47,13 @@ class RealmManager {
     func updateListSortingAscident(with list: ListModel) {
         write {
             list.listSortType.isAscident.toggle()
+        }
+    }
+    
+    // меняем видимость листа
+    func updateHiddenListProterty(list: ListModel) {
+        write {
+            list.isHidden.toggle()
         }
     }
     
