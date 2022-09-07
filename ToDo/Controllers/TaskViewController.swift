@@ -60,7 +60,7 @@ class TaskViewController: UIViewController {
                                      forCellWithReuseIdentifier: "ImageCell")
         imageCollectionView.showsVerticalScrollIndicator = false
         imageCollectionView.showsHorizontalScrollIndicator = false
-        imageCollectionView.backgroundColor = .white
+//        imageCollectionView.backgroundColor = .white
         imageCollectionView.contentInset = UIEdgeInsets(top: 0,
                                                         left: ImageCellConstants.leftDistanceToView,
                                                         bottom: 0,
