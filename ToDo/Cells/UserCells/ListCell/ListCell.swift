@@ -63,16 +63,6 @@ class ListCell: UITableViewCell {
     }
     
     @IBAction func switchListAction(_ sender: UISwitch) {
-        switch indexCell {
-        case 0:
-            self.delegate?.changeListVisibility(index: indexCell)
-        case 1:
-            self.delegate?.changeListVisibility(index: indexCell)
-        case 2:
-            self.delegate?.changeListVisibility(index: indexCell)
-        default:
-            self.delegate?.changeListVisibility(index: indexCell)
-        }
+        delegate?.changeListVisibility(index: indexCell)
     }
-    
 }
