@@ -41,23 +41,18 @@ class TaskCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        self.cornerAndShadow(cornerRadius: 6,
+                             shadowRadius: 2,
+                             shadowOffset: CGSize(width: 3, height: 2))
         containerView.layer.cornerRadius = 6
-        layer.cornerRadius = 6
-        layer.masksToBounds = false
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowRadius = 2
-        layer.shadowOpacity = 0.35
-        layer.shadowOffset = CGSize(width: 3, height: 2)
     }
     
     @IBAction func completedTaskTapped(_ sender: UIButton) {
         RealmManager.shared.updateCompletedState(task: task)
-        print("completed")
     }
     
     @IBAction func importantTaskTapped(_ sender: UIButton) {
         RealmManager.shared.updateImportantState(task: task)
-        print("important")
     }
     
     func configure(with task: TaskModel) {
@@ -91,7 +86,7 @@ class TaskCell: UITableViewCell {
         calendarLabel.isHidden = task.dateOfCompletion == nil
 
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "ru_RU")
+        formatter.locale = Locale.current
         formatter.dateFormat = "dd, MMM, YY"
         calendarLabel.text = task.dateOfCompletion == nil ? "" : formatter.string(from: task.dateOfCompletion ?? Date())
         

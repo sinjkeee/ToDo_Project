@@ -20,7 +20,7 @@ extension UIViewController {
         }
         
         if showCancel {
-            alertController.addAction(UIAlertAction(title: "Отмена",
+            alertController.addAction(UIAlertAction(title: "Cancel".localized(),
                                                     style: .cancel))
         }
         
@@ -38,7 +38,7 @@ extension UIViewController {
         }
         
         if showCancel {
-            alertController.addAction(UIAlertAction(title: "Отмена",
+            alertController.addAction(UIAlertAction(title: "Cancel".localized(),
                                                     style: .cancel))
         }
         

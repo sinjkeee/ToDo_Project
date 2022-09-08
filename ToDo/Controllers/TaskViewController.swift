@@ -25,6 +25,7 @@ class TaskViewController: UIViewController {
     @IBOutlet weak var dateTimeImage: UIImageView!
     @IBOutlet weak var deleteDateTimeButton: UIButton!
     
+    @IBOutlet weak var addImageButton: UIButton!
     @IBOutlet weak var notesTextView: UITextView!
     
     @IBOutlet weak var saveTaskButton: UIBarButtonItem!
@@ -47,6 +48,13 @@ class TaskViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        cancelButton.title = "Cancel".localized()
+        saveTaskButton.title = "Save".localized()
+        taskNameTF.placeholder = "Task name".localized()
+        datePickerLabel.text = "Due Date".localized()
+        dateTimeLabel.text = "Remind Me".localized()
+        addImageButton.setTitle("Add Image".localized(), for: .normal)
         
         deleteDateTimeButton.isHidden = true
         deleteDatePickerButton.isHidden = true
@@ -106,7 +114,7 @@ class TaskViewController: UIViewController {
     // add placeholder and setting text view
     private func settingNotesTextView() {
         placeholderLabel = UILabel()
-        placeholderLabel.text = "Заметка"
+        placeholderLabel.text = "Note".localized()
         guard let pointSize = notesTextView.font?.pointSize else { return }
         placeholderLabel.font = .systemFont(ofSize: pointSize)
         placeholderLabel.sizeToFit()
@@ -137,7 +145,7 @@ class TaskViewController: UIViewController {
         
         if let time = reminderTime {
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
-            sendNotifications(title: "Напоминание",
+            sendNotifications(title: "Reminder".localized(),
                               body: task.name,
                               date: time,
                               id: task._id.stringValue)
@@ -160,7 +168,7 @@ class TaskViewController: UIViewController {
         
         if let time = reminderTime {
             notificationCenter.removePendingNotificationRequests(withIdentifiers: [task._id.stringValue])
-            sendNotifications(title: "Напоминание",
+            sendNotifications(title: "Reminder".localized(),
                               body: task.name,
                               date: time,
                               id: task._id.stringValue)
@@ -194,12 +202,12 @@ class TaskViewController: UIViewController {
     
     //MARK: - @IBAction
     @IBAction func addFileTapped(_ sender: UIButton) {
-        let camera = UIAlertAction(title: "Камера",
+        let camera = UIAlertAction(title: "Camera".localized(),
                                    style: .default) { _ in
             self.showImagePicker(withType: .camera)
         }
         
-        let photoLibrary = UIAlertAction(title: "Библиотека изображений",
+        let photoLibrary = UIAlertAction(title: "Photo library".localized(),
                                          style: .default) { _ in
             self.showImagePicker(withType: .photoLibrary)
         }
@@ -349,10 +357,10 @@ extension TaskViewController: ImageCellDelegate {
     }
     
     func deleteImage(index: Int) {
-        showActionSheet(title: "Вы действительно хотите удалить этот файл?",
+        showActionSheet(title: "Are you sure you want to delete this file?".localized(),
                         message: nil,
                         showCancel: true,
-                        actions: [UIAlertAction(title: "Удаление файла",
+                        actions: [UIAlertAction(title: "Delete a file".localized(),
                                                 style: .destructive,
                                                 handler: { _ in
             self.imagesLocal.remove(at: index)

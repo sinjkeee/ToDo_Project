@@ -1,0 +1,51 @@
+
+/* Class = "UITextField"; placeholder = "Введите имя"; ObjectID = "1yU-C9-FHe"; */
+"1yU-C9-FHe.placeholder" = "Введите имя";
+
+/* Class = "UIBarButtonItem"; title = "Готово"; ObjectID = "CKZ-Sf-78c"; */
+"CKZ-Sf-78c.title" = "Готово";
+
+/* Class = "UIButton"; configuration.title = "Войти"; ObjectID = "Cjn-F7-4rc"; */
+"Cjn-F7-4rc.configuration.title" = "Войти";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Cjn-F7-4rc"; */
+"Cjn-F7-4rc.normalTitle" = "Button";
+
+/* Class = "UINavigationItem"; title = "title"; ObjectID = "DLx-oM-15V"; */
+"DLx-oM-15V.title" = "title";
+
+/* Class = "UIButton"; configuration.title = "Зарегистрироваться"; ObjectID = "JHF-8N-dfd"; */
+"JHF-8N-dfd.configuration.title" = "Зарегистрироваться";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "JHF-8N-dfd"; */
+"JHF-8N-dfd.normalTitle" = "Button";
+
+/* Class = "UITextField"; placeholder = "Введите пароль"; ObjectID = "LBM-sn-bTj"; */
+"LBM-sn-bTj.placeholder" = "Введите пароль";
+
+/* Class = "UIButton"; configuration.title = "Зарегистрироваться"; ObjectID = "OcL-Ha-d0U"; */
+"OcL-Ha-d0U.configuration.title" = "Зарегистрироваться";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "OcL-Ha-d0U"; */
+"OcL-Ha-d0U.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Нет аккаунта? "; ObjectID = "P2I-Hy-Xef"; */
+"P2I-Hy-Xef.text" = "Нет аккаунта? ";
+
+/* Class = "UILabel"; text = "Есть аккаунт?"; ObjectID = "R6j-e4-YaE"; */
+"R6j-e4-YaE.text" = "Есть аккаунт?";
+
+/* Class = "UITextField"; placeholder = "Пароль еще раз"; ObjectID = "Xvu-n2-JPu"; */
+"Xvu-n2-JPu.placeholder" = "Пароль еще раз";
+
+/* Class = "UITextField"; placeholder = "Введите почту"; ObjectID = "avQ-D7-z0i"; */
+"avQ-D7-z0i.placeholder" = "Введите почту";
+
+/* Class = "UIButton"; configuration.title = "Войти"; ObjectID = "gGA-Xv-yN0"; */
+"gGA-Xv-yN0.configuration.title" = "Войти";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "gGA-Xv-yN0"; */
+"gGA-Xv-yN0.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "   Создать список"; ObjectID = "lHE-BV-MIm"; */
+"lHE-BV-MIm.configuration.title" = "   Создать список";

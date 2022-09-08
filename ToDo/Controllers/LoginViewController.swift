@@ -37,15 +37,24 @@ class LoginViewController: UIViewController {
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(recognizer)
         
-        loginButton.cornerRadius()
-        registerButton.cornerRadius()
+        loginButton.layer.cornerRadius = 6
+        registerButton.layer.cornerRadius = 6
         
         loginTF.delegate = self
         passwordTF.delegate = self
         
-        loginTF.placeholder = "Введите почту"
-        passwordTF.placeholder = "Введите пароль"
-        
+        toLoginView.setTitle("Sign in".localized(), for: .normal)
+        haveAnAccountLabel.text = "Already have an account?".localized()
+        dontHaveAnAccountLabel.text = "Don't have an account?".localized()
+        toRegisterView.setTitle("SIGN UP".localized(), for: .normal)
+        loginButton.setTitle("SIGN IN".localized(), for: .normal)
+        loginTF.placeholder = "Enter your email".localized()
+        passwordTF.placeholder = "Enter password".localized()
+        loginRegisterTF.placeholder = "Enter your email".localized()
+        nameRegisterTF.placeholder = "Enter your name".localized()
+        passwordRegisterTF.placeholder = "Enter password".localized()
+        secondPasswordRegisterTF.placeholder = "Enter your password again".localized()
+        registerButton.setTitle("Join Us".localized(), for: .normal)
         addVerticalGradientLayer(topColor: .systemBlue, bottomColor: .systemYellow)
     }
     

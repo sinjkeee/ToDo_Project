@@ -296,20 +296,29 @@
                     </view>
                     <navigationItem key="navigationItem" id="LrW-S5-KOP"/>
                     <connections>
+                        <outlet property="addNewTaskButton" destination="bLW-tT-X7G" id="TFP-N2-LLZ"/>
                         <outlet property="addTaskView" destination="B0U-xi-VIw" id="p29-Zp-ipl"/>
                         <outlet property="alphabetButton" destination="0Eg-ga-xVH" id="h7t-St-wrf"/>
+                        <outlet property="alphabetLabel" destination="2KU-bI-oMP" id="jsZ-wE-IMA"/>
                         <outlet property="alphabetSwitch" destination="5L6-dK-HX0" id="Bgw-xH-Vgt"/>
                         <outlet property="bottomConstraintContentView" destination="Je6-rl-AJK" id="Udl-tV-k79"/>
+                        <outlet property="byDateOfCompletedLabel" destination="8yE-dN-5c0" id="1wu-FX-eyn"/>
+                        <outlet property="byDateOfCreationLabel" destination="iut-SD-cGV" id="wRv-MU-Ocq"/>
                         <outlet property="collectionView" destination="bTc-OV-hee" id="OQ9-Xb-wA0"/>
+                        <outlet property="colorTextLabel" destination="Bsu-VT-eS3" id="wl5-B8-dyb"/>
                         <outlet property="contentView" destination="63H-Rw-Q3k" id="ca2-kV-EpZ"/>
                         <outlet property="dateOfCompletionButton" destination="Ht6-V4-L7w" id="cUG-m7-Dgv"/>
                         <outlet property="dateOfCompletionSwitch" destination="cGo-uk-GtK" id="QWE-Ui-aEh"/>
                         <outlet property="dateOfCreationButton" destination="Dgt-jg-FBT" id="Bsy-Bk-ByS"/>
                         <outlet property="dateOfCreationSwitch" destination="5V1-RO-2bz" id="r1f-ki-I6D"/>
+                        <outlet property="doneButton" destination="MeE-UN-ZNt" id="CXm-xR-UZB"/>
                         <outlet property="importantButton" destination="Vbv-1s-D2Y" id="uwe-wU-AFu"/>
+                        <outlet property="importantLabel" destination="CEA-S6-wy2" id="MX6-nl-tNT"/>
                         <outlet property="importantSwitch" destination="rP0-ha-Mwj" id="xB7-T4-ubN"/>
                         <outlet property="listTableView" destination="JCi-uM-7S6" id="m1k-TK-CRQ"/>
+                        <outlet property="mainLabel" destination="pcX-hS-Qbc" id="tg9-hB-TTn"/>
                         <outlet property="settingsView" destination="07I-Fm-xGW" id="nMH-Bm-ikV"/>
+                        <outlet property="sortTextLabel" destination="Dxa-Xx-8yp" id="pe3-N0-mBm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
