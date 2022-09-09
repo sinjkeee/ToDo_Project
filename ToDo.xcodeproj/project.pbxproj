@@ -41,6 +41,7 @@
 		2AA3156728C8B48800F09967 /* Sorting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA3156628C8B48800F09967 /* Sorting.swift */; };
 		2AB2D4FB28C9F177004D7531 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2AB2D4FD28C9F177004D7531 /* Localizable.strings */; };
 		2AB2D50128CA2EC1004D7531 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2AB2D50328CA2EC1004D7531 /* InfoPlist.strings */; };
+		2AB2D50628CB5F55004D7531 /* AuthErrorCode+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2D50528CB5F55004D7531 /* AuthErrorCode+Extension.swift */; };
 		2AC7A4E728A23A0B00FC641A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */; };
 		2AC7A4E928A23A0B00FC641A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */; };
 		2AC7A4EB28A23A0B00FC641A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC7A4EA28A23A0B00FC641A /* MainViewController.swift */; };
@@ -86,6 +87,7 @@
 		2AB2D4FE28C9F184004D7531 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2AB2D50228CA2EC1004D7531 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		2AB2D50428CA2EC2004D7531 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2AB2D50528CB5F55004D7531 /* AuthErrorCode+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AuthErrorCode+Extension.swift"; sourceTree = "<group>"; };
 		2AC7A4E328A23A0B00FC641A /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC7A4E628A23A0B00FC641A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AC7A4E828A23A0B00FC641A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 				2A9E46E928AA4219006DCFB0 /* UIViewController+Extension.swift */,
 				2A99711228C9D35100531963 /* UIView+Extension.swift */,
 				2A99711428C9E7CF00531963 /* String+Extension.swift */,
+				2AB2D50528CB5F55004D7531 /* AuthErrorCode+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				2A9E471128AB88CF006DCFB0 /* ModelForRealm.swift in Sources */,
 				2A99711528C9E7CF00531963 /* String+Extension.swift in Sources */,
 				2AD5D55C28A692880038A1A4 /* TaskViewController.swift in Sources */,
+				2AB2D50628CB5F55004D7531 /* AuthErrorCode+Extension.swift in Sources */,
 				2AA3156428C77D5E00F09967 /* ListCell.swift in Sources */,
 				2A99711328C9D35100531963 /* UIView+Extension.swift in Sources */,
 				2AA3156728C8B48800F09967 /* Sorting.swift in Sources */,

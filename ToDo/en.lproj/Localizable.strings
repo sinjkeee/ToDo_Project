@@ -80,4 +80,17 @@
 "Enter your name" = "Enter your name";
 "Enter your password again" = "Enter your password again";
 "Join Us" = "Join Us";
+"All fields must be filled" = "All fields must be filled.";
+"Error!" = "Error!";
+"Check the entered passwords again." = "Check the entered passwords again.";
+"Wrong password!" = "Wrong password!";
 
+//MARK: - AuthErrorCode
+"Your password is incorrect." = "Your password is incorrect.";
+"The email is already in use with another account." = "The email is already in use with another account.";
+"Account not found for the specified user. Please check and try again." = "Account not found for the specified user. Please check and try again.";
+"Your account has been disabled. Please contact support." = "Your account has been disabled. Please contact support.";
+"Please enter a valid email." = "Please enter a valid email.";
+"Network error. Please try again." = "Network error. Please try again.";
+"Your password is too weak. The password must be 6 characters long or more." = "Your password is too weak. The password must be 6 characters long or more.";
+"Unknown error occurred" = "Unknown error occurred.";

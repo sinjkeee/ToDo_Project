@@ -26,8 +26,20 @@ class SignOutCell: UITableViewCell {
         }
     }
     
+    private func deleteCurrentUser() {
+        let user = Auth.auth().currentUser
+
+        user?.delete { error in
+            if error != nil {
+                print(error?.localizedDescription as Any)
+          } else {
+            // Account deleted.
+          }
+        }
+    }
+    
     @IBAction func mainButtonAction(_ sender: UIButton) {
-        indexCell == 0 ? signOut() : print("Delete")
+        indexCell == 0 ? signOut() : deleteCurrentUser()
     }
     
     func configure(index: Int) {

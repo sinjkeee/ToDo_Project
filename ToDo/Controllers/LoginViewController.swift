@@ -36,26 +36,13 @@ class LoginViewController: UIViewController {
         
         let recognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         view.addGestureRecognizer(recognizer)
-        
-        loginButton.layer.cornerRadius = 6
-        registerButton.layer.cornerRadius = 6
-        
+
         loginTF.delegate = self
         passwordTF.delegate = self
-        
-        toLoginView.setTitle("Sign in".localized(), for: .normal)
-        haveAnAccountLabel.text = "Already have an account?".localized()
-        dontHaveAnAccountLabel.text = "Don't have an account?".localized()
-        toRegisterView.setTitle("SIGN UP".localized(), for: .normal)
-        loginButton.setTitle("SIGN IN".localized(), for: .normal)
-        loginTF.placeholder = "Enter your email".localized()
-        passwordTF.placeholder = "Enter password".localized()
-        loginRegisterTF.placeholder = "Enter your email".localized()
-        nameRegisterTF.placeholder = "Enter your name".localized()
-        passwordRegisterTF.placeholder = "Enter password".localized()
-        secondPasswordRegisterTF.placeholder = "Enter your password again".localized()
-        registerButton.setTitle("Join Us".localized(), for: .normal)
+
+        setTitles()
         addVerticalGradientLayer(topColor: .systemBlue, bottomColor: .systemYellow)
+        viewCustomization()
     }
     
     //MARK: - viewWillAppear
@@ -73,6 +60,31 @@ class LoginViewController: UIViewController {
     //MARK: - Custom methods
     @objc private func tap() {
         view.endEditing(true)
+    }
+    
+    private func viewCustomization() {
+        let views: [UIView] = [loginTF, passwordTF, loginRegisterTF, nameRegisterTF, passwordRegisterTF, secondPasswordRegisterTF, loginButton, registerButton]
+
+        views.forEach { view in
+            view.cornerAndShadow(cornerRadius: 6,
+                                 shadowRadius: 2,
+                                 shadowOffset: CGSize(width: 3, height: 3))
+        }
+    }
+    
+    private func setTitles() {
+        toLoginView.setTitle("Sign in".localized(), for: .normal)
+        haveAnAccountLabel.text = "Already have an account?".localized()
+        dontHaveAnAccountLabel.text = "Don't have an account?".localized()
+        toRegisterView.setTitle("SIGN UP".localized(), for: .normal)
+        loginButton.setTitle("SIGN IN".localized(), for: .normal)
+        loginTF.placeholder = "Enter your email".localized()
+        passwordTF.placeholder = "Enter password".localized()
+        loginRegisterTF.placeholder = "Enter your email".localized()
+        nameRegisterTF.placeholder = "Enter your name".localized()
+        passwordRegisterTF.placeholder = "Enter password".localized()
+        secondPasswordRegisterTF.placeholder = "Enter your password again".localized()
+        registerButton.setTitle("Join Us".localized(), for: .normal)
     }
     
     private func addVerticalGradientLayer(topColor: UIColor, bottomColor: UIColor) {
@@ -97,9 +109,17 @@ class LoginViewController: UIViewController {
     
     //MARK: - @IBAction
     @IBAction func loginButtonTapped(_ sender: UIButton) {
-        guard let email = loginTF.text,
+        guard loginTF.hasText,
+              passwordTF.hasText,
+              let email = loginTF.text,
               let password = passwordTF.text
-        else { return }
+        else {
+            self.showAlert(title: "Error!".localized(),
+                           message: "All fields must be filled".localized(),
+                           showCancel: false,
+                           actions: [UIAlertAction(title: "OK", style: .default)])
+            return
+        }
         
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if error == nil, let result = result, let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavigationController") as? UINavigationController, let vc = mainController.viewControllers.first as? MainViewController {
@@ -108,7 +128,7 @@ class LoginViewController: UIViewController {
                 vc.userUID = result.user.uid
                 self.present(mainController, animated: true)
             } else if let error = error {
-                print(error.localizedDescription)
+                self.handleError(error)
             }
         }
     }
@@ -116,15 +136,34 @@ class LoginViewController: UIViewController {
     // регистрация нового пользователя в firebase
     @IBAction func registerButtonTapped(_ sender: UIButton) {
         
-        guard let name = nameRegisterTF.text,
+        guard loginRegisterTF.hasText,
+              nameRegisterTF.hasText,
+              passwordRegisterTF.hasText,
+              secondPasswordRegisterTF.hasText,
+              let name = nameRegisterTF.text,
               let email = loginRegisterTF.text,
-              let password = passwordRegisterTF.text
-        else { return }
+              let password = passwordRegisterTF.text,
+              let secondPassword = secondPasswordRegisterTF.text
+        else {
+            self.showAlert(title: "Error!".localized(),
+                           message: "All fields must be filled".localized(),
+                           showCancel: false,
+                           actions: [UIAlertAction(title: "OK", style: .default)])
+            return
+        }
+        
+        guard password == secondPassword else {
+            self.showAlert(title: "Wrong password!".localized(),
+                           message: "Check the entered passwords again.".localized(),
+                           showCancel: false,
+                           actions: [UIAlertAction(title: "OK", style: .default)])
+            return
+        }
         // регистрируем пользователя в firebase
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             
             if let error = error {
-                print(error.localizedDescription)
+                self.handleError(error)
                 return
             }
             
@@ -140,21 +179,6 @@ class LoginViewController: UIViewController {
                 newUser.settings = UserSettings()
                 RealmManager.shared.save(user: newUser)
                 self.firstLaunchApp(user: newUser)
-                self.showAlert(title: "Успешно!",
-                               message: nil,
-                               showCancel: false,
-                               actions: [UIAlertAction(title: "OK", style: .default, handler: { action in
-                    UIView.animate(withDuration: 0.25) {
-                        self.registerView.alpha = 0
-                    } completion: { _ in
-                        self.registerView.isHidden = true
-                        self.loginView.alpha = 0
-                        UIView.animate(withDuration: 0.25, delay: 0) {
-                            self.loginView.isHidden = false
-                            self.loginView.alpha = 1
-                        }
-                    }
-                })])
                 
                 self.loginRegisterTF.text = ""
                 self.passwordRegisterTF.text = ""
@@ -174,6 +198,8 @@ class LoginViewController: UIViewController {
             UIView.animate(withDuration: 0.25, delay: 0) {
                 self.registerView.isHidden = false
                 self.registerView.alpha = 1
+                self.loginTF.text = ""
+                self.passwordTF.text = ""
             }
         }
     }
@@ -187,6 +213,10 @@ class LoginViewController: UIViewController {
             UIView.animate(withDuration: 0.25, delay: 0) {
                 self.loginView.isHidden = false
                 self.loginView.alpha = 1
+                self.loginRegisterTF.text = ""
+                self.nameRegisterTF.text = ""
+                self.passwordRegisterTF.text = ""
+                self.secondPasswordRegisterTF.text = ""
             }
         }
     }
