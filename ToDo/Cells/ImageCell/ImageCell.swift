@@ -53,12 +53,9 @@ class ImageCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        layer.masksToBounds = false
-        layer.cornerRadius = 6
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowRadius = 6
-        layer.shadowOpacity = 0.35
-        layer.shadowOffset = CGSize(width: 5, height: 8)
+        self.cornerAndShadow(cornerRadius: 6,
+                             shadowRadius: 6,
+                             shadowOffset: CGSize(width: 5, height: 8))
     }
 
     @objc private func deleteImageTapped() {

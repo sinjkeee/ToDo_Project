@@ -20,17 +20,17 @@ enum ListIndex: Int, PersistableEnum, CaseIterable {
     var name: String {
         switch self {
         case .one:
-            return "Мой день"
+            return "My Day".localized()
         case .two:
-            return "Важно"
+            return "Important".localized()
         case .three:
-            return "Запланировано"
+            return "Planned".localized()
         case .four:
-            return "Завершенные"
+            return "Completed".localized()
         case .five:
-            return "Задачи"
+            return "Tasks".localized()
         case .custom:
-            return "Новый список"
+            return "New List".localized()
         }
     }
     

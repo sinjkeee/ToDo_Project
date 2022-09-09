@@ -15,10 +15,21 @@ class ListViewController: UIViewController {
     //MARK: - @IBOutlet
     @IBOutlet weak var listTableView: UITableView!
     @IBOutlet weak var addTaskView: UIView!
+    @IBOutlet weak var addNewTaskButton: UIButton!
     @IBOutlet weak var settingsView: UIView!
+    // setting view
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var bottomConstraintContentView: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var mainLabel: UILabel!
+    @IBOutlet weak var doneButton: UIButton!
+    @IBOutlet weak var colorTextLabel: UILabel!
+    @IBOutlet weak var sortTextLabel: UILabel!
+    @IBOutlet weak var alphabetLabel: UILabel!
+    @IBOutlet weak var importantLabel: UILabel!
+    @IBOutlet weak var byDateOfCompletedLabel: UILabel!
+    @IBOutlet weak var byDateOfCreationLabel: UILabel!
+    
     
     @IBOutlet weak var alphabetSwitch: UISwitch!
     @IBOutlet weak var alphabetButton: UIButton!
@@ -47,14 +58,21 @@ class ListViewController: UIViewController {
         let view = UIView()
         view.backgroundColor = .clear
         let button = UIButton(type: .system)
-        button.backgroundColor = .clear
+        button.tintColor = .white
+        button.backgroundColor = .systemGroupedBackground.withAlphaComponent(0.4)
+        button.cornerAndShadow(cornerRadius: 6,
+                               shadowRadius: 2,
+                               shadowOffset: CGSize(width: 3, height: 2))
         view.addSubview(button)
-        button.addTarget(self, action: #selector(hideCompletedTask(sender:)), for: .touchUpInside)
-        button.setTitle("  Завершенные", for: .normal)
-        button.setImage(UIImage(systemName: "chevron.forward"), for: .normal)
+        button.addTarget(self,
+                         action: #selector(hideCompletedTask(sender:)),
+                         for: .touchUpInside)
+        button.setTitle("  Completed".localized(), for: .normal)
+        button.setImage(UIImage(systemName: "chevron.down"), for: .normal)
         
         button.snp.makeConstraints { make in
             make.height.equalTo(30)
+            make.width.equalTo(150)
             make.leading.equalToSuperview().inset(10)
             make.top.equalToSuperview().inset(0)
         }
@@ -65,25 +83,27 @@ class ListViewController: UIViewController {
     //MARK: - viewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         bottomConstraintContentView.constant = -350
-        
         contentView.layer.cornerRadius = 10
+        // setting view title
+        mainLabel.text = "List options".localized()
+        doneButton.setTitle("Done".localized(), for: .normal)
+        colorTextLabel.text = "Background color:".localized()
+        sortTextLabel.text = "Sort:".localized()
+        alphabetLabel.text = "Alphabetically".localized()
+        importantLabel.text = "Importance".localized()
+        byDateOfCompletedLabel.text = "Due Date".localized()
+        byDateOfCreationLabel.text = "Creation Date".localized()
         
-        addTaskView.layer.cornerRadius = 6
-        addTaskView.layer.masksToBounds = false
-        addTaskView.layer.shadowColor = UIColor.black.cgColor
-        addTaskView.layer.shadowRadius = 2
-        addTaskView.layer.shadowOpacity = 0.35
-        addTaskView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        
-        settingsView.layer.cornerRadius = 6
-        settingsView.layer.masksToBounds = false
-        settingsView.layer.shadowColor = UIColor.black.cgColor
-        settingsView.layer.shadowRadius = 2
-        settingsView.layer.shadowOpacity = 0.35
-        settingsView.layer.shadowOffset = CGSize(width: 3, height: 3)
-        
+        addNewTaskButton.setTitle("   Add a new Task".localized(), for: .normal)
+        addTaskView.cornerAndShadow(cornerRadius: 6,
+                                    shadowRadius: 2,
+                                    shadowOffset: CGSize(width: 3, height: 3))
+        settingsView.cornerAndShadow(cornerRadius: 6,
+                                     shadowRadius: 2,
+                                     shadowOffset: CGSize(width: 3, height: 3))
+
         self.navigationController?.navigationBar.tintColor = .white
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -125,8 +145,8 @@ class ListViewController: UIViewController {
         listTableView.separatorStyle = .none
         listTableView.showsVerticalScrollIndicator = false
         
-        settingsView.isHidden = title == "Завершенные"
-        addTaskView.isHidden = title == "Завершенные"
+        //settingsView.isHidden = title == "Завершенные"
+        addTaskView.isHidden = title == "Completed".localized()
     }
     
     //MARK: - private methods
@@ -313,14 +333,14 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         controller.listID = listID
         present(taskController, animated: true)
     }
-    
+    // "Item".localized() + " " + "\"\(arrayCustomLists[indexPath.row].name)\"" + " " + "will be permanently deleted".localized()
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let taskName = indexPath.section == 0 ? self.sortedTasks?.filter({$0.isCompleted == false})[indexPath.row].name : self.sortedTasks?.filter({$0.isCompleted == true})[indexPath.row].name else { return }
-            showActionSheet(title: "Элемент \"\(taskName)\" будет удален без возможности восстановления",
+            showActionSheet(title: "Item".localized() + " " + "\"\(taskName)\"" + " " + "will be permanently deleted".localized(),
                             message: nil,
                             showCancel: true,
-                            actions: [UIAlertAction(title: "Удалить задачу",
+                            actions: [UIAlertAction(title: "Delete task".localized(),
                                                     style: .destructive,
                                                     handler: { [weak self] _ in
                 guard let self = self,

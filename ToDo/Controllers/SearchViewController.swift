@@ -26,8 +26,8 @@ class SearchViewController: UIViewController {
         view.backgroundColor = .systemGray6
         title = ""
         
-        searchController.searchBar.setValue("Отмена", forKey: "cancelButtonText")
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.setValue("Cancel".localized(), forKey: "cancelButtonText")
+        searchController.searchBar.placeholder = "Search".localized()
         searchController.searchResultsUpdater = self
         
         navigationItem.searchController = searchController

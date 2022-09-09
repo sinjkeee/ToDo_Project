@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class SignOutCell: UITableViewCell {
 
@@ -17,12 +18,20 @@ class SignOutCell: UITableViewCell {
         // Initialization code
     }
 
+    private func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print(error)
+        }
+    }
+    
     @IBAction func mainButtonAction(_ sender: UIButton) {
-        print(indexCell == 0 ? "Выйти" : "Удалить")
+        indexCell == 0 ? signOut() : print("Delete")
     }
     
     func configure(index: Int) {
-        mainButton.setTitle(index == 0 ? "Выйти" : "Удалить учетную запись", for: .normal)
+        mainButton.setTitle(index == 0 ? "Sign Out".localized() : "Delete Account".localized(), for: .normal)
         indexCell = index
     }
 }

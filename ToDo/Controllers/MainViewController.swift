@@ -14,6 +14,7 @@ class MainViewController: UIViewController {
     
     //MARK: - IBOutlet
     @IBOutlet weak var mainTableView: UITableView!
+    @IBOutlet weak var createNewListButton: UIButton!
     
     //MARK: - let/var
     private var arrayLists: Results<ListModel>!
@@ -95,7 +96,7 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "Списки"
+        self.title = "Lists".localized()
         
         customTitleView.addSubview(userImage)
         customTitleView.addSubview(infoLabel)
@@ -104,6 +105,8 @@ class MainViewController: UIViewController {
         let userInfoRecognizer = UITapGestureRecognizer(target: self,
                                                         action: #selector(toUserInfoTapped))
         infoLabel.addGestureRecognizer(userInfoRecognizer)
+        
+        createNewListButton.setTitle("  New List".localized(), for: .normal)
         
         mainTableView.delegate = self
         mainTableView.dataSource = self
@@ -276,10 +279,10 @@ class MainViewController: UIViewController {
     }
     
     private func showAlert() {
-        let alertController = UIAlertController(title: "Новый список",
+        let alertController = UIAlertController(title: "New List".localized(),
                                                 message: "",
                                                 preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Ok", style: .default) { _ in
+        let ok = UIAlertAction(title: "OK", style: .default) { _ in
             guard let text = alertController.textFields?.first?.text else { return }
             if text != "" {
                 // создаем новый список задач и сохраняем в бд
@@ -290,11 +293,11 @@ class MainViewController: UIViewController {
                 RealmManager.shared.save(list: newTaskList, in: self.currentUser)
             }
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancel = UIAlertAction(title: "Cancel".localized(), style: .cancel)
         alertController.addAction(ok)
         alertController.addAction(cancel)
         alertController.addTextField { textField in
-            textField.placeholder = "Введите имя списка"
+            textField.placeholder = "Enter list name".localized()
         }
         present(alertController, animated: true)
     }
@@ -305,15 +308,15 @@ class MainViewController: UIViewController {
     }
     
     private func showEditAlert(_ list: ListModel) {
-        let alertController = UIAlertController(title: "Хотите переименовать?",
-                                                message: "Введите новое название списка",
+        let alertController = UIAlertController(title: "Want to rename?".localized(),
+                                                message: "Enter a new name for the list".localized(),
                                                 preferredStyle: .alert)
-        let ok = UIAlertAction(title: "Изменить", style: .default) { _ in
+        let ok = UIAlertAction(title: "Change".localized(), style: .default) { _ in
             guard let text = alertController.textFields?.first?.text,
                   text != "" else { return }
             RealmManager.shared.updateList(list: list, newValue: text)
         }
-        let cancel = UIAlertAction(title: "Отмена", style: .cancel)
+        let cancel = UIAlertAction(title: "Cancel".localized(), style: .cancel)
         alertController.addAction(ok)
         alertController.addAction(cancel)
         alertController.addTextField { textField in
@@ -390,14 +393,14 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         navigationController?.pushViewController(list, animated: true)
     }
-    
+//    \"\(arrayCustomLists[indexPath.row].name)\"
     // удаление списка из бд
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            showActionSheet(title: "Элемент \"\(arrayCustomLists[indexPath.row].name)\" будет удален без возможности восстановления",
+            showActionSheet(title: "Item".localized() + " " + "\"\(arrayCustomLists[indexPath.row].name)\"" + " " + "will be permanently deleted".localized(),
                             message: nil,
                             showCancel: true,
-                            actions: [UIAlertAction(title: "Удаление списка",
+                            actions: [UIAlertAction(title: "Delete List".localized(),
                                                     style: .destructive,
                                                     handler: { [weak self] action in
                 guard let self = self else { return }

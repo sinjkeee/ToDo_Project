@@ -38,6 +38,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="doneButton" destination="CKZ-Sf-78c" id="2RE-kH-JYi"/>
                         <outlet property="tableVIew" destination="JSB-F7-Y04" id="emE-zU-xrt"/>
                     </connections>
                 </viewController>
@@ -84,6 +85,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="title" id="DLx-oM-15V"/>
                     <connections>
+                        <outlet property="createNewListButton" destination="lHE-BV-MIm" id="1VW-2j-Grd"/>
                         <outlet property="mainTableView" destination="yhc-6p-5RK" id="TrU-Ik-fhJ"/>
                     </connections>
                 </viewController>

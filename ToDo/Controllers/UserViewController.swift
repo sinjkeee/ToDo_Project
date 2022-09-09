@@ -11,6 +11,7 @@ class UserViewController: UIViewController {
     
     //MARK: - @IBOutlets
     @IBOutlet weak var tableVIew: UITableView!
+    @IBOutlet weak var doneButton: UIBarButtonItem!
     
     //MARK: - let/var
     private var imagePicker = UIImagePickerController()
@@ -20,7 +21,8 @@ class UserViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Параметры"
+        doneButton.title = "Done".localized()
+        title = "Settings".localized()
         tableVIew.register(UINib(nibName: "UserInfoCell", bundle: nil),
                            forCellReuseIdentifier: "userInfoCell")
         tableVIew.register(UINib(nibName: "SignOutCell", bundle: nil),
@@ -95,35 +97,35 @@ extension UserViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        section == 1 ? "СМАРТ-СПИСКИ" : ""
+        section == 1 ? "SMART LISTS".localized() : ""
     }
 }
 
 //MARK: - UserInfoCellDelegate
 extension UserViewController: UserInfoCellDelegate {
     func showAlert() {
-        let cameraAction = UIAlertAction(title: "Камера", style: .default) { _ in
+        let cameraAction = UIAlertAction(title: "Camera".localized(), style: .default) { _ in
             self.showImagePicker(withType: .camera)
         }
-        let photoLibraryAction = UIAlertAction(title: "Библиотека изображений", style: .default) { _ in
+        let photoLibraryAction = UIAlertAction(title: "Photo library".localized(), style: .default) { _ in
             self.showImagePicker(withType: .photoLibrary)
         }
         
-        let changePhoto = UIAlertAction(title: "Изменить фото", style: .default) { _ in
+        let changePhoto = UIAlertAction(title: "Edit photo".localized(), style: .default) { _ in
             self.showActionSheet(title: nil,
                                  message: nil,
                                  showCancel: true,
                                  actions: [cameraAction, photoLibraryAction])
         }
         
-        let delete = UIAlertAction(title: "Удалить",
+        let delete = UIAlertAction(title: "Delete".localized(),
                                    style: .destructive) { _ in
             RealmManager.shared.deleteUserPhoto(user: self.user)
             self.tableVIew.reloadData()
         }
         
-        let deletePhoto = UIAlertAction(title: "Удалить фото", style: .destructive) { _ in
-            self.showActionSheet(title: "Фото будет удалено без возможности восстановления",
+        let deletePhoto = UIAlertAction(title: "Delete photo".localized(), style: .destructive) { _ in
+            self.showActionSheet(title: "The photo will be permanently deleted".localized(),
                                  message: nil,
                                  showCancel: true,
                                  actions: [delete])

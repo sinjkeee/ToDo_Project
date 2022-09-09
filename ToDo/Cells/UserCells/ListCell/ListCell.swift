@@ -28,7 +28,7 @@ class ListCell: UITableViewCell {
         indexCell = index
         switch index {
         case 0:
-            listName.text = "Важно"
+            listName.text = "Important".localized()
             listImage.image = UIImage(systemName: "star")
             let importantList = RealmManager.shared.realm.objects(ListModel.self).first { list in
                 list.index == ListIndex.two
@@ -36,7 +36,7 @@ class ListCell: UITableViewCell {
             guard let importantList = importantList else { return }
             switchList.isOn = !importantList.isHidden
         case 1:
-            listName.text = "Запланировано"
+            listName.text = "Planned".localized()
             listImage.image = UIImage(systemName: "calendar")
             let dateOfCompletedList = RealmManager.shared.realm.objects(ListModel.self).first { list in
                 list.index == ListIndex.three
@@ -44,7 +44,7 @@ class ListCell: UITableViewCell {
             guard let dateOfCompletedList = dateOfCompletedList else { return }
             switchList.isOn = !dateOfCompletedList.isHidden
         case 2:
-            listName.text = "Завершенные"
+            listName.text = "Completed".localized()
             listImage.image = UIImage(systemName: "checkmark.circle")
             let completedTasks = RealmManager.shared.realm.objects(ListModel.self).first { list in
                 list.index == ListIndex.four
@@ -52,7 +52,7 @@ class ListCell: UITableViewCell {
             guard let completedTasks = completedTasks else { return }
             switchList.isOn = !completedTasks.isHidden
         default:
-            listName.text = "Задачи"
+            listName.text = "Tasks".localized()
             listImage.image = UIImage(systemName: "text.badge.checkmark")
             let tasksList = RealmManager.shared.realm.objects(ListModel.self).first { list in
                 list.index == ListIndex.five

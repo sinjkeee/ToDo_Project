@@ -65,7 +65,6 @@
                                             <datePicker alpha="0.20000000000000001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="n0W-hY-POJ">
                                                 <rect key="frame" x="0.0" y="0.0" width="174.5" height="50"/>
                                                 <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
-                                                <locale key="locale" localeIdentifier="ru"/>
                                                 <connections>
                                                     <action selector="datePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="Tgx-xp-OPD"/>
                                                 </connections>
@@ -108,7 +107,6 @@
                                             <datePicker alpha="0.20000000000000001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="RAQ-Ph-vw1">
                                                 <rect key="frame" x="0.0" y="0.0" width="216" height="50"/>
                                                 <color key="backgroundColor" systemColor="systemGroupedBackgroundColor"/>
-                                                <locale key="locale" localeIdentifier="ru"/>
                                                 <connections>
                                                     <action selector="dateTimePickerAction:" destination="Y6W-OH-hqX" eventType="valueChanged" id="CbY-RY-YQZ"/>
                                                 </connections>
@@ -195,7 +193,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="cancelButton" destination="ZiS-No-ZKW" id="iKk-YP-MEr"/>
+                        <outlet property="addImageButton" destination="OH7-Di-UsK" id="cOO-VF-or9"/>
+                        <outlet property="cancelButton" destination="ZiS-No-ZKW" id="XtD-4D-gSG"/>
                         <outlet property="datePicker" destination="n0W-hY-POJ" id="T9Z-yM-zc4"/>
                         <outlet property="datePickerImage" destination="b9R-al-3Pq" id="MVP-EW-n6C"/>
                         <outlet property="datePickerLabel" destination="4PF-jm-FSJ" id="oLp-ug-n21"/>

@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  ToDo
+
+  Created by Vladimir Sekerko on 08.09.2022.
+  
+*/
+
+NSCameraUsageDescription = "Please allow access to the camera to take a picture";
