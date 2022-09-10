@@ -27,6 +27,7 @@ class SignOutCell: UITableViewCell {
     }
     
     private func deleteCurrentUser() {
+        /*
         let user = Auth.auth().currentUser
 
         user?.delete { error in
@@ -36,6 +37,7 @@ class SignOutCell: UITableViewCell {
             // Account deleted.
           }
         }
+         */
     }
     
     @IBAction func mainButtonAction(_ sender: UIButton) {
