@@ -18,23 +18,50 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         FirebaseApp.configure()
 
-        /*
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            print(error)
+        if !UserDefaults.standard.bool(forKey: "firstLaunchApp") {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print(error)
+            }
         }
-        */
         
         Auth.auth().addStateDidChangeListener { auth, user in
             if user == nil {
                 print("user == nil")
                 self.showLoginViewController()
+            } else if !UserDefaults.standard.bool(forKey: "firstLaunchApp") {
+                guard let uid = user?.uid else { return }
+                Database.database().reference().child("users").child(uid).getData { error, snapshot in
+                    guard let dict = snapshot?.value as? [String:Any],
+                          let name = dict["name"] as? String,
+                          let email = dict["email"] as? String
+                    else { return }
+
+                    let newUser = UserModel()
+                    newUser.name = name
+                    newUser.uid = uid
+                    newUser.email = email
+                    newUser.settings = UserSettings()
+                    RealmManager.shared.save(user: newUser)
+                    self.firstLaunchApp(user: newUser)
+                    self.showMainViewController(with: uid)
+                }
             } else {
                 print("user != nil")
                 guard let uid = user?.uid else { return }
                 self.showMainViewController(with: uid)
             }
+        }
+    }
+    
+    private func firstLaunchApp(user: UserModel) {
+        for i in ListIndex.allCases where i != .custom {
+            let list = ListModel()
+            list.listSortType = SortedForList()
+            list.index = i
+            RealmManager.shared.save(list: list, in: user)
+            UserDefaults.standard.set(true, forKey: "firstLaunchApp")
         }
     }
     

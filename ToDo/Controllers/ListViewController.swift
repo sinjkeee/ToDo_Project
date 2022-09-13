@@ -19,6 +19,7 @@ class ListViewController: UIViewController {
     @IBOutlet weak var settingsView: UIView!
     // setting view
     @IBOutlet weak var contentView: UIView!
+    @IBOutlet weak var backgroundView: UIView!
     @IBOutlet weak var bottomConstraintContentView: NSLayoutConstraint!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var mainLabel: UILabel!
@@ -86,6 +87,9 @@ class ListViewController: UIViewController {
 
         bottomConstraintContentView.constant = -350
         contentView.layer.cornerRadius = 10
+        backgroundView.isHidden = true
+        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        backgroundView.addGestureRecognizer(recognizer)
         // setting view title
         mainLabel.text = "List options".localized()
         doneButton.setTitle("Done".localized(), for: .normal)
@@ -152,15 +156,19 @@ class ListViewController: UIViewController {
     //MARK: - private methods
     private func updateSwitchState() {
         alphabetSwitch.isOn = sortedForList.sortType == .alphabet
+        alphabetButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"), for: .normal)
         alphabetButton.isHidden = !(sortedForList.sortType == .alphabet)
         
         importantSwitch.isOn = sortedForList.sortType == .isImportant
+        importantButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"), for: .normal)
         importantButton.isHidden = !(sortedForList.sortType == .isImportant)
         
         dateOfCompletionSwitch.isOn = sortedForList.sortType == .dateOfCompletion
+        dateOfCompletionButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"), for: .normal)
         dateOfCompletionButton.isHidden = !(sortedForList.sortType == .dateOfCompletion)
         
         dateOfCreationSwitch.isOn = sortedForList.sortType == .dateOfCreation
+        dateOfCreationButton.setImage(UIImage(systemName: sortedForList.isAscident ? "chevron.up" : "chevron.down"), for: .normal)
         dateOfCreationButton.isHidden = !(sortedForList.sortType == .dateOfCreation)
     }
     
@@ -190,17 +198,33 @@ class ListViewController: UIViewController {
     }
     
     //MARK: - @IBAction
+    @objc private func tapped() {
+        bottomConstraintContentView.constant = -350
+        UIView.animate(withDuration: 0.3) {
+            self.backgroundView.alpha = 0
+            self.view.layoutIfNeeded()
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.backgroundView.isHidden = true
+            }
+        }
+    }
+    
     @IBAction func addTaskTapped(_ sender: UIButton) {
         guard let taskController = UIStoryboard(name: "Task", bundle: nil).instantiateViewController(withIdentifier: "TaskNavigationController") as? UINavigationController,
               let controller = taskController.viewControllers.first as? TaskViewController
         else { return }
         controller.listID = listID
+        taskController.modalPresentationStyle = .fullScreen
         present(taskController, animated: true)
     }
     
     @IBAction func settingsTapped(_ sender: UIButton) {
+        backgroundView.isHidden = false
+        backgroundView.alpha = 0
         bottomConstraintContentView.constant = 0
         UIView.animate(withDuration: 0.3) {
+            self.backgroundView.alpha = 0.4
             self.view.layoutIfNeeded()
         } completion: { _ in
             self.bottomConstraintContentView.constant = -10
@@ -213,7 +237,12 @@ class ListViewController: UIViewController {
     @IBAction func doneButtonTapped(_ sender: UIButton) {
         bottomConstraintContentView.constant = -350
         UIView.animate(withDuration: 0.3) {
+            self.backgroundView.alpha = 0
             self.view.layoutIfNeeded()
+        } completion: { _ in
+            UIView.animate(withDuration: 0.3) {
+                self.backgroundView.isHidden = true
+            }
         }
     }
     
@@ -331,9 +360,10 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
         controller.task = task
         controller.indexPath = indexPath
         controller.listID = listID
+        taskController.modalPresentationStyle = .fullScreen
         present(taskController, animated: true)
     }
-    // "Item".localized() + " " + "\"\(arrayCustomLists[indexPath.row].name)\"" + " " + "will be permanently deleted".localized()
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             guard let taskName = indexPath.section == 0 ? self.sortedTasks?.filter({$0.isCompleted == false})[indexPath.row].name : self.sortedTasks?.filter({$0.isCompleted == true})[indexPath.row].name else { return }

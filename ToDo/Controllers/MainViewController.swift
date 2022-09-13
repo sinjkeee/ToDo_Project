@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 import RealmSwift
 import Firebase
+import FirebaseStorage
+import FirebaseDatabase
 
 class MainViewController: UIViewController {
     
@@ -198,6 +200,7 @@ class MainViewController: UIViewController {
         let importantTasks = RealmManager.shared.realm.objects(TaskModel.self).where { task in
             task.isImportant == true
         }
+        
         RealmManager.shared.deleteAllTasks(list: importantList)
         importantTasks.forEach { task in
             RealmManager.shared.save(task: task, in: importantList)
@@ -242,7 +245,7 @@ class MainViewController: UIViewController {
                 break
             }
         })
-        
+        mainTableView.reloadData()
         updateUI()
     }
     
@@ -371,7 +374,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? arrayLists.count : arrayCustomLists.count
+        section == 0 ? arrayLists?.count ?? 0 : arrayCustomLists?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -393,7 +396,7 @@ extension MainViewController: UITableViewDelegate, UITableViewDataSource {
         
         navigationController?.pushViewController(list, animated: true)
     }
-//    \"\(arrayCustomLists[indexPath.row].name)\"
+
     // удаление списка из бд
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {

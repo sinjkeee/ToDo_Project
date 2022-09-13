@@ -80,3 +80,17 @@
 "Enter your name" = "Введите Ваше имя";
 "Enter your password again" = "Введите пароль еще раз";
 "Join Us" = "Зарегистрироваться";
+"All fields must be filled" = "Все поля должны быть заполнены.";
+"Error!" = "Ошибка!";
+"Check the entered passwords again." = "Проверьте введенные пароли еще раз.";
+"Wrong password!" = "Ошибка пароля!";
+
+//MARK: - AuthErrorCode
+"Your password is incorrect." = "Ваш пароль неверен.";
+"The email is already in use with another account." = "Электронная почта уже используется с другой учетной записью.";
+"Account not found for the specified user. Please check and try again." = "Аккаунт для указанного пользователя не найден. Пожалуйста проверьте и попробуйте снова.";
+"Your account has been disabled. Please contact support." = "Ваш аккаунт был отключен. Пожалуйста, свяжитесь со службой поддержки.";
+"Please enter a valid email." = "Введите, пожалуйста, действительный адрес электронной почты.";
+"Network error. Please try again." = "Сетевая ошибка. Пожалуйста, попробуйте еще раз.";
+"Your password is too weak. The password must be 6 characters long or more." = "Ваш пароль слишком легкий. Пароль должен состоять из 6 символов или более.";
+"Unknown error occurred" = "Произошла неизвестная ошибка.";

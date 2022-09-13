@@ -138,7 +138,8 @@ class TaskViewController: UIViewController {
         task.note = notesTextView.text
         task.images = imagesArray
         task.reminderTime = reminderTime
-        task.dateOfCompletion = dateOfCompletion
+        task.dateOfCompletion = self.taskList.index == ListIndex.three ? Date() : dateOfCompletion //dateOfCompletion
+        task.isImportant = self.taskList.index == ListIndex.two ? true : false
         imagesLocal.forEach { data in
             task.images.append(data)
         }

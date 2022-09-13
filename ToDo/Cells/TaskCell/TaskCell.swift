@@ -41,6 +41,7 @@ class TaskCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        self.selectionStyle = .none
         self.cornerAndShadow(cornerRadius: 6,
                              shadowRadius: 2,
                              shadowOffset: CGSize(width: 3, height: 2))
