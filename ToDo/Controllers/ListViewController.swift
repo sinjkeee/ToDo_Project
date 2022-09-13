@@ -101,6 +101,8 @@ class ListViewController: UIViewController {
         byDateOfCreationLabel.text = "Creation Date".localized()
         
         addNewTaskButton.setTitle("   Add a new Task".localized(), for: .normal)
+        settingsView.backgroundColor = .white
+        addTaskView.backgroundColor = .white
         addTaskView.cornerAndShadow(cornerRadius: 6,
                                     shadowRadius: 2,
                                     shadowOffset: CGSize(width: 3, height: 3))
@@ -344,7 +346,7 @@ extension ListViewController: UITableViewDelegate, UITableViewDataSource {
               let task = indexPath.section == 0 ? sortedTasks?.filter({$0.isCompleted == false})[indexPath.row] : sortedTasks?.filter({$0.isCompleted == true})[indexPath.row]
         else { return UITableViewCell() }
         
-        taskCell.configure(with: task)
+        taskCell.configure(with: task, color: list?.color.color)
         return taskCell
     }
     
@@ -409,6 +411,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let list = list else { return }
         RealmManager.shared.updateColor(list: list, newColor: currentColor)
         collectionView.reloadData()
+        listTableView.reloadData()
     }
 }
 

@@ -56,32 +56,32 @@ class TaskCell: UITableViewCell {
         RealmManager.shared.updateImportantState(task: task)
     }
     
-    func configure(with task: TaskModel) {
+    func configure(with task: TaskModel, color: UIColor?) {
         self.task = task
         
         importantTaskButton.setImage(UIImage(systemName: task.isImportant ? "star.fill" : "star"), for: .normal)
-        completedTaskButton.setImage(UIImage(systemName: task.isCompleted ? "circle.slash" : "circle"), for: .normal)
+        completedTaskButton.setImage(UIImage(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle"), for: .normal)
+        
+        completedTaskButton.tintColor = task.isCompleted ? color : .systemGray
+        importantTaskButton.tintColor = task.isImportant ? color : .systemGray
         
         taskNameLabel.attributedText = task.isCompleted ? completedAttributeString : notCompletedAttributeString
         
-        noteImage.tintColor = task.note.isEmpty ? .systemGray2 : .systemBlue
         noteImage.isHidden = task.note.isEmpty
         
-        filesImage.tintColor = task.images.isEmpty ? .systemGray2 : .systemBlue
         filesImage.isHidden = task.images.isEmpty
         
-        bellImage.tintColor = task.reminderTime == nil ? .systemGray2 : .systemPink
+        let currendDate = Date()
+        bellImage.tintColor = currendDate > task.reminderTime ?? Date() ? .systemPink : .systemGray
         bellImage.isHidden = task.reminderTime == nil
         bellLabel.isHidden = true
         
         let smallConfig = UIImage.SymbolConfiguration(scale: .small)
-        bellImage.image = UIImage(systemName: task.reminderTime == nil ? "bell.slash" : "bell.badge",
-                                  withConfiguration: smallConfig)
+        bellImage.image = UIImage(systemName: task.reminderTime == nil ? "bell.slash" : "bell.badge", withConfiguration: smallConfig)
         
         // если дата выполнения задачи сегодня, то подсвечиваем ярким, если в будущем, то синим цветом
-        let currendDate = Date()
-        calendarImage.tintColor = currendDate > task.dateOfCompletion ?? Date() ? .systemPink : .systemBlue
-        calendarLabel.textColor = currendDate > task.dateOfCompletion ?? Date() ? .systemPink : .systemBlue
+        calendarImage.tintColor = currendDate > task.dateOfCompletion ?? Date() ? .systemPink : .systemGray
+        calendarLabel.textColor = currendDate > task.dateOfCompletion ?? Date() ? .systemPink : .systemGray
         
         calendarImage.isHidden = task.dateOfCompletion == nil
         calendarLabel.isHidden = task.dateOfCompletion == nil
