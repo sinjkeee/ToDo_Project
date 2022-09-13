@@ -104,6 +104,7 @@ class LoginViewController: UIViewController {
             list.listSortType = SortedForList()
             list.index = i
             RealmManager.shared.save(list: list, in: user)
+            UserDefaults.standard.set(true, forKey: "firstLaunchApp")
         }
     }
     
@@ -120,13 +121,13 @@ class LoginViewController: UIViewController {
                            actions: [UIAlertAction(title: "OK", style: .default)])
             return
         }
-        
+      
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if error == nil, let result = result, let mainController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "mainNavigationController") as? UINavigationController, let vc = mainController.viewControllers.first as? MainViewController {
-                mainController.modalPresentationStyle = .fullScreen
                 // при успешной авторизации мы передаем uid пользователя в контроллер, чтобы понимать, какой пользователь авторизовался
                 vc.userUID = result.user.uid
-                self.present(mainController, animated: true)
+                mainController.modalPresentationStyle = .fullScreen
+                //self.present(mainController, animated: true)
             } else if let error = error {
                 self.handleError(error)
             }

@@ -47,6 +47,10 @@
                                     <constraint firstAttribute="trailing" secondItem="bLW-tT-X7G" secondAttribute="trailing" id="lKg-Ep-Ytl"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ehu-gF-8SN">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="611"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07I-Fm-xGW">
                                 <rect key="frame" x="319" y="611" width="40" height="40"/>
                                 <subviews>
@@ -280,12 +284,16 @@
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemTealColor"/>
                         <constraints>
+                            <constraint firstItem="ehu-gF-8SN" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="5rM-FV-UGS"/>
                             <constraint firstItem="JCi-uM-7S6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="8IE-Sh-5J7"/>
+                            <constraint firstItem="ehu-gF-8SN" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="Ei7-5p-r7o"/>
                             <constraint firstAttribute="bottom" secondItem="63H-Rw-Q3k" secondAttribute="bottom" id="Je6-rl-AJK"/>
                             <constraint firstItem="07I-Fm-xGW" firstAttribute="leading" secondItem="B0U-xi-VIw" secondAttribute="trailing" constant="8" id="O5E-X3-lLQ"/>
                             <constraint firstItem="63H-Rw-Q3k" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="V6U-qR-K8e"/>
+                            <constraint firstItem="B0U-xi-VIw" firstAttribute="top" secondItem="ehu-gF-8SN" secondAttribute="bottom" id="VIw-2d-gPS"/>
                             <constraint firstItem="63H-Rw-Q3k" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="cHt-lZ-UE8"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="07I-Fm-xGW" secondAttribute="trailing" constant="16" id="e2h-CD-bt4"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="ehu-gF-8SN" secondAttribute="trailing" id="gVS-sq-ATQ"/>
                             <constraint firstItem="07I-Fm-xGW" firstAttribute="top" secondItem="B0U-xi-VIw" secondAttribute="top" id="gjP-Tx-HCF"/>
                             <constraint firstItem="B0U-xi-VIw" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="jZf-kL-eGf"/>
                             <constraint firstItem="B0U-xi-VIw" firstAttribute="top" secondItem="JCi-uM-7S6" secondAttribute="bottom" constant="16" id="nxI-HK-faN"/>
@@ -294,13 +302,13 @@
                             <constraint firstItem="JCi-uM-7S6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="wLH-TI-FJV"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="LrW-S5-KOP"/>
                     <connections>
                         <outlet property="addNewTaskButton" destination="bLW-tT-X7G" id="TFP-N2-LLZ"/>
                         <outlet property="addTaskView" destination="B0U-xi-VIw" id="p29-Zp-ipl"/>
                         <outlet property="alphabetButton" destination="0Eg-ga-xVH" id="h7t-St-wrf"/>
                         <outlet property="alphabetLabel" destination="2KU-bI-oMP" id="jsZ-wE-IMA"/>
                         <outlet property="alphabetSwitch" destination="5L6-dK-HX0" id="Bgw-xH-Vgt"/>
+                        <outlet property="backgroundView" destination="ehu-gF-8SN" id="ldH-0j-pmV"/>
                         <outlet property="bottomConstraintContentView" destination="Je6-rl-AJK" id="Udl-tV-k79"/>
                         <outlet property="byDateOfCompletedLabel" destination="8yE-dN-5c0" id="1wu-FX-eyn"/>
                         <outlet property="byDateOfCreationLabel" destination="iut-SD-cGV" id="wRv-MU-Ocq"/>

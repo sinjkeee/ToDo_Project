@@ -134,7 +134,7 @@ extension UserViewController: UserInfoCellDelegate {
         showActionSheet(title: nil,
                         message: nil,
                         showCancel: true,
-                        actions: [changePhoto, deletePhoto])
+                        actions: self.user.userImage.isEmpty ? [changePhoto] : [changePhoto, deletePhoto])
     }
 }
 
