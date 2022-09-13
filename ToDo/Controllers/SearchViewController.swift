@@ -62,7 +62,7 @@ extension SearchViewController: UITableViewDelegate, UITableViewDataSource {
         guard let taskCell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath) as? TaskCell else { return UITableViewCell() }
         
         taskCell.task = filteredDataTask[indexPath.row]
-        taskCell.configure(with: filteredDataTask[indexPath.row])
+        taskCell.configure(with: filteredDataTask[indexPath.row], color: .systemGray)
         return taskCell
     }
     
