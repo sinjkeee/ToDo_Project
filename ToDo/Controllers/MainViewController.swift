@@ -337,7 +337,7 @@ class MainViewController: UIViewController {
         
         userImage.snp.makeConstraints { make in
             make.width.height.equalTo(30)
-            make.leading.equalToSuperview().inset(8)
+            make.leading.equalToSuperview()
             make.centerY.equalToSuperview()
         }
         
@@ -351,7 +351,7 @@ class MainViewController: UIViewController {
         searchButton.snp.makeConstraints { make in
             make.width.height.equalTo(30)
             make.centerY.equalTo(userImage)
-            make.trailing.equalToSuperview().inset(32)
+            make.trailing.equalToSuperview()
         }
         
         navigationItem.titleView = customTitleView
