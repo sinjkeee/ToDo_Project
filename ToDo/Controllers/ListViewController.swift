@@ -51,7 +51,7 @@ class ListViewController: UIViewController {
     private var sortedTasks: [TaskModel]?
     private var notificationCenter = UNUserNotificationCenter.current()
     private var list: ListModel?
-    private var isHideCompletionTasks = false
+    private var isHideCompletionTasks = true
     private var sortingClosure: ((TaskModel, TaskModel) -> Bool)?
     var listID: ObjectId!
     

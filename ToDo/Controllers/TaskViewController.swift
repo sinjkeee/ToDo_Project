@@ -98,8 +98,8 @@ class TaskViewController: UIViewController {
         task.images.forEach { imageData in
             self.imagesLocal.append(imageData)
         }
-        datePickerImage.tintColor = dateOfCompletion == nil ? .systemGray2 : .systemBlue
-        dateTimeImage.tintColor = reminderTime == nil ? .systemGray2 : .systemBlue
+        datePickerImage.tintColor = dateOfCompletion == nil ? .systemGray : .systemBlue
+        dateTimeImage.tintColor = reminderTime == nil ? .systemGray : .systemBlue
         datePicker.alpha = dateOfCompletion == nil ? 0.2 : 1
         dateTimePicker.alpha = reminderTime == nil ? 0.2 : 1
         deleteDatePickerButton.isHidden = dateOfCompletion == nil
